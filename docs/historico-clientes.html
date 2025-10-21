@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="../assets/icons/favicon.ico" />
+    <title>Tu Taxi - Histórico Clientes</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../css/docs/tadiDefaults.css" />
+    <link rel="stylesheet" href="../css/docs/historico.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Sharp" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.1.1/b-print-2.1.1/date-1.1.1/sb-1.3.0/datatables.min.css"
+    />
+    <style>
+      .filter-container {
+        display: flex;
+        flex-direction: row;
+        column-gap: 1rem;
+        align-items: baseline;
+      }
+      .filter-container label {
+        display: flex;
+        flex-direction: column;
+        row-gap: 0.5rem;
+      }
+
+      .filter-container input,
+      .filter-container select {
+        height: 40px;
+        padding: 8px 12px;
+        border-radius: 3px;
+        border: 1px solid #8080808a;
+      }
+
+      label[data-format="currency"] {
+        position: relative;
+      }
+      label[data-format="currency"]::before {
+        content: "$";
+        display: block;
+        position: absolute;
+        left: 0.5rem;
+        top: 2.3rem;
+        z-index: 1;
+      }
+
+      label[data-format="currency"] input[type="text"] {
+        padding-left: 1.5rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root" class="preload">
+      <!-- Aside -->
+      <aside>
+        <div id="aside-container">
+          <div class="logo">
+            <a class="home-link" href="./main.html">Tu Taxi | Backoffice</a>
+          </div>
+          <hr />
+          <ul class="nav">
+            <li class="nav-item" id="mapa-menu-li" style="display: none">
+              <a class="nav-link" href="./maps.html">
+                <span class="link-icons material-icons-sharp">map</span>
+                MAPA
+              </a>
+            </li>
+            <li class="nav-item" id="concesionario-menu-li" style="display: none">
+              <a class="nav-link hasSubmenu selectedPage" href="#" id="concesionario">
+                <span class="link-icons material-icons-sharp">person</span>
+                CONCESIONARIOS
+              </a>
+            </li>
+            <li class="nav-item" id="vehiculos-menu-li">
+              <a class="nav-link" href="./vehicles.html">
+                <span class="link-icons material-icons-sharp">directions_car</span>
+                VEHICULO
+              </a>
+            </li>
+            <li class="nav-item" id="conductores-menu-li">
+              <a class="nav-link" href="./users.html">
+                <span class="link-icons material-icons-sharp">person</span>
+                CONDUCTORES
+              </a>
+            </li>
+            <li class="nav-item" id="chats-menu-li">
+              <a class="nav-link" href="#">
+                <span class="link-icons material-icons-sharp">chat</span>
+                CHATS
+              </a>
+            </li>
+            <li class="nav-item menu-button menu-closed" id="historico-menu-li">
+              <a class="nav-link" href="#" id="historico">
+                <span class="link-icons material-icons-sharp">token</span>
+                HISTORICO DE VIAJES
+              </a>
+              <div id="historico-submenu" data-displayed="hidden">
+                <ul>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="./historico-conductores.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      CONDUCTORES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="./historico-clientes.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      CLIENTES
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item menu-button menu-closed" id="admin-menu-li" style="display: none">
+              <a class="nav-link" href="#" id="administracion">
+                <span class="link-icons material-icons-sharp">manage_accounts</span>
+                ADMINISTRACIÓN
+              </a>
+              <div id="administracion-submenu" data-displayed="hidden">
+                <ul>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/mensajes/index.html">
+                      <span class="link-icons material-icons-sharp">chat</span>
+                      MENSAJES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/administradores/index.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      ADMINISTRADORES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden" id="roles-menu-li">
+                    <a class="nav-sublink" href="../admin/roles/index.html">
+                      <span class="link-icons material-icons-sharp">groups</span>
+                      ROLES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/rates.html">
+                      <span class="link-icons material-icons-sharp">paid</span>
+                      TARIFAS
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/base_rates.html">
+                      <span class="link-icons material-icons-sharp">attach_money</span>
+                      TARIFAS BASE
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="./accesos.html">
+                      <span class="link-icons material-icons-sharp">history</span>
+                      ACCESOS
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../admin/clientes/index.html">
+                <span class="link-icons material-icons-sharp">person_pin</span>
+                CLIENTES
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./seguridad-publica.html">
+                <span class="link-icons material-icons-sharp">local_police</span>
+                Seguridad Pública
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./mapa-seguridad.html">
+                <span class="link-icons material-icons-sharp">local_police</span>
+                Mapa Seguridad
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Header  -->
+      <header>
+        <nav style="position: relative; z-index: 1;">
+          <h1 class="app-title">Tu taxi - Portal Administrativo</h1>
+          <button class="close-app" id="signout-button">
+            <span class="material-icons-sharp">logout</span>
+            Cerrar Sesión
+          </button>
+        </nav>
+        <div class="header-bg-image" style="z-index: 0;"></div>
+      </header>
+
+      <!-- Main -->
+      <main style="position: relative">
+        <div class="page-title">
+          <h2 class="header-module-title">Histórico de viajes</h2>
+        </div>
+        <div class="container">
+          <div class="container-module col-12">
+            <div class="module-body">
+              <div class="body-header">
+                <!-- <div>
+                  <h2
+                    style="
+                      margin: 0;
+                      color: #333;
+                      font-weight: 500;
+                      font-size: 20px;
+                      line-height: 30px;
+                      margin-bottom: 0.5rem;
+                    "
+                  >
+                    Consulta de Clientes
+                  </h2>
+                </div> -->
+              </div>
+              <div id="body-content">
+                <div class="filter-container" style="margin-bottom: 1rem">
+                  <label for="filterCliente" style="flex-grow: 1">
+                    Buscar cliente
+                    <div style="display: flex; flex-flow: row nowrap; column-gap: 0.5rem">
+                      <input
+                        type="text"
+                        name="filterCliente"
+                        id="filterCliente"
+                        style="width: 100%"
+                      />
+                      <input
+                        type="button"
+                        value="buscar"
+                        id="filterClienteButton"
+                        style="background-color: #2d6e3d; border-radius: 3px; color: whitesmoke"
+                      />
+                    </div>
+                  </label>
+                  <label for="filterStartDate">
+                    Fecha Inicio
+                    <input type="date" name="filterStartDate" id="filterStartDate" />
+                  </label>
+                  <label for="filterEndDate">
+                    Fecha Final
+                    <input type="date" name="filterEndDate" id="filterEndDate" />
+                  </label>
+                  <label for="filterCantidadMin" data-format="currency">
+                    Monto MIN
+                    <input
+                      type="text"
+                      name="filterCantidadMin"
+                      id="filterCantidadMin"
+                      style="max-width: 80px"
+                      placeholder="0"
+                    />
+                  </label>
+                  <label for="filterCantidadMax" data-format="currency">
+                    Monto MAX
+                    <input
+                      type="text"
+                      name="filterCantidadMax"
+                      id="filterCantidadMax"
+                      style="max-width: 80px"
+                      placeholder="999"
+                    />
+                  </label>
+                  <label for="filterCalificacion">
+                    Calificación
+                    <div>
+                      <input type="radio" name="filterCalificacion" id="rateOne" />
+                      <input type="radio" name="filterCalificacion" id="rateTwo" />
+                      <input type="radio" name="filterCalificacion" id="rateThree" />
+                      <input type="radio" name="filterCalificacion" id="rateFour" />
+                      <input type="radio" name="filterCalificacion" id="rateFive" />
+                    </div>
+                  </label>
+                </div>
+                <div class="table-container">
+                  <table id="table-historico">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Fecha</th>
+                        <th>Monto</th>
+                        <th>Recibo</th>
+                        <th>Trayectoria</th>
+                        <th>Partida</th>
+                        <th>Destino</th>
+                        <th>Calificación</th>
+                        <th>Reseña</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer>
+        <p id="copyrightFooter"></p>
+      </footer>
+    </div>
+  </body>
+  <script>
+    function inputValidOnlyNumbers() {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    }
+
+    function inputValidOnlyTextOrSpaces() {
+      this.value = this.value.replace(/[^a-zA-Z\s]/g, "");
+    }
+
+    function inputValidOnlyTextOrNumber() {
+      this.value = this.value.replace(/[^a-zA-Z0-9]/g, "");
+    }
+
+    function inputValidOnlyTextNumberAndSpaces() {
+      this.value = this.value.replace(/[^a-zA-Z0-9\s]/g, "");
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll("input.only-letters").forEach((input) => {
+        input.addEventListener("input", inputValidOnlyTextOrSpaces);
+      });
+
+      document.querySelectorAll("input.only-numbers").forEach((input) => {
+        input.addEventListener("input", inputValidOnlyNumbers);
+      });
+
+      document.querySelectorAll("input.only-characters").forEach((input) => {
+        input.addEventListener("input", inputValidOnlyTextOrNumber);
+      });
+
+      document.querySelectorAll("input.only-characters-spaces").forEach((input) => {
+        input.addEventListener("input", inputValidOnlyTextNumberAndSpaces);
+      });
+    });
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-firestore.js"></script>
+  <script type="module" src="../js/config/auth-config.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-storage.js"></script>
+  <script src="../js/global-context.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script
+    type="text/javascript"
+    src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.1.1/b-print-2.1.1/date-1.1.1/sb-1.3.0/datatables.min.js"
+  ></script>
+  <script type="module">
+    const realtime = firebase.database().ref();
+    const firestore = firebase.firestore();
+
+    let CLIENTES_REFERENCE = firestore.collection("clientes");
+    let CLIENT_TRIPS_REFERENCE = firestore.collection("clientTrips");
+    let LISTADO_CLIENTES = document.querySelector("select#listadoClientes");
+    let TABLA_HISTORICO = document.querySelector("#table-historico");
+    let DATATABLE_CONTEXT = null;
+    let CLIENTES_ARRAY = [];
+
+    const getClientes = async () => {
+      const { docs } = await CLIENTES_REFERENCE.get().catch((error) => false);
+      if (docs) {
+        let clientesList = [];
+        docs.forEach((doc, index) => {
+          const cliente = { uid: doc.id, ...doc.data() };
+          clientesList.push(cliente);
+        });
+        return clientesList;
+      }
+    };
+
+    function createOptionElements({ uid, data }, index) {
+      const optionTag = document.createElement("option");
+      const { correoElectronico, nombre, apellidoPaterno, apellidoMaterno } = data;
+      optionTag.value = uid;
+      optionTag.dataset.key = index;
+      optionTag.innerHTML = `${correoElectronico} - ${nombre} ${apellidoPaterno} ${apellidoMaterno}`;
+      LISTADO_CLIENTES.insertAdjacentElement("beforeend", optionTag);
+    }
+
+    async function getDriverTrips() {
+      const trips = await firebase
+        .firestore()
+        .collection("driverTripSlp")
+        .get()
+        .then((snapshot) => {
+          let array = [];
+          snapshot.docs.forEach((document) => {
+            array.push({ uid: document.id, ...document.data() });
+          });
+          return array;
+        })
+        .catch((error) => {
+          console.error({ error });
+          return false;
+        });
+    }
+
+    function generateDataTable() {
+      const exportOptions = {
+        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+      };
+      DATATABLE_CONTEXT = new DataTable(TABLA_HISTORICO, {
+        dom: "<'datatable-top'fB><'datatable-middle't><'datatable-bottom'lp>",
+        buttons: [
+          {
+            extend: "excelHtml5",
+            exportOptions,
+          },
+          {
+            extend: "pdfHtml5",
+            orientation: "landscape",
+            pageSize: "A4",
+            exportOptions,
+          },
+          {
+            extend: "print",
+            exportOptions,
+          },
+        ],
+        oLanguage: {
+          sSearch: "Busqueda:",
+          oPaginate: {
+            sFirst: "Primera",
+            sPrevious: "Anterior",
+            sNext: "Siguiente",
+            sLast: "Ultima",
+          },
+        },
+        language: {
+          info: "Se muestran los registros _START_ al _END_ de _TOTAL_. ",
+          infoEmpty: "No se muestran registros.",
+          emptyTable: "No se registran datos en la tabla.",
+          infoFiltered: "(Filtrado de _MAX_ registros).",
+        },
+      });
+    }
+
+    function insertDataToRowTable(data) {
+      const rowTag = document.createElement("tr");
+      data.forEach((cell) => {
+        const tableCell = document.createElement("td");
+        tableCell.innerHTML = cell;
+        rowTag.append(tableCell);
+      });
+      TABLA_HISTORICO.children[1].append(rowTag);
+    }
+ 
+    function formatTimestampToString(timestamp) {
+      const datetime = new Date(parseInt(timestamp) * 1000).toLocaleString("en-US", {
+        timeZone: "America/Mexico_City",
+      });
+      return datetime.split(", ");
+    }
+
+    function clearDataTable() {
+      DATATABLE_CONTEXT.clear().destroy();
+    }
+
+    async function main() {
+      const clientes = await getClientes();
+      CLIENTES_ARRAY = [...clientes];
+      await getDriverTrips();
+      generateDataTable();
+    }
+
+    main();
+ 
+    /**
+     * Buscar cliente para desplegar su informacion en la tabla
+     **/
+
+    const searchDriverInput = document.querySelector("#filterCliente");
+    const searchDriverButton = document.querySelector("#filterClienteButton");
+
+    searchDriverButton.addEventListener("click", async function (event) {
+      const stringValue = searchDriverInput.value;
+      const [{ uid }] = await firestore
+        .collection("clientes")
+        .where("numGafeteSCT", "==", String(stringValue).toUpperCase())
+        .get()
+        .then((snapshot) => {
+          let array = [];
+          snapshot.docs.forEach((document) => {
+            array.push({ uid: document.id, ...document.data() });
+          });
+          return array;
+        })
+        .catch((error) => {
+          console.error({ error });
+          return false;
+        });
+      if (uid !== false) {
+        const trips = await firestore
+          .collection("driverTripSlp")
+          .doc(uid)
+          .collection("trips")
+          .get()
+          .then((snapshot) => {
+            let array = [];
+            snapshot.docs.forEach((document) => {
+              array.push({ uid: document.id, ...document.data() });
+            });
+            return array;
+          })
+          .catch((error) => {
+            console.error({ error });
+            return false;
+          });
+        if (trips !== false) {
+          let counter = 0;
+          clearDataTable();
+          trips.forEach(function (trip) {
+            const rowElement = document.createElement("tr");
+            const cellsValues = [
+              counter + 1,
+              trip.fecha,
+              "$ " + trip.totalPagasScope,
+              "$ " + trip.totalPagasScope,
+              "N/A",
+              trip.origen,
+              trip.destination,
+              "N/A",
+              "N/A",
+            ];
+
+            Object.values(cellsValues).forEach(function (cell) {
+              const cellElement = document.createElement("td");
+              cellElement.innerText = cell;
+              rowElement.insertAdjacentElement("beforeend", cellElement);
+            });
+            TABLA_HISTORICO.children[1].append(rowElement);
+            counter = counter + 1;
+          });
+          generateDataTable();
+        } else {
+          window.alert("Cliente registrado, sin embargo no cuenta con viajes registrados.");
+        }
+      } else {
+        window.alert("No se encontró cliente, intente con otro número de gafete.");
+        return;
+      }
+    });
+
+    function findDriverByNameOrGafete() {}
+  </script>
+</html>
+
+<!-- 554DS -->

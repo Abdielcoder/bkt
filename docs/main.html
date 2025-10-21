@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="../assets/icons/favicon.ico" />
+    <title>Tu Taxi | Portal Administrativo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../css/docs/main.css" />
+    <link rel="stylesheet" href="../css/docs/tadiDefaults.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Sharp" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.1.1/b-print-2.1.1/date-1.1.1/sb-1.3.0/datatables.min.css"
+    />
+  </head>
+
+  <body>
+    <div id="root" class="preload">
+      <!-- Aside -->
+      <aside>
+        <div id="aside-container">
+          <div class="logo">
+            <a class="home-link" href="./main.html">Tu Taxi | Backoffice</a>
+          </div>
+          <hr />
+          <ul class="nav">
+            <li class="nav-item" id="mapa-menu-li">
+              <a class="nav-link" href="./maps.html">
+                <span class="link-icons material-icons-sharp">map</span>
+                MAPA
+              </a>
+            </li>
+            <li class="nav-item" id="concesionario-menu-li">
+              <a class="nav-link" href="./concesionarios.html" id="concesionario">
+                <span class="link-icons material-icons-sharp">person</span>
+                CONCESIONARIOS
+              </a>
+            </li>
+            <li class="nav-item" id="vehiculos-menu-li">
+              <a class="nav-link" href="./vehicles.html">
+                <span class="link-icons material-icons-sharp">directions_car</span>
+                VEHICULOS
+              </a>
+            </li>
+            <li class="nav-item" id="conductores-menu-li">
+              <a class="nav-link" href="./users.html">
+                <span class="link-icons material-icons-sharp">person</span>
+                CONDUCTORES
+              </a>
+            </li>
+            <li class="nav-item" id="chats-menu-li">
+              <a class="nav-link" href="#">
+                <span class="link-icons material-icons-sharp">chat</span>
+                CHATS
+              </a>
+            </li>
+            <li class="nav-item menu-button menu-closed" id="historico-menu-li">
+              <a class="nav-link" href="#" id="historico">
+                <span class="link-icons material-icons-sharp">token</span>
+                HISTORICO DE VIAJES
+              </a>
+              <div id="historico-submenu" data-displayed="hidden">
+                <ul>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="./historico-conductores.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      CONDUCTORES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="./historico-clientes.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      CLIENTES
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item menu-button menu-closed" id="admin-menu-li" style="display: none">
+              <a class="nav-link" href="#" id="administracion">
+                <span class="link-icons material-icons-sharp">manage_accounts</span>
+                ADMINISTRACIÓN
+              </a>
+              <div id="administracion-submenu" data-displayed="hidden">
+                <ul>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/mensajes/index.html">
+                      <span class="link-icons material-icons-sharp">chat</span>
+                      MENSAJES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/administradores/index.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      ADMINISTRADORES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden" id="roles-menu-li">
+                    <a class="nav-sublink" href="../admin/roles/index.html">
+                      <span class="link-icons material-icons-sharp">groups</span>
+                      ROLES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/rates.html">
+                      <span class="link-icons material-icons-sharp">paid</span>
+                      TARIFAS
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/base_rates.html">
+                      <span class="link-icons material-icons-sharp">attach_money</span>
+                      TARIFAS BASE
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="./accesos.html">
+                      <span class="link-icons material-icons-sharp">history</span>
+                      ACCESOS
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item" id="clientes-menu-li">
+              <a class="nav-link" href="../admin/clientes/index.html">
+                <span class="link-icons material-icons-sharp">person_pin</span>
+                CLIENTES
+              </a>
+            </li>
+            <li class="nav-item" id="seguridad-publica-menu-li">
+              <a class="nav-link" href="./seguridad-publica.html">
+                <span class="link-icons material-icons-sharp">local_police</span>
+                Seguridad Pública
+              </a>
+            </li>
+            <li class="nav-item" id="mapa-seguridad-menu-li">
+              <a class="nav-link" href="./mapa-seguridad.html">
+                <span class="link-icons material-icons-sharp">local_police</span>
+                Mapa Seguridad
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Header  -->
+      <header>
+        <nav style="position: relative; z-index: 1;">
+          <h1 class="app-title">Tu taxi - Portal Administrativo</h1>
+          <button class="close-app" id="signout-button">
+            <span class="material-icons-sharp">logout</span>
+            Cerrar Sesión
+          </button>
+        </nav>
+        <div class="header-bg-image" style="z-index: 0;"></div>
+      </header>
+
+      <!-- Main -->
+      <main>
+        <div class="page-title">
+          <h2 class="header-module-title">Dashboard Backoffice</h2>
+        </div>
+        <div class="container" style="padding-top: 1rem">
+          <div class="dashboard_stats">
+            <div class="stat-card">
+              <h4># de viajes</h4>
+              <div class="stat-data">
+                <span data-icon_type="vehicle" class="material-icons-sharp">directions_car</span>
+                <span id="tripTotal">-</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <h4>Recaudo</h4>
+              <div class="stat-data">
+                <span data-icon_type="currency" class="material-icons-sharp">attach_money</span>
+                <span id="tripCollection">-</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <h4># promedio de viajes</h4>
+              <div class="stat-data">
+                <span data-icon_type="vehicle" class="material-icons-sharp">directions_car</span>
+                <span id="tripAvgTrips">-</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <h4>$ promedio por viaje</h4>
+              <div class="stat-data">
+                <span data-icon_type="currency" class="material-icons-sharp">attach_money</span>
+                <span id="tripAvgCollection">-</span>
+              </div>
+            </div>
+          </div>
+          <div class="graphics_container">
+            <div class="tadi-card">
+              <div class="card-header">
+                <h3>Vehículos</h3>
+              </div>
+              <div class="card-body">
+                <div class="graphic-container">
+                  <div>
+                    <canvas id="myChart" style="width: 360px; height: 360px"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tadi-card">
+              <div class="card-header">
+                <h3>Vehículos Activos</h3>
+              </div>
+              <div class="card-body">
+                <div class="graphic-container">
+                  <div>
+                    <canvas id="myChart_2" style="width: 360px; height: 360px"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="tadi-card">
+              <div class="card-header">
+                <h3>Empadronamiento</h3>
+              </div>
+              <div class="card-body">
+                <div class="graphic-container">
+                  <div>
+                    <canvas id="myChart_3" style="width: 360px; height: 360px"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- Footer -->
+      <footer>
+        <p id="copyrightFooter"></p>
+      </footer>
+    </div>
+  </body>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-firestore.js"></script>
+  <script type="module" src="../js/config/auth-config.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-storage.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+  <script src="../js/global-context.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+  <script
+    type="text/javascript"
+    src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.1.1/b-print-2.1.1/date-1.1.1/sb-1.3.0/datatables.min.js"
+  ></script>
+  <script src="../js/charts/chartsjs-plugin-label.js"></script>
+  <script type="module" src="../js/dashboard/main.js" async></script>
+  <!-- <script type="module" src="../js/dom/defaults.js"></script> -->
+</html>

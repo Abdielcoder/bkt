@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="icon" href="../../assets/icons/favicon.ico" />
+    <title>Tu Taxi | Clientes</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Icons+Sharp" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.1.1/b-print-2.1.1/date-1.1.1/sb-1.3.0/datatables.min.css"
+    />
+    <link rel="stylesheet" href="../../css/docs/tadiDefaults.css" />
+    <link rel="stylesheet" href="./index.css" />
+    <link rel="stylesheet" href="../../css/design-framework.css" />
+  </head>
+
+  <body>
+    <div id="root" class="preload">
+      <!-- Aside -->
+      <aside>
+        <div id="aside-container">
+          <div class="logo">
+            <a class="home-link" href="../../docs/main.html">Tu Taxi | Backoffice</a>
+          </div>
+          <hr />
+          <ul class="nav">
+            <li class="nav-item" id="mapa-menu-li" style="display: none">
+              <a class="nav-link" href="../../docs/maps.html">
+                <span class="link-icons material-icons-sharp">map</span>
+                MAPA
+              </a>
+            </li>
+            <li class="nav-item" id="concesionario-menu-li" style="display: none">
+              <a class="nav-link" href="../../docs/concesionarios.html" id="concesionario">
+                <span class="link-icons material-icons-sharp">person</span>
+                CONCESIONARIOS
+              </a> 
+            </li>
+            <li class="nav-item" id="vehiculos-menu-li">
+              <a class="nav-link" href="../../docs/vehicles.html">
+                <span class="link-icons material-icons-sharp">directions_car</span>
+                VEHICULOS
+              </a>
+            </li>
+            <li class="nav-item" id="conductores-menu-li">
+              <a class="nav-link" href="../../docs/users.html">
+                <span class="link-icons material-icons-sharp">person</span>
+                CONDUCTORES
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span class="link-icons material-icons-sharp">chat</span>
+                CHATS
+              </a>
+            </li>
+            <li class="nav-item menu-button menu-closed" id="historico-menu-li">
+              <a class="nav-link" href="#" id="historico">
+                <span class="link-icons material-icons-sharp">token</span>
+                HISTORICO DE VIAJES
+              </a>
+              <div id="historico-submenu" data-displayed="hidden">
+                <ul>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../../docs/historico-conductores.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      CONDUCTORES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../../historico-clientes.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      CLIENTES
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item menu-button menu-closed" id="admin-menu-li" style="display: none">
+              <a class="nav-link" href="#" id="administracion">
+                <span class="link-icons material-icons-sharp">manage_accounts</span>
+                ADMINISTRACIÓN
+              </a>
+              <div id="administracion-submenu" data-displayed="hidden">
+                <ul>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../mensajes/index.html">
+                      <span class="link-icons material-icons-sharp">chat</span>
+                      MENSAJES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink selectedPage" href="#">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      ADMINISTRADORES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden" id="roles-menu-li" style="display: none">
+                    <a class="nav-sublink" href="../roles/">
+                      <span class="link-icons material-icons-sharp">groups</span>
+                      ROLES
+                    </a>
+                  </li> 
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../rates.html">
+                      <span class="link-icons material-icons-sharp">paid</span>
+                      TARIFAS
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../base_rates.html">
+                      <span class="link-icons material-icons-sharp">attach_money</span>
+                      TARIFAS BASE
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../../docs/accesos.html">
+                      <span class="link-icons material-icons-sharp">history</span>
+                      ACCESOS
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span class="link-icons material-icons-sharp">person_pin</span>
+                CLIENTES
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../../docs/seguridad-publica.html">
+                <span class="link-icons material-icons-sharp">local_police</span>
+                Seguridad Pública
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../../docs/mapa-seguridad.html">
+                <span class="link-icons material-icons-sharp">local_police</span>
+                Mapa Seguridad
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+      <!-- Header  -->
+      <header>
+        <nav style="position: relative; z-index: 1;">
+          <h1 class="app-title">Tu taxi - Portal Administrativo</h1>
+          <button class="close-app" id="signout-button">
+            <span class="material-icons-sharp">logout</span>
+            Cerrar Sesión
+          </button>
+        </nav>
+        <div class="header-bg-image" style="z-index: 0;"></div>
+      </header>
+
+      <!-- Main -->
+      <main>
+        <div class="page-title">
+          <h2 class="header-module-title">Clientes</h2>
+        </div>
+        <div class="container">
+          <div class="container-module col-12">
+            <!-- <div class="module-header">
+              <button id="userAdd" type="button" class="create-new">
+                <span>Alta Administrador</span>
+              </button>
+            </div> -->
+            <div class="module-body">
+              <div class="table-container">
+                <table id="clientes">
+                  <thead>
+                    <tr>
+                      <th>Perfil</th>
+                      <th>Correo Electrónico</th>
+                      <th>Nombre Completo</th>
+                      <th>Genero</th>
+                      <th>Teléfono</th>
+                      <th>Fecha de nacimiento</th>
+                      <th># de viajes</th>
+                      <th>Ultimo viaje</th>
+                      <th>Fecha de alta</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer>
+        <p id="copyrightFooter"></p>
+      </footer>
+    </div>
+  </body>
+  <script>
+    function inputValidOnlyNumbers() {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    }
+
+    function inputValidOnlyTextOrSpaces() {
+      this.value = this.value.replace(/[^a-zA-Z\s]/g, "");
+    }
+
+    function inputValidOnlyTextOrNumber() {
+      this.value = this.value.replace(/[^a-zA-Z0-9]/g, "");
+    }
+
+    function inputValidOnlyTextNumberAndSpaces() {
+      this.value = this.value.replace(/[^a-zA-Z0-9\s]/g, "");
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll("input.only-letters").forEach((input) => {
+        input.addEventListener("input", inputValidOnlyTextOrSpaces);
+      });
+
+      document.querySelectorAll("input.only-numbers").forEach((input) => {
+        input.addEventListener("input", inputValidOnlyNumbers);
+      });
+
+      document.querySelectorAll("input.only-characters").forEach((input) => {
+        input.addEventListener("input", inputValidOnlyTextOrNumber);
+      });
+
+      document.querySelectorAll("input.only-characters-spaces").forEach((input) => {
+        input.addEventListener("input", inputValidOnlyTextNumberAndSpaces);
+      });
+    });
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-firestore.js"></script>
+  <script type="module" src="../../js/config/auth-config.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-storage.js"></script>
+  <script src="../../js/global-context.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+  <script
+    type="text/javascript"
+    src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.1.1/b-print-2.1.1/date-1.1.1/sb-1.3.0/datatables.min.js"
+  ></script>
+  <script type="module" defer>
+    const firestore = firebase.firestore();
+    const clientes = firestore.collection("clientes");
+    let tableClientes = document.querySelector("table#clientes");
+    let dataTableContext = null;
+    let CLIENTES_COLLECTION_DATA = [];
+
+    async function getClientesCollection() {
+      return await clientes.get().then((snapshot) => {
+        let array = [];
+        snapshot.docs.forEach((document) => {
+          const data = document.data();
+          const object = {
+            imageURL: data.imageURL,
+            correoElectronico: data.correoElectronico,
+            nombreCompleto: data.nombreCompleto,
+            genero: data.genero,
+            telefono: data.telefono,
+            fechaNacimiento: data.fechaNacimiento,
+            numeroViajes: data.numeroViajes,
+            ultimoViaje: data.ultimoViaje,
+            fechaAlta: data.fechaAlta,
+            uid: document.id,
+          };
+          array.push(object);
+        });
+        return array;
+      });
+    }
+
+    function generateRowsForTableBody(array) {
+      try {
+        array.forEach((client, index, array) => {
+          const tableRow = document.createElement("tr");
+          tableRow.dataset.reference = client.uid;
+          const dataFields = Object.entries(client);
+          dataFields.slice(0, -1).forEach(([key, value]) => {
+            const cell = createCellElement(key, value);
+            tableRow.insertAdjacentElement("beforeend", cell);
+          });
+          tableClientes.children[1].insertAdjacentElement("beforeend", tableRow);
+        });
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function createCellElement(key, value) {
+      const cell = document.createElement("td");
+      if (key === "imageURL") {
+        const imageTag = document.createElement("img");
+        imageTag.src = value;
+        imageTag.alt = "Foto de Perfil";
+        imageTag.className = "clientProfilePic middle-content";
+        cell.insertAdjacentElement("beforeend", imageTag);
+      } else {
+        cell.innerHTML = key.includes("fecha") || key == "ultimoViaje" ? formatStringDate(value) : value;
+        cell.dataset.key = key;
+      }
+      return cell;
+    }
+
+    function formatStringDate(value) {
+      const monthStrings = [
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre",
+      ];
+      if (value.includes("T")) {
+        const [date, time] = value.split("T");
+        const [year, month, day] = date.split("-");
+        const [hour, minutes, seconds] = time.split(":");
+
+        const monthName = monthStrings[parseInt(month) - 1];
+
+        return `${day} de ${monthName} del ${year} ${hour}:${minutes}:${seconds.split(".")[0]}`;
+      }
+
+      const [year, month, day] = value.split("-");
+      const monthName = monthStrings[parseInt(month) - 1];
+      return `${day} de ${monthName} del ${year}`;
+    }
+
+    function initializeDataTable(data) {
+      generateRowsForTableBody(data);
+      dataTableContext = new DataTable(tableClientes, {
+        dom: "<'datatable-top'fB><'datatable-middle't><'datatable-bottom'lp>",
+        buttons: [
+          {
+            extend: "collection",
+            text: "Exportar",
+            buttons: ["excelHtml5", "pdfHtml5", "print"],
+          },
+        ],
+        oLanguage: {
+          sSearch: "Busqueda:",
+          oPaginate: {
+            sFirst: "Primera",
+            sPrevious: "Anterior",
+            sNext: "Siguiente",
+            sLast: "Ultima",
+          },
+        },
+        language: {
+          info: "Se muestran los registros _START_ al _END_ de _TOTAL_. ",
+          infoEmpty: "No se muestran registros.",
+          emptyTable: "No se registran datos en la tabla.",
+          infoFiltered: "(Filtrado de _MAX_ registros).",
+        },
+      });
+    }
+
+    async function main() {
+      const response = await getClientesCollection();
+      CLIENTES_COLLECTION_DATA.push(...response);
+      initializeDataTable(response);
+    }
+
+    main();
+  </script>
+</html>

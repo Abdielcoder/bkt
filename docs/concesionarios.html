@@ -1,0 +1,3032 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Tu Taxi - Concesionarios</title>
+    <link rel="icon" href="../assets/icons/favicon.ico" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../css/docs/tadiDefaults.css" />
+    <link rel="stylesheet" href="../css/docs/concesionarios.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Sharp" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.1.1/b-print-2.1.1/date-1.1.1/sb-1.3.0/datatables.min.css"
+    />
+
+    <!-- <link rel="stylesheet" href="../css/coreui.css"> -->
+  </head>
+
+  <body>
+    <div id="root" class="preload">
+      <!-- Aside -->
+      <aside>
+        <div id="aside-container">
+          <div class="logo">
+            <a class="home-link" href="./main.html">Tu Taxi | Backoffice</a>
+          </div>
+          <hr />
+          <ul class="nav">
+            <li class="nav-item" id="mapa-menu-li">
+              <a class="nav-link" href="./maps.html">
+                <span class="link-icons material-icons-sharp">map</span>
+                MAPA
+              </a>
+            </li>
+            <li class="nav-item" id="concesionario-menu-li">
+              <a class="nav-link selectedPage" href="#" id="concesionario">
+                <span class="link-icons material-icons-sharp">person</span>
+                CONCESIONARIOS
+              </a>
+            </li>
+            <li class="nav-item" id="vehiculos-menu-li">
+              <a class="nav-link" href="./vehicles.html">
+                <span class="link-icons material-icons-sharp">directions_car</span>
+                VEHICULOS
+              </a>
+            </li>
+            <li class="nav-item" id="conductores-menu-li">
+              <a class="nav-link" href="./users.html">
+                <span class="link-icons material-icons-sharp">person</span>
+                CONDUCTORES
+              </a>
+            </li>
+            <li class="nav-item" id="chats-menu-li">
+              <a class="nav-link" href="#">
+                <span class="link-icons material-icons-sharp">chat</span>
+                CHATS
+              </a>
+            </li>
+            <li class="nav-item menu-button menu-closed" id="historico-menu-li">
+              <a class="nav-link" href="#" id="historico">
+                <span class="link-icons material-icons-sharp">token</span>
+                HISTORICO DE VIAJES
+              </a>
+              <div id="historico-submenu" data-displayed="hidden">
+                <ul>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="./historico-conductores.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      CONDUCTORES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="./historico-clientes.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      CLIENTES
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item menu-button menu-closed" id="admin-menu-li" style="display: none">
+              <a class="nav-link" href="#" id="administracion">
+                <span class="link-icons material-icons-sharp">manage_accounts</span>
+                ADMINISTRACIÓN
+              </a>
+              <div id="administracion-submenu" data-displayed="hidden">
+                <ul>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/mensajes/index.html">
+                      <span class="link-icons material-icons-sharp">chat</span>
+                      MENSAJES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/administradores/index.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      ADMINISTRADORES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden" id="roles-menu-li">
+                    <a class="nav-sublink" href="../admin/roles/index.html">
+                      <span class="link-icons material-icons-sharp">groups</span>
+                      ROLES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/rates.html">
+                      <span class="link-icons material-icons-sharp">paid</span>
+                      TARIFAS
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/base_rates.html">
+                      <span class="link-icons material-icons-sharp">attach_money</span>
+                      TARIFAS BASE
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="./accesos.html">
+                      <span class="link-icons material-icons-sharp">history</span>
+                      ACCESOS
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../admin/clientes/index.html">
+                <span class="link-icons material-icons-sharp">person_pin</span>
+                CLIENTES
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./seguridad-publica.html">
+                <span class="link-icons material-icons-sharp">local_police</span>
+                Seguridad Pública
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./mapa-seguridad.html">
+                <span class="link-icons material-icons-sharp">local_police</span>
+                Mapa Seguridad
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Header  -->
+      <header>
+        <nav style="position: relative; z-index: 1;">
+          <h1 class="app-title">Tu taxi - Portal Administrativo</h1>
+          <button class="close-app" id="signout-button">
+            <span class="material-icons-sharp">logout</span>
+            Cerrar Sesión
+          </button>
+        </nav>
+        <div class="header-bg-image" style="z-index: 0;"></div>
+      </header>
+
+      <!-- Main -->
+      <main style="position: relative">
+        <div class="page-title">
+          <h2 class="header-module-title">Concesionarios</h2>
+        </div>
+        <div class="container">
+          <div class="container-module col-12">
+            <div class="module-header">
+              <button id="userAdd" type="button" class="create-new">
+                <span>Alta Concesionario</span>
+              </button>
+            </div>
+            <div class="module-body">
+              <div class="table-container">
+                <table id="concesionariosTable">
+                  <thead>
+                    <tr>
+                      <!-- <th></th> -->
+                      <th>Nombre completo</th>
+                      <th>Genero</th>
+                      <th>Email</th>
+                      <th>Teléfono</th>
+                      <th>Curp</th>
+                      <th>Num. Económico</th>
+                      <th>Gafete SCT</th>
+                      <th>Fecha de registro</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal -->
+        <div id="usuariosAltaModal" class="modalForm" data-reference="">
+          <div class="modalContent">
+            <div class="containerHead">
+              <h2
+                style="
+                  font-size: 24px;
+                  color: #123019;
+                  line-height: 36px;
+                  font-weight: 600;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  font-family: Montserrat-Regular;
+                  text-align: start;
+                "
+              >
+                Información general del concesionario
+              </h2>
+            </div>
+            <div class="contentTabs">
+              <ul class="tab-list">
+                <li>
+                  <button type="button" class="tab-button" aria-selected="true" data-tab="data">
+                    <span>Datos</span>
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="tab-button" aria-selected="false" data-tab="accounts">
+                    <span>Vehículos</span>
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="tab-button" aria-selected="false" data-tab="files">
+                    <span>Archivos</span>
+                  </button>
+                </li>
+                <li>
+                  <button type="button" class="tab-button" aria-selected="false" data-tab="drivers">
+                    <span>Conductores</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+            <div class="formContainer" data-tabcontainer="data" data-visibility="true">
+              <div class="containerBody" style="max-height: 600px; overflow-y: auto">
+                <form id="userAlta">
+                  <h2 style="font-size: 20px; display: block; padding: 1rem 0; line-height: 1; color: #d3660e">
+                    Datos Personales
+                  </h2>
+
+                  <div class="form-columns flex-nowrap">
+                    <div class="formGroup inputForm">
+                      <label for="nombre">Nombre(s) <span style="color: rgb(185, 39, 39)">*</span></label>
+                      <input
+                        type="text"
+                        placeholder="Nombre(s)"
+                        name="nombre"
+                        id="nombre"
+                        maxlength="40"
+                        style="text-transform: uppercase"
+                        required
+                        class="only-letters"
+                      />
+                    </div>
+                    <div class="formGroup inputForm">
+                      <label for="apellidoPaterno"
+                        >Apellido Paterno <span style="color: rgb(185, 39, 39)">*</span></label
+                      >
+                      <input
+                        type="text"
+                        placeholder="Apellido Paterno"
+                        name="apellidoPaterno"
+                        id="apellidoPaterno"
+                        maxlength="20"
+                        class="only-letters"
+                        style="text-transform: uppercase"
+                        required
+                      />
+                    </div>
+                    <div class="formGroup inputForm">
+                      <label for="apellidoMaterno"
+                        >Apellido Materno <span style="color: rgb(185, 39, 39)">*</span></label
+                      >
+                      <input
+                        type="text"
+                        placeholder="Apellido Materno"
+                        name="apellidoMaterno"
+                        id="apellidoMaterno"
+                        maxlength="20"
+                        class="only-letters"
+                        style="text-transform: uppercase"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-columns flex-nowrap">
+                    <div class="formGroup inputForm">
+                      <label for="correoElectronico"
+                        >Correo electrónico <span style="color: rgb(185, 39, 39)">*</span></label
+                      >
+                      <input
+                        type="email"
+                        placeholder="Correo electrónico"
+                        name="correoElectronico"
+                        id="correoElectronico"
+                        required
+                      />
+                    </div>
+                    <div class="formGroup inputForm">
+                      <label for="curp">Curp <span style="color: rgb(185, 39, 39)">*</span></label>
+                      <input
+                        type="text"
+                        placeholder="Curp"
+                        name="curp"
+                        id="curp"
+                        required
+                        class="only-characters"
+                        maxlength="18"
+                        data-length="18"
+                        style="text-transform: uppercase"
+                      />
+                    </div>
+                    <div class="formGroup inputForm">
+                      <label for="rfc">RFC <span style="color: rgb(185, 39, 39)">*</span></label>
+                      <input
+                        type="text"
+                        placeholder="RFC"
+                        name="rfc"
+                        id="rfc"
+                        required
+                        style="text-transform: uppercase"
+                        maxlength="13"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-columns flex-wrap justify-start">
+                    <div class="formGroup selectForm">
+                      <label for="tipoSangre">Tipo de sangre <span style="color: rgb(185, 39, 39)">*</span></label>
+                      <select name="tipoSangre" id="tipoSangre" required>
+                        <option value="A-">A-</option>
+                        <option value="A+">A+</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                      </select>
+                    </div>
+                    <div class="formGroup selectForm">
+                      <label for="sexo">Genero</label>
+                      <select name="sexo" id="sexo">
+                        <option value="F" selected>Femenino</option>
+                        <option value="M">Masculino</option>
+                        <option value="Otro">Otro</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-columns flex-nowrap justify-start">
+                    <div class="formGroup inputForm">
+                      <label for="telefono">Teléfono <span style="color: rgb(185, 39, 39)">*</span></label>
+                      <input
+                        type="tel"
+                        placeholder="Teléfono"
+                        name="telefono"
+                        class="only-numbers"
+                        id="telefono"
+                        required
+                        data-length="10"
+                        maxlength="10"
+                      />
+                    </div>
+                    <div class="formGroup inputForm">
+                      <label for="telefonoEmergencia"
+                        >Teléfono de Emergencia <span style="color: rgb(185, 39, 39)">*</span></label
+                      >
+                      <input
+                        type="tel"
+                        placeholder="Teléfono de emergencia"
+                        name="telefonoEmergencia"
+                        id="telefonoEmergencia"
+                        class="only-numbers"
+                        required
+                        data-length="10"
+                        maxlength="10"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-columns flex-nowrap justify-start">
+                    <div class="formGroup inputForm">
+                      <label for="numeroEconomico"
+                        >Numero Económico <span style="color: rgb(185, 39, 39)">*</span></label
+                      >
+                      <input
+                        type="text"
+                        placeholder="Número económico"
+                        name="numeroEconomico"
+                        id="numeroEconomico"
+                        class="only-numbers"
+                        maxlength="4"
+                        data-length="4"
+                        required
+                      />
+                    </div>
+                    <div class="formGroup inputForm">
+                      <label for="numGafeteSCT">Gafete SCT <span style="color: rgb(185, 39, 39)">*</span></label>
+                      <input
+                        type="text"
+                        placeholder="Gafete SCT"
+                        name="numGafeteSCT"
+                        maxlength="5"
+                        data-length="5"
+                        class="only-numbers"
+                        style="text-transform: uppercase"
+                        id="numGafeteSCT"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <h2 style="font-size: 20px; display: block; padding: 1rem 0; line-height: 1; color: #d3660e">
+                    Domicilio particular
+                  </h2>
+
+                  <div class="form-columns flex-nowrap justify-start">
+                    <div class="formGroup inputForm" style="max-width: unset">
+                      <label for="calle">Calle <span style="color: rgb(185, 39, 39)">*</span></label>
+                      <input
+                        type="text"
+                        placeholder="Calle"
+                        name="calle"
+                        id="calle"
+                        maxlength="80"
+                        class="only-characters-spaces"
+                        required
+                      />
+                    </div>
+                    <div class="formGroup inputForm">
+                      <label for="numeroCasa">Número <span style="color: rgb(185, 39, 39)">*</span></label>
+                      <input
+                        type="text"
+                        placeholder="Número"
+                        name="numeroCasa"
+                        id="numeroCasa"
+                        class="only-characters-spaces"
+                        maxlength="10"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-columns flex-nowrap">
+                    <div class="formGroup inputForm">
+                      <label for="colonia"
+                        >Colonia o Fraccionamiento <span style="color: rgb(185, 39, 39)">*</span></label
+                      >
+                      <input
+                        type="text"
+                        placeholder="Colonia"
+                        name="colonia"
+                        class="only-letters"
+                        maxlength="80"
+                        id="colonia"
+                        class="only-letters"
+                        required
+                      />
+                    </div>
+                    <div class="formGroup selectForm">
+                      <label for="municipio">Municipio <span style="color: rgb(185, 39, 39)">*</span></label>
+                      <select name="municipio" id="municipio" required>
+                        <option value="sanluis">SAN LUIS POTOSI</option>
+                        <option value="soledaddegraciano">SOLEDAD DE GRACIANO SÁNCHEZ</option>
+                      </select>
+                    </div>
+                    <div class="formGroup inputForm">
+                      <label for="cp">Código Postal</label>
+                      <input
+                        type="text"
+                        placeholder="Código postal"
+                        name="cp"
+                        maxlength="5"
+                        data-length="5"
+                        class="only-numbers"
+                        id="cp"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <h2 style="font-size: 20px; display: block; padding: 1rem 0; line-height: 1; color: #d3660e">
+                    Desea o puede realizar viajes para personas con:
+                  </h2>
+                  <div class="checkboxGroup">
+                    <div class="formGroup checkboxForm">
+                      <input type="checkbox" name="especiales" id="especiales" />
+                      <label for="especiales">Persona con discapacidad</label>
+                    </div>
+                    <div class="formGroup checkboxForm">
+                      <input type="checkbox" name="mascotas" id="mascotas" />
+                      <label for="mascotas">Mascotas</label>
+                    </div>
+                    <div class="formGroup checkboxForm">
+                      <input type="checkbox" name="equipaje" id="equipaje" />
+                      <label for="equipaje">Equipaje</label>
+                    </div>
+                  </div>
+                  <h2 style="font-size: 20px; display: block; padding: 1rem 0; line-height: 1; color: #d3660e">
+                    Padece de alguna de las siguentes enfermedades crónicas:
+                  </h2>
+
+                  <div class="checkboxGroup">
+                    <div class="formGroup checkboxForm">
+                      <input type="checkbox" name="hipertension" id="hipertension" />
+                      <label for="hipertension">Hipertensión</label>
+                    </div>
+                    <div class="formGroup checkboxForm">
+                      <input type="checkbox" name="diabetes" id="diabetes" />
+                      <label for="diabetes">Diabetes</label>
+                    </div>
+                    <div class="formGroup checkboxForm">
+                      <input type="checkbox" name="epoc" id="epoc" />
+                      <label for="epoc" style="white-space: nowrap"
+                        >Epoc (Enfermedad Pulmonar Obstructiva Crónica)</label
+                      >
+                    </div>
+                    <div class="formGroup checkboxForm">
+                      <input type="checkbox" name="cardiaca" id="cardiaca" />
+                      <label for="cardiaca">Insuficiencia cardiaca</label>
+                    </div>
+
+                    <div class="formGroup checkboxForm">
+                      <input type="checkbox" name="otrasEnfermedades" id="otrasEnfermedades" />
+                      <label for="otrasEnfermedades">Otros:</label>
+                      <br />
+                      <textarea
+                        name="otrasEnfermedadesTexto"
+                        id="otrasEnfermedadesTexto"
+                        cols="30"
+                        rows="10"
+                        disabled
+                        style="
+                          width: 100%;
+                          display: block;
+                          font-size: 16px;
+                          padding: 16px;
+                          height: 120px;
+                          border: 1px solid #333;
+                          border-radius: 2px;
+                          resize: none;
+                        "
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <h2 style="font-size: 20px; display: block; padding: 1rem 0; line-height: 1; color: #d3660e">
+                    Capacitaciones tomadas por el concesionario:
+                  </h2>
+                  <div class="checkboxGroup">
+                    <div class="formGroup checkboxForm">
+                      <input type="checkbox" name="rcp" id="rcp" />
+                      <label for="rcp">RCP</label>
+                    </div>
+                    <div class="formGroup checkboxForm">
+                      <input type="checkbox" name="lenguaje" id="lenguaje" />
+                      <label for="lenguaje">Lenguaje de Señas</label>
+                    </div>
+                    <div class="formGroup checkboxForm">
+                      <input type="checkbox" name="primerosAux" id="primerosAux" />
+                      <label for="primerosAux">Primeros Auxilios</label>
+                    </div>
+                    <div class="formGroup checkboxForm">
+                      <input type="checkbox" name="otrasCapacidades" id="otrasCapacidades" />
+                      <label for="otrasCapacidades">Otros:</label>
+                      <textarea
+                        name="otrasCapacidadesTexto"
+                        id="otrasCapacidadesTexto"
+                        cols="30"
+                        rows="10"
+                        disabled
+                        maxlength="200"
+                        style="
+                          width: 100%;
+                          display: block;
+                          font-size: 16px;
+                          padding: 16px;
+                          height: 120px;
+                          border: 1px solid #333;
+                          border-radius: 2px;
+                          resize: none;
+                        "
+                      ></textarea>
+                    </div>
+                  </div>
+
+                  <div class="containerFooter">
+                    <div class="buttonsTools">
+                      <button type="button" class="modalFormCancel">Cancelar</button>
+                      <button type="submit" id="modalFormSubmit">
+                        <span>Generar</span>
+                      </button>
+                      <button type="button" id="modalFormUpdateSubmit" style="display: none">
+                        <span>Actualizar</span>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+                <input type="hidden" name="uid" value="" id="userAltaIdentifier" />
+              </div>
+            </div>
+
+            <div class="formContainer" data-tabcontainer="accounts" data-visibility="false" style="padding-top: 20px">
+              <div class="containerBody">
+                <div class="placa-search">
+                  <form id="userVehicleSearch">
+                    <div class="formGroup" style="width: 100%">
+                      <label id="search-item" for="placaSearch" style="font-size: 16px"
+                        >Busca vehículo por numero de placa y asignalo al concesionario:</label
+                      >
+                      <div style="display: flex; width: 100%">
+                        <input
+                          type="text"
+                          placeholder="Introducir placa del vehículo"
+                          name="placaSearch"
+                          id="placaSearch"
+                          class="search-placa"
+                          style="flex-grow: 1; outline: none"
+                        />
+                        <button type="submit" class="placa-button-icon">
+                          <svg
+                            width="20px"
+                            height="20px"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                              <path
+                                d="M15 15L21 21"
+                                stroke="#323232"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              ></path>
+                              <path
+                                d="M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                                stroke="#323232"
+                                stroke-width="2"
+                              ></path>
+                            </g>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                </div>
+                <div
+                  id="vehiculos-searched"
+                  style="
+                    width: 100%;
+                    display: none;
+                    min-height: 40px;
+                    padding: 0.5rem;
+                    border: 1px solid gray;
+                    margin-top: 1rem;
+                  "
+                ></div>
+                <div id="vehicles-container-list" data-reference="">
+                  <table id="vehicles-list" style="text-transform: uppercase">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Placas</th>
+                        <th>Habilitado</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <div class="containerFooter">
+                  <div class="buttonsTools">
+                    <button type="button" class="modalFormCancel">Cancelar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="formContainer" data-tabcontainer="files" data-visibility="false" style="padding-top: 20px">
+              <div class="containerBody">
+                <h2 style="font-size: 20px; display: block; line-height: 1; color: #d3660e">Archivos</h2>
+                <div class="files-container">
+                  <div class="file-box">
+                    <div style="padding: 4px; border: 1px solid lightslategray; border-radius: 2px">
+                      <img
+                        src="../assets/img/nopic.png"
+                        alt="licenciaConcesionario"
+                        id="licenciaConcesionarioPreview"
+                        class="imagePreview"
+                        style="display: block; width: 120px; height: 120px; object-fit: cover"
+                      />
+                      <label for="licenciaConcesionario">
+                        <input
+                          type="file"
+                          name="licenciaConcesionario"
+                          id="licenciaConcesionario"
+                          style="display: none"
+                          class="documentationFiles"
+                        />
+                        <div class="imageEdit">
+                          <svg
+                            width="32px"
+                            height="32px"
+                            viewBox="-9.6 -9.6 43.20 43.20"
+                            id="Layer_1"
+                            data-name="Layer 1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="#ffffff"
+                            stroke="#ffffff"
+                            transform="matrix(1, 0, 0, 1, 0, 0)"
+                          >
+                            <g id="SVGRepo_bgCarrier" stroke-width="0" transform="translate(0,0), scale(1)">
+                              <rect
+                                x="-9.6"
+                                y="-9.6"
+                                width="43.20"
+                                height="43.20"
+                                rx="21.6"
+                                fill="#e2e7e9"
+                                strokewidth="0"
+                              ></rect>
+                            </g>
+                            <g
+                              id="SVGRepo_tracerCarrier"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke="#CCCCCC"
+                              stroke-width="0.384"
+                            ></g>
+                            <g id="SVGRepo_iconCarrier">
+                              <defs>
+                                <style>
+                                  .cls-1 {
+                                    fill: none;
+                                    stroke: #000000;
+                                    stroke-miterlimit: 10;
+                                    stroke-width: 1.9200000000000004;
+                                  }
+                                </style>
+                              </defs>
+                              <polyline
+                                class="cls-1"
+                                points="20.59 12 20.59 22.5 1.5 22.5 1.5 3.41 12.96 3.41"
+                              ></polyline>
+                              <path
+                                class="cls-1"
+                                d="M12,15.82l-4.77.95L8.18,12l9.71-9.71A2.69,2.69,0,0,1,19.8,1.5h0a2.7,2.7,0,0,1,2.7,2.7h0a2.69,2.69,0,0,1-.79,1.91Z"
+                              ></path>
+                            </g>
+                          </svg>
+                        </div>
+                      </label>
+                      <div class="imageEdit imageDelete">
+                        <svg
+                          width="32px"
+                          height="32px"
+                          viewBox="-5.04 -5.04 34.08 34.08"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          transform="rotate(0)matrix(-1, 0, 0, 1, 0, 0)"
+                        >
+                          <g id="SVGRepo_bgCarrier" stroke-width="0">
+                            <rect
+                              x="-5.04"
+                              y="-5.04"
+                              width="34.08"
+                              height="34.08"
+                              rx="17.04"
+                              fill="#ebebeb"
+                              strokewidth="0"
+                            ></rect>
+                          </g>
+                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                          <g id="SVGRepo_iconCarrier">
+                            <path
+                              d="M10 12V17"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M14 12V17"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M4 7H20"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                          </g>
+                        </svg>
+                      </div>
+                    </div>
+                    <p>Licencia de Conducir</p>
+                  </div>
+
+                  <div class="file-box">
+                    <div style="padding: 4px; border: 1px solid lightslategray; border-radius: 2px">
+                      <img
+                        src="../assets/img/nopic.png"
+                        alt="polizaSeguro"
+                        id="polizaSeguroPreview"
+                        class="imagePreview"
+                        style="display: block; width: 120px; height: 120px; object-fit: cover"
+                      />
+                      <label for="polizaSeguro">
+                        <input
+                          type="file"
+                          name="polizaSeguro"
+                          id="polizaSeguro"
+                          style="display: none"
+                          class="documentationFiles"
+                        />
+                        <div class="imageEdit">
+                          <svg
+                            width="32px"
+                            height="32px"
+                            viewBox="-9.6 -9.6 43.20 43.20"
+                            id="Layer_1"
+                            data-name="Layer 1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="#ffffff"
+                            stroke="#ffffff"
+                            transform="matrix(1, 0, 0, 1, 0, 0)"
+                          >
+                            <g id="SVGRepo_bgCarrier" stroke-width="0" transform="translate(0,0), scale(1)">
+                              <rect
+                                x="-9.6"
+                                y="-9.6"
+                                width="43.20"
+                                height="43.20"
+                                rx="21.6"
+                                fill="#e2e7e9"
+                                strokewidth="0"
+                              ></rect>
+                            </g>
+                            <g
+                              id="SVGRepo_tracerCarrier"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke="#CCCCCC"
+                              stroke-width="0.384"
+                            ></g>
+                            <g id="SVGRepo_iconCarrier">
+                              <defs>
+                                <style>
+                                  .cls-1 {
+                                    fill: none;
+                                    stroke: #000000;
+                                    stroke-miterlimit: 10;
+                                    stroke-width: 1.9200000000000004;
+                                  }
+                                </style>
+                              </defs>
+                              <polyline
+                                class="cls-1"
+                                points="20.59 12 20.59 22.5 1.5 22.5 1.5 3.41 12.96 3.41"
+                              ></polyline>
+                              <path
+                                class="cls-1"
+                                d="M12,15.82l-4.77.95L8.18,12l9.71-9.71A2.69,2.69,0,0,1,19.8,1.5h0a2.7,2.7,0,0,1,2.7,2.7h0a2.69,2.69,0,0,1-.79,1.91Z"
+                              ></path>
+                            </g>
+                          </svg>
+                        </div>
+                      </label>
+                      <div class="imageEdit imageDelete">
+                        <svg
+                          width="32px"
+                          height="32px"
+                          viewBox="-5.04 -5.04 34.08 34.08"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          transform="rotate(0)matrix(-1, 0, 0, 1, 0, 0)"
+                        >
+                          <g id="SVGRepo_bgCarrier" stroke-width="0">
+                            <rect
+                              x="-5.04"
+                              y="-5.04"
+                              width="34.08"
+                              height="34.08"
+                              rx="17.04"
+                              fill="#ebebeb"
+                              strokewidth="0"
+                            ></rect>
+                          </g>
+                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                          <g id="SVGRepo_iconCarrier">
+                            <path
+                              d="M10 12V17"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M14 12V17"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M4 7H20"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                          </g>
+                        </svg>
+                      </div>
+                    </div>
+                    <p>Póliza de Seguro</p>
+                  </div>
+
+                  <div class="file-box">
+                    <div style="padding: 4px; border: 1px solid lightslategray; border-radius: 2px">
+                      <img
+                        src="../assets/img/nopic.png"
+                        alt="ine"
+                        id="inePreview"
+                        class="imagePreview"
+                        style="display: block; width: 120px; height: 120px; object-fit: cover"
+                      />
+                      <label for="ine">
+                        <input type="file" name="ine" id="ine" style="display: none" class="documentationFiles" />
+                        <div class="imageEdit">
+                          <svg
+                            width="32px"
+                            height="32px"
+                            viewBox="-9.6 -9.6 43.20 43.20"
+                            id="Layer_1"
+                            data-name="Layer 1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="#ffffff"
+                            stroke="#ffffff"
+                            transform="matrix(1, 0, 0, 1, 0, 0)"
+                          >
+                            <g id="SVGRepo_bgCarrier" stroke-width="0" transform="translate(0,0), scale(1)">
+                              <rect
+                                x="-9.6"
+                                y="-9.6"
+                                width="43.20"
+                                height="43.20"
+                                rx="21.6"
+                                fill="#e2e7e9"
+                                strokewidth="0"
+                              ></rect>
+                            </g>
+                            <g
+                              id="SVGRepo_tracerCarrier"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke="#CCCCCC"
+                              stroke-width="0.384"
+                            ></g>
+                            <g id="SVGRepo_iconCarrier">
+                              <defs>
+                                <style>
+                                  .cls-1 {
+                                    fill: none;
+                                    stroke: #000000;
+                                    stroke-miterlimit: 10;
+                                    stroke-width: 1.9200000000000004;
+                                  }
+                                </style>
+                              </defs>
+                              <polyline
+                                class="cls-1"
+                                points="20.59 12 20.59 22.5 1.5 22.5 1.5 3.41 12.96 3.41"
+                              ></polyline>
+                              <path
+                                class="cls-1"
+                                d="M12,15.82l-4.77.95L8.18,12l9.71-9.71A2.69,2.69,0,0,1,19.8,1.5h0a2.7,2.7,0,0,1,2.7,2.7h0a2.69,2.69,0,0,1-.79,1.91Z"
+                              ></path>
+                            </g>
+                          </svg>
+                        </div>
+                      </label>
+                      <div class="imageEdit imageDelete">
+                        <svg
+                          width="32px"
+                          height="32px"
+                          viewBox="-5.04 -5.04 34.08 34.08"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          transform="rotate(0)matrix(-1, 0, 0, 1, 0, 0)"
+                        >
+                          <g id="SVGRepo_bgCarrier" stroke-width="0">
+                            <rect
+                              x="-5.04"
+                              y="-5.04"
+                              width="34.08"
+                              height="34.08"
+                              rx="17.04"
+                              fill="#ebebeb"
+                              strokewidth="0"
+                            ></rect>
+                          </g>
+                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                          <g id="SVGRepo_iconCarrier">
+                            <path
+                              d="M10 12V17"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M14 12V17"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M4 7H20"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                          </g>
+                        </svg>
+                      </div>
+                    </div>
+                    <p>INE</p>
+                  </div>
+
+                  <div class="file-box">
+                    <div style="padding: 4px; border: 1px solid lightslategray; border-radius: 2px">
+                      <img
+                        src="../assets/img/nopic.png"
+                        alt="claveUnica"
+                        id="claveUnicaPreview"
+                        class="imagePreview"
+                        style="display: block; width: 120px; height: 120px; object-fit: cover"
+                      />
+                      <label for="claveUnica">
+                        <input
+                          type="file"
+                          name="claveUnica"
+                          id="claveUnica"
+                          style="display: none"
+                          class="documentationFiles"
+                        />
+                        <div class="imageEdit">
+                          <svg
+                            width="32px"
+                            height="32px"
+                            viewBox="-9.6 -9.6 43.20 43.20"
+                            id="Layer_1"
+                            data-name="Layer 1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="#ffffff"
+                            stroke="#ffffff"
+                            transform="matrix(1, 0, 0, 1, 0, 0)"
+                          >
+                            <g id="SVGRepo_bgCarrier" stroke-width="0" transform="translate(0,0), scale(1)">
+                              <rect
+                                x="-9.6"
+                                y="-9.6"
+                                width="43.20"
+                                height="43.20"
+                                rx="21.6"
+                                fill="#e2e7e9"
+                                strokewidth="0"
+                              ></rect>
+                            </g>
+                            <g
+                              id="SVGRepo_tracerCarrier"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke="#CCCCCC"
+                              stroke-width="0.384"
+                            ></g>
+                            <g id="SVGRepo_iconCarrier">
+                              <defs>
+                                <style>
+                                  .cls-1 {
+                                    fill: none;
+                                    stroke: #000000;
+                                    stroke-miterlimit: 10;
+                                    stroke-width: 1.9200000000000004;
+                                  }
+                                </style>
+                              </defs>
+                              <polyline
+                                class="cls-1"
+                                points="20.59 12 20.59 22.5 1.5 22.5 1.5 3.41 12.96 3.41"
+                              ></polyline>
+                              <path
+                                class="cls-1"
+                                d="M12,15.82l-4.77.95L8.18,12l9.71-9.71A2.69,2.69,0,0,1,19.8,1.5h0a2.7,2.7,0,0,1,2.7,2.7h0a2.69,2.69,0,0,1-.79,1.91Z"
+                              ></path>
+                            </g>
+                          </svg>
+                        </div>
+                      </label>
+                      <div class="imageEdit imageDelete">
+                        <svg
+                          width="32px"
+                          height="32px"
+                          viewBox="-5.04 -5.04 34.08 34.08"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          transform="rotate(0)matrix(-1, 0, 0, 1, 0, 0)"
+                        >
+                          <g id="SVGRepo_bgCarrier" stroke-width="0">
+                            <rect
+                              x="-5.04"
+                              y="-5.04"
+                              width="34.08"
+                              height="34.08"
+                              rx="17.04"
+                              fill="#ebebeb"
+                              strokewidth="0"
+                            ></rect>
+                          </g>
+                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                          <g id="SVGRepo_iconCarrier">
+                            <path
+                              d="M10 12V17"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M14 12V17"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M4 7H20"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                          </g>
+                        </svg>
+                      </div>
+                    </div>
+                    <p>CURP</p>
+                  </div>
+
+                  <div class="file-box">
+                    <div style="padding: 4px; border: 1px solid lightslategray; border-radius: 2px">
+                      <img
+                        src="../assets/img/nopic.png"
+                        alt="gafeteSCT"
+                        id="gafeteSCTPreview"
+                        class="imagePreview"
+                        style="display: block; width: 120px; height: 120px; object-fit: cover"
+                      />
+                      <label for="gafeteSCT">
+                        <input
+                          type="file"
+                          name="gafeteSCT"
+                          id="gafeteSCT"
+                          style="display: none"
+                          class="documentationFiles"
+                        />
+                        <div class="imageEdit">
+                          <svg
+                            width="32px"
+                            height="32px"
+                            viewBox="-9.6 -9.6 43.20 43.20"
+                            id="Layer_1"
+                            data-name="Layer 1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="#ffffff"
+                            stroke="#ffffff"
+                            transform="matrix(1, 0, 0, 1, 0, 0)"
+                          >
+                            <g id="SVGRepo_bgCarrier" stroke-width="0" transform="translate(0,0), scale(1)">
+                              <rect
+                                x="-9.6"
+                                y="-9.6"
+                                width="43.20"
+                                height="43.20"
+                                rx="21.6"
+                                fill="#e2e7e9"
+                                strokewidth="0"
+                              ></rect>
+                            </g>
+                            <g
+                              id="SVGRepo_tracerCarrier"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke="#CCCCCC"
+                              stroke-width="0.384"
+                            ></g>
+                            <g id="SVGRepo_iconCarrier">
+                              <defs>
+                                <style>
+                                  .cls-1 {
+                                    fill: none;
+                                    stroke: #000000;
+                                    stroke-miterlimit: 10;
+                                    stroke-width: 1.9200000000000004;
+                                  }
+                                </style>
+                              </defs>
+                              <polyline
+                                class="cls-1"
+                                points="20.59 12 20.59 22.5 1.5 22.5 1.5 3.41 12.96 3.41"
+                              ></polyline>
+                              <path
+                                class="cls-1"
+                                d="M12,15.82l-4.77.95L8.18,12l9.71-9.71A2.69,2.69,0,0,1,19.8,1.5h0a2.7,2.7,0,0,1,2.7,2.7h0a2.69,2.69,0,0,1-.79,1.91Z"
+                              ></path>
+                            </g>
+                          </svg>
+                        </div>
+                      </label>
+                      <div class="imageEdit imageDelete">
+                        <svg
+                          width="32px"
+                          height="32px"
+                          viewBox="-5.04 -5.04 34.08 34.08"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          transform="rotate(0)matrix(-1, 0, 0, 1, 0, 0)"
+                        >
+                          <g id="SVGRepo_bgCarrier" stroke-width="0">
+                            <rect
+                              x="-5.04"
+                              y="-5.04"
+                              width="34.08"
+                              height="34.08"
+                              rx="17.04"
+                              fill="#ebebeb"
+                              strokewidth="0"
+                            ></rect>
+                          </g>
+                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                          <g id="SVGRepo_iconCarrier">
+                            <path
+                              d="M10 12V17"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M14 12V17"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M4 7H20"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                          </g>
+                        </svg>
+                      </div>
+                    </div>
+                    <p>Gafete de la SCT</p>
+                  </div>
+
+                  <div class="file-box">
+                    <div style="padding: 4px; border: 1px solid lightslategray; border-radius: 2px">
+                      <img
+                        src="../assets/img/nopic.png"
+                        alt="fotografiaConcesionario"
+                        id="fotografiaConcesionarioPreview"
+                        class="imagePreview"
+                        style="display: block; width: 120px; height: 120px; object-fit: cover"
+                      />
+                      <label for="fotografiaConcesionario">
+                        <input
+                          type="file"
+                          name="fotografiaConcesionario"
+                          id="fotografiaConcesionario"
+                          style="display: none"
+                          class="documentationFiles"
+                        />
+                        <div class="imageEdit">
+                          <svg
+                            width="32px"
+                            height="32px"
+                            viewBox="-9.6 -9.6 43.20 43.20"
+                            id="Layer_1"
+                            data-name="Layer 1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="#ffffff"
+                            stroke="#ffffff"
+                            transform="matrix(1, 0, 0, 1, 0, 0)"
+                          >
+                            <g id="SVGRepo_bgCarrier" stroke-width="0" transform="translate(0,0), scale(1)">
+                              <rect
+                                x="-9.6"
+                                y="-9.6"
+                                width="43.20"
+                                height="43.20"
+                                rx="21.6"
+                                fill="#e2e7e9"
+                                strokewidth="0"
+                              ></rect>
+                            </g>
+                            <g
+                              id="SVGRepo_tracerCarrier"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke="#CCCCCC"
+                              stroke-width="0.384"
+                            ></g>
+                            <g id="SVGRepo_iconCarrier">
+                              <defs>
+                                <style>
+                                  .cls-1 {
+                                    fill: none;
+                                    stroke: #000000;
+                                    stroke-miterlimit: 10;
+                                    stroke-width: 1.9200000000000004;
+                                  }
+                                </style>
+                              </defs>
+                              <polyline
+                                class="cls-1"
+                                points="20.59 12 20.59 22.5 1.5 22.5 1.5 3.41 12.96 3.41"
+                              ></polyline>
+                              <path
+                                class="cls-1"
+                                d="M12,15.82l-4.77.95L8.18,12l9.71-9.71A2.69,2.69,0,0,1,19.8,1.5h0a2.7,2.7,0,0,1,2.7,2.7h0a2.69,2.69,0,0,1-.79,1.91Z"
+                              ></path>
+                            </g>
+                          </svg>
+                        </div>
+                      </label>
+                      <div class="imageEdit imageDelete">
+                        <svg
+                          width="32px"
+                          height="32px"
+                          viewBox="-5.04 -5.04 34.08 34.08"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          transform="rotate(0)matrix(-1, 0, 0, 1, 0, 0)"
+                        >
+                          <g id="SVGRepo_bgCarrier" stroke-width="0">
+                            <rect
+                              x="-5.04"
+                              y="-5.04"
+                              width="34.08"
+                              height="34.08"
+                              rx="17.04"
+                              fill="#ebebeb"
+                              strokewidth="0"
+                            ></rect>
+                          </g>
+                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                          <g id="SVGRepo_iconCarrier">
+                            <path
+                              d="M10 12V17"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M14 12V17"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M4 7H20"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                          </g>
+                        </svg>
+                      </div>
+                    </div>
+                    <p>Concesionario</p>
+                  </div>
+
+                  <div class="file-box">
+                    <div style="padding: 4px; border: 1px solid lightslategray; border-radius: 2px">
+                      <img
+                        src="../assets/img/nopic.png"
+                        alt="datosAdicionales"
+                        id="datosAdicionalesPreview"
+                        class="imagePreview"
+                        style="display: block; width: 120px; height: 120px; object-fit: cover"
+                      />
+                      <label for="datosAdicionales">
+                        <input
+                          type="file"
+                          name="datosAdicionales"
+                          id="datosAdicionales"
+                          style="display: none"
+                          class="documentationFiles"
+                        />
+                        <div class="imageEdit">
+                          <svg
+                            width="32px"
+                            height="32px"
+                            viewBox="-9.6 -9.6 43.20 43.20"
+                            id="Layer_1"
+                            data-name="Layer 1"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="#ffffff"
+                            stroke="#ffffff"
+                            transform="matrix(1, 0, 0, 1, 0, 0)"
+                          >
+                            <g id="SVGRepo_bgCarrier" stroke-width="0" transform="translate(0,0), scale(1)">
+                              <rect
+                                x="-9.6"
+                                y="-9.6"
+                                width="43.20"
+                                height="43.20"
+                                rx="21.6"
+                                fill="#e2e7e9"
+                                strokewidth="0"
+                              ></rect>
+                            </g>
+                            <g
+                              id="SVGRepo_tracerCarrier"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke="#CCCCCC"
+                              stroke-width="0.384"
+                            ></g>
+                            <g id="SVGRepo_iconCarrier">
+                              <defs>
+                                <style>
+                                  .cls-1 {
+                                    fill: none;
+                                    stroke: #000000;
+                                    stroke-miterlimit: 10;
+                                    stroke-width: 1.9200000000000004;
+                                  }
+                                </style>
+                              </defs>
+                              <polyline
+                                class="cls-1"
+                                points="20.59 12 20.59 22.5 1.5 22.5 1.5 3.41 12.96 3.41"
+                              ></polyline>
+                              <path
+                                class="cls-1"
+                                d="M12,15.82l-4.77.95L8.18,12l9.71-9.71A2.69,2.69,0,0,1,19.8,1.5h0a2.7,2.7,0,0,1,2.7,2.7h0a2.69,2.69,0,0,1-.79,1.91Z"
+                              ></path>
+                            </g>
+                          </svg>
+                        </div>
+                      </label>
+                      <div class="imageEdit imageDelete">
+                        <svg
+                          width="32px"
+                          height="32px"
+                          viewBox="-5.04 -5.04 34.08 34.08"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          transform="rotate(0)matrix(-1, 0, 0, 1, 0, 0)"
+                        >
+                          <g id="SVGRepo_bgCarrier" stroke-width="0">
+                            <rect
+                              x="-5.04"
+                              y="-5.04"
+                              width="34.08"
+                              height="34.08"
+                              rx="17.04"
+                              fill="#ebebeb"
+                              strokewidth="0"
+                            ></rect>
+                          </g>
+                          <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                          <g id="SVGRepo_iconCarrier">
+                            <path
+                              d="M10 12V17"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M14 12V17"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M4 7H20"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M6 10V18C6 19.6569 7.34315 21 9 21H15C16.6569 21 18 19.6569 18 18V10"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                            <path
+                              d="M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5V7H9V5Z"
+                              stroke="#c81414"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            ></path>
+                          </g>
+                        </svg>
+                      </div>
+                    </div>
+                    <p>Datos Adicionales</p>
+                  </div>
+                </div>
+                <div class="containerFooter">
+                  <div class="buttonsTools">
+                    <button type="button" class="modalFormCancel">Cancelar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="formContainer" data-tabcontainer="drivers" data-visibility="false" style="padding-top: 20px">
+              <div class="containerBody">
+                <p style="font-size: 16px; font-weight: 500; margin-bottom: 8px" id="placa-search-text">
+                  Busca conductor por Numero de Gafete, y asignalo al concesionario:
+                </p>
+                <div class="placa-search">
+                  <form id="userEmailSearch">
+                    <input
+                      type="text"
+                      placeholder="Introducir nombre o gafete del conductor"
+                      name="searchEmail"
+                      id="searchEmail"
+                      class="search-placa"
+                      style="flex-grow: 1; outline: none; font-size: 14px"
+                    />
+                    <button type="submit" class="placa-button-icon">
+                      <svg
+                        width="20px"
+                        height="20px"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                        <g id="SVGRepo_iconCarrier">
+                          <path
+                            d="M15 15L21 21"
+                            stroke="#323232"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          ></path>
+                          <path
+                            d="M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z"
+                            stroke="#323232"
+                            stroke-width="2"
+                          ></path>
+                        </g>
+                      </svg>
+                    </button>
+                  </form>
+                </div>
+                <div
+                  id="usuarios-searched"
+                  style="
+                    width: 100%;
+                    display: block;
+                    min-height: 40px;
+                    padding: 0.5rem;
+                    border: 1px solid gray;
+                    margin-top: 1rem;
+                    display: none;
+                  "
+                ></div>
+                <div id="usuarios-container-list" data-reference="">
+                  <table id="usuarios-list">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Nombre Completo</th>
+                        <th>Teléfono</th>
+                        <th>Correo</th>
+                        <th>Habilitado</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <div class="containerFooter">
+                  <div class="buttonsTools">
+                    <button type="button" class="modalFormCancel">Cancelar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Delete -->
+        <div id="usuariosBajaModal" class="modalForm">
+          <div class="formContainer">
+            <div class="containerBody">
+              <p>¿Estás seguro de dar de baja a este concesionario?</p>
+              <form id="userBaja">
+                <input id="userDeleteIdentifier" type="hidden" value="" />
+                <input id="userDeleteEmailId" type="hidden" value="" />
+                <div class="buttonsTools">
+                  <button type="button" id="modalFormDeleteCancel">
+                    <span>Cancelar</span>
+                  </button>
+                  <button type="submit" id="modalFormDeleteSubmit">
+                    <span>Eliminar</span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <div class="modal-preview-image" data-visibility="hidden">
+        <div class="modal-bg"></div>
+        <div class="modal-container">
+          <img src="../assets/img/nopic.png" alt="previewImage" id="full-width-preview-Image" />
+        </div>
+      </div>
+
+      <div class="modal-preview-document" data-visibility="hidden">
+        <div class="modal-bg"></div>
+        <div class="modal-container">
+          <iframe id="full-width-preview-Document" src="#" width="600" height="700" frameborder="0"></iframe>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer>
+        <p id="copyrightFooter"></p>
+      </footer>
+    </div>
+  </body>
+  <script>
+    function inputValidOnlyNumbers() {
+      this.value = this.value.replace(/[^0-9]/g, "");
+    }
+
+    function inputValidOnlyTextOrSpaces() {
+      this.value = this.value.replace(/[^a-zA-Z\s]/g, "");
+    }
+
+    function inputValidOnlyTextOrNumber() {
+      this.value = this.value.replace(/[^a-zA-Z0-9]/g, "");
+    }
+
+    function inputValidOnlyTextNumberAndSpaces() {
+      this.value = this.value.replace(/[^a-zA-Z0-9\s]/g, "");
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      document.querySelectorAll("input.only-letters").forEach((input) => {
+        input.addEventListener("input", inputValidOnlyTextOrSpaces);
+      });
+
+      document.querySelectorAll("input.only-numbers").forEach((input) => {
+        input.addEventListener("input", inputValidOnlyNumbers);
+      });
+
+      document.querySelectorAll("input.only-characters").forEach((input) => {
+        input.addEventListener("input", inputValidOnlyTextOrNumber);
+      });
+
+      document.querySelectorAll("input.only-characters-spaces").forEach((input) => {
+        input.addEventListener("input", inputValidOnlyTextNumberAndSpaces);
+      });
+    });
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-firestore.js"></script>
+  <script type="module" src="../js/config/auth-config.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-storage.js"></script>
+  <script src="../js/global-context.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script
+    type="text/javascript"
+    src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.1.1/b-print-2.1.1/date-1.1.1/sb-1.3.0/datatables.min.js"
+  ></script>
+  <script type="module">
+    import {
+      getDocumentsFromCollection,
+      createUserAndSaveData,
+      deleteDocumentByUid,
+      getDocumentByUid,
+      updateDocumentByUid,
+      getVehiclesFromInnerDocumentCollection,
+      getConductoresromInnerDocumentCollection,
+      resetPasswordToUser,
+      firestore,
+      storage,
+    } from "../js/config/config.js";
+    import Iconos from "../constants/icons.js";
+
+    const monthStrings = [
+      "Enero",
+      "Febrero",
+      "Marzo",
+      "Abril",
+      "Mayo",
+      "Junio",
+      "Julio",
+      "Agosto",
+      "Septiembre",
+      "Octubre",
+      "Noviembre",
+      "Diciembre",
+    ];
+
+    let permissions = {};
+    let isUserSelected = false;
+    let usersTable = document.querySelector("#concesionariosTable");
+    let usersDataTableContext = null;
+    let addCancelButton = document.querySelectorAll("button.modalFormCancel");
+    const CONCESIONARIOS_COLLECTION = "concesionarios";
+    const VEHICULOS_COLLECTION = "vehiculos";
+    const modalDialogAdd = document.querySelector("#usuariosAltaModal");
+    const modalDialogEdit = document.querySelector("#usuariosEditModal");
+    const modalDialogDelete = document.querySelector("#usuariosBajaModal");
+    const modalForm = document.querySelector("form#userAlta");
+    const deleteForm = document.querySelector("#userBaja");
+    const userAddbutton = document.querySelector("button#userAdd");
+    const userAddSubmitButton = document.querySelector("#modalFormSubmit");
+    const userUpdateButton = document.querySelector("#modalFormUpdateSubmit");
+    const deleteCancelButton = document.querySelector("#modalFormDeleteCancel");
+    const checkboxOtrasEnfermedades = document.querySelector("input#otrasEnfermedades");
+    const checkboxOtrasCapacidades = document.querySelector("input#otrasCapacidades");
+    const modalTabButtons = document.querySelectorAll("button.tab-button");
+    const vehicleTableBody = document.querySelector("table#vehicles-list tbody");
+    let GLOBAL_USER_DATA = null;
+
+    addCancelButton.forEach((element) => {
+      element.addEventListener("click", async () => {
+        handleViewAltaModal(false);
+      });
+    });
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape" || event.key === "Esc") {
+        handleViewAltaModal(false);
+      }
+    });
+
+    function toggleTextArea(e) {
+      const textArea = e.target.id + "Texto";
+      const textareaTexto = document.querySelector("#" + textArea);
+      textareaTexto.disabled = !e.target.checked;
+      textareaTexto.focus();
+    }
+
+    checkboxOtrasEnfermedades.addEventListener("change", toggleTextArea);
+    checkboxOtrasCapacidades.addEventListener("change", toggleTextArea);
+
+    userAddbutton.addEventListener("click", () => {
+      if (permissions.create == "0") {
+        negateAccess();
+        return;
+      }
+      userAddSubmitButton.style.display = "block";
+      userUpdateButton.style.display = "none";
+      document.querySelector("#otrasCapacidadesTexto").value = "";
+      document.querySelector("#otrasEnfermedadesTexto").value = "";
+      modalTabButtons.forEach((element) => {
+        const attribute = element.getAttribute("data-tab");
+        if (attribute === "files" || attribute === "accounts" || attribute === "drivers") {
+          element.style.display = "none";
+        }
+      });
+      handleViewAltaModal(true);
+    });
+
+    deleteCancelButton.addEventListener("click", () => handleViewDeleteModal(false));
+    userUpdateButton.addEventListener("click", async (event) => await handleUpdateUserInformation(event));
+
+    async function handleRefetchingData() {
+      usersDataTableContext.clear().destroy();
+      await fetchingData();
+    }
+
+    // Modal Add Form Submit Event
+    modalForm.addEventListener("submit", async (e) => await handleSubmit(e));
+    deleteForm.addEventListener("submit", async (e) => await handleDeleteSubmit(e));
+
+    function handleViewAltaModal(e) {
+      if (e === true) {
+        modalDialogAdd.classList.add("modalViewTrue");
+        return;
+      }
+      GLOBAL_USER_DATA = null;
+      vehicleTableBody.innerHTML = "";
+      document.querySelector("div#vehiculos-searched").innerHTML = "";
+      document.querySelector("input#placaSearch").value = "";
+      document.querySelector("#usuariosAltaModal").setAttribute("data-reference", "");
+      document.querySelector("table#usuarios-list tbody").innerHTML = "";
+      document.querySelectorAll("textarea").forEach((element) => {
+        element.value = "";
+        element.disabled = true;
+      });
+      document.querySelectorAll(".row-element").forEach((element) => {
+        element.checked = false;
+        isUserSelected = false;
+      });
+      Object.entries(modalForm).forEach((item) => {
+        const element = item[1];
+        const type = element.type;
+        if (type === "text" || type === "email" || type === "tel") {
+          element.value = "";
+          return;
+        }
+        if (type === "select-one" || type === "select") {
+          element.value = "M";
+          return;
+        }
+        if (type === "checkbox") {
+          element.checked = false;
+          return;
+        }
+        modalTabButtons.forEach((element) => {
+          if (element.getAttribute("data-tab") === "data") {
+            element.setAttribute("aria-selected", "true");
+            return;
+          }
+          element.setAttribute("aria-selected", "false");
+        });
+        document.querySelectorAll("div.formContainer").forEach((element) => {
+          if (element.getAttribute("data-tabcontainer") === "data") {
+            element.setAttribute("data-visibility", "true");
+            return;
+          }
+          element.setAttribute("data-visibility", "false");
+        });
+        document.querySelectorAll("img.imagePreview").forEach((element) => {
+          element.src = "../assets/img/nopic.png";
+        });
+        return;
+      });
+
+      modalDialogAdd.classList.remove("modalViewTrue");
+    }
+
+    function handleViewEditModal(e) {
+      if (e === true) {
+        modalDialogEdit.classList.add("modalViewTrue");
+        return;
+      }
+      modalDialogEdit.classList.remove("modalViewTrue");
+    }
+
+    function handleViewDeleteModal(e) {
+      if (e === true) {
+        modalDialogDelete.classList.add("modalViewTrue");
+        return;
+      }
+      modalDialogDelete.classList.remove("modalViewTrue");
+    }
+
+    async function fetchingData() {
+      const querySnapshots = await getDocumentsFromCollection(CONCESIONARIOS_COLLECTION);
+      querySnapshots.forEach((doc) => {
+        const document = doc.data();
+        getDataFromDriversList(document);
+      });
+      const exportOptions = {
+        columns: [0, 1, 2, 3, 4, 5, 6, 7],
+      };
+      usersDataTableContext = new DataTable(usersTable, {
+        dom: "<'datatable-top'fB><'datatable-middle't><'datatable-bottom'lp>",
+        buttons: [
+          {
+            extend: "excelHtml5",
+            exportOptions,
+          },
+          {
+            extend: "pdfHtml5",
+            orientation: "landscape",
+            pageSize: "A4",
+          },
+          {
+            extend: "print",
+            exportOptions,
+          },
+        ],
+        oLanguage: {
+          sSearch: "Busqueda:",
+          oPaginate: {
+            sFirst: "Primera",
+            sPrevious: "Anterior",
+            sNext: "Siguiente",
+            sLast: "Ultima",
+          },
+        },
+        language: {
+          info: "Se muestran los registros _START_ al _END_ de _TOTAL_. ",
+          infoEmpty: "No se muestran registros.",
+          emptyTable: "No se registran datos en la tabla.",
+          infoFiltered: "(Filtrado de _MAX_ registros).",
+        },
+      });
+    }
+
+    function getDataFromDriversList(list) {
+      const cell_list = {
+        uid: list.uid,
+        cells: [
+          list.nombre + " " + list.apellidoPaterno || "" + " " + list.apellidoMaterno || "",
+          list.sexo,
+          list.correoElectronico,
+          list.telefono,
+          list.curp || "",
+          list.numeroEconomico,
+          list.numGafeteSCT || "",
+          formatDate(list.fechaAlta),
+        ],
+      };
+      createRowToTable(cell_list);
+    }
+
+    const formatDate = (datetime) => {
+      const [date, time] = datetime.slice(0, -5).split("T");
+      const [year, month, day] = date.split("-");
+      return day + " de " + monthStrings[parseInt(month) - 1] + " del " + year;
+    };
+
+    const validateEmail = (email) => {
+      const pattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+      return pattern.test(email);
+    };
+
+    async function handleSubmit(e) {
+      e.preventDefault();
+      const targets = Object.entries(e.target).slice(0, -3);
+      const emailInput = targets.find((item) => item[1].type === "email");
+      if (!validateEmail(emailInput[1].value)) {
+        window.alert("Favor de verificar correo, debe ser un correo válido.");
+        return;
+      }
+
+      const preValidation = targets
+        .filter(([key, item]) => item.getAttribute("data-length"))
+        .map(([key, item]) => item);
+
+      let hasAnError = false;
+
+      preValidation.forEach((element) => {
+        const inputString = element.value.length;
+        const inputText = element.placeholder;
+        const inputRequest = parseInt(element.getAttribute("data-length"));
+        if (!(inputString >= inputRequest)) {
+          hasAnError = true;
+          element.style.border = "1px solid red";
+        } else {
+          element.style.border = "1px solid gray";
+        }
+      });
+
+      if (hasAnError) {
+        window.alert("Favor de llenar los campos correctamente.");
+        return;
+      }
+
+      const values = targets.map((input, index) => {
+        const name = input[1].name;
+        let val = input[1].type === "checkbox" ? input[1].checked : input[1].value;
+        return { [name]: val };
+      });
+
+      const isCreated = await createUserAndSaveData(values, CONCESIONARIOS_COLLECTION, true);
+      if (isCreated === false) return;
+      await handleRefetchingData();
+      handleViewAltaModal(false);
+    }
+
+    async function handleUpdateUserInformation(e) {
+      const targets = Object.entries(modalForm).slice(0, -3);
+      const emailInput = targets.find((item) => item[1].type === "email");
+      if (!validateEmail(emailInput[1].value)) {
+        window.alert("Favor de verificar correo, debe ser un correo válido.");
+        return;
+      }
+
+      const preValidation = targets
+        .filter(([key, item]) => item.getAttribute("data-length"))
+        .map(([key, item]) => item);
+
+      let hasAnError = false;
+
+      preValidation.forEach((element) => {
+        const inputString = element.value.length;
+        const inputText = element.placeholder;
+        const inputRequest = parseInt(element.getAttribute("data-length"));
+        if (!(inputString >= inputRequest)) {
+          hasAnError = true;
+          element.style.border = "1px solid red";
+        } else {
+          element.style.border = "1px solid gray";
+        }
+      });
+
+      if (hasAnError) {
+        window.alert("Favor de llenar los campos correctamente.");
+        return;
+      }
+
+      const values = targets.map((input, index) => {
+        const name = input[1].name;
+        let val = input[1].type === "checkbox" ? input[1].checked : input[1].value;
+        return { [name]: val };
+      });
+
+      const userUID = document.querySelector("#usuariosAltaModal").getAttribute("data-reference");
+
+      const isUpdated = await updateDocumentByUid(values, userUID, CONCESIONARIOS_COLLECTION);
+      if (isUpdated === false) return;
+      await handleRefetchingData();
+      handleViewAltaModal(false);
+    }
+
+    async function handleDeleteSubmit(e) {
+      e.preventDefault();
+
+      const uid = document.querySelector("#userDeleteIdentifier").value;
+      const email = document.querySelector("#userDeleteEmailId").value; 
+      const hasBeenDeleted = await deleteDocumentByUid(uid, CONCESIONARIOS_COLLECTION);
+
+      if (hasBeenDeleted === false) return;
+      await handleRefetchingData();
+      handleViewDeleteModal(false);
+    }
+
+    function createRowToTable(list) {
+      const tableRow = document.createElement("tr");
+      list.cells.forEach((item) => {
+        const tableCell = document.createElement("td");
+        const cellNode = document.createTextNode(item);
+        tableCell.appendChild(cellNode);
+        tableRow.appendChild(tableCell);
+      });
+
+      const tools = createActionButtons(list.uid);
+      tableRow.appendChild(tools);
+      document.querySelector("table#concesionariosTable tbody").insertAdjacentElement("beforeend", tableRow);
+    }
+
+    function createActionButtons(u) {
+      const box = document.createElement("td");
+      box.classList.add("cellButtonTool");
+      box.dataset.type = "tools";
+
+      const buttonsData = [
+        { type: "update", title: "Editar", icon: Iconos.editar, text: "Actualizar", handler: handleUpdateUser },
+        { type: "reset", title: "Reestablecer contraseña", icon: Iconos.reset, text: "Reestablecer contraseña", handler: () => handleResetPassword(u), },
+        { type: "delete", title: "Eliminar", icon: Iconos.eliminar, text: "Eliminar", handler: ()=> handleDeleteUser(u, box) },
+      ];
+
+      buttonsData.forEach(({ type, title, icon, text, handler }) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "tableTools";
+        button.dataset.type = type;
+        button.dataset.id = u;
+        button.title = title;
+        button.innerHTML = `${icon}<span>${text}</span>`;
+        button.addEventListener("click", (e) => handler(e, e.currentTarget.parentNode));
+        box.appendChild(button);
+      });
+
+      return box;
+    }
+
+    const handleResetPassword = async (e) => { 
+      if (permissions.reset == "0") {
+        negateAccess();
+        return;
+      }
+      const confirmMessage =
+        "Se le enviará al usuario un correo de reestablecimiento de contraseña, ¿Estas seguro de proceder con la acción?";
+      if (confirm(confirmMessage)) {
+        const currentElement = document.querySelector(`button.tableTools[data-type='reset'][data-id='${e}']`)
+        const tableRow = currentElement.parentNode.parentNode;;
+        console.log(tableRow)
+        const email = tableRow.childNodes[2].innerText;
+        const hasBeenReseted = await resetPasswordToUser(email);
+      }
+    };
+
+    function elementSetAttributes(el, attrs) {
+      for (var key in attrs) {
+        el.setAttribute(key, attrs[key]);
+      }
+    }
+
+    async function handleUpdateUser(e) {
+      if (permissions.update == "0") {
+        negateAccess();
+        return;
+      }
+      const uid = e.currentTarget.getAttribute("data-id");
+      document.querySelector("#usuariosAltaModal").setAttribute("data-reference", uid);
+      document.querySelector("#userAltaIdentifier").value = uid;
+      userAddSubmitButton.style.display = "none";
+      userUpdateButton.style.display = "block";
+      modalTabButtons.forEach((element) => {
+        element.style.display = "block";
+      });
+      handleViewAltaModal(true);
+      await getOperatorByUid(uid);
+    }
+
+    function handleDeleteUser(e, node) {
+      if (permissions.delete == "0") {
+        negateAccess();
+        return;
+      }
+  
+
+      const tableRow =  node.parentNode;
+      const email = tableRow.childNodes[2].innerText; 
+      const input = document.querySelector("#userDeleteIdentifier");
+      const emailInput = document.querySelector("#userDeleteEmailId");
+      input.value = e;
+      emailInput.value = email;
+      handleViewDeleteModal(true);
+    }
+
+    async function getOperatorByUid(uid) {
+      let data = await getDocumentByUid(uid, CONCESIONARIOS_COLLECTION);
+      GLOBAL_USER_DATA = data;
+      let formEntries = Object.values(modalForm).filter((item) => item.type !== "button" && item.type !== "submit");
+
+      formEntries.forEach((element) => {
+        const { name, type } = element;
+        if (type === "checkbox") {
+          element.checked = data[name];
+          return;
+        }
+        element.value = data[name] || "";
+        return;
+      });
+    }
+
+    modalTabButtons.forEach((tab, index) => {
+      tab.addEventListener("click", ({ currentTarget }) => {
+        const nameTab = currentTarget.getAttribute("data-tab");
+        const isSelected = currentTarget.getAttribute("aria-selected");
+        if (isSelected == "true") {
+          return false;
+        }
+        modalTabButtons.forEach((element) => {
+          if (element.getAttribute("aria-selected") == "true" || element.getAttribute("data-tab") !== nameTab) {
+            element.setAttribute("aria-selected", "false");
+            return;
+          }
+          element.setAttribute("aria-selected", "true");
+        });
+        const tabContents = document.querySelectorAll("div.formContainer");
+        tabContents.forEach((element) => {
+          element.setAttribute("data-visibility", "false");
+          if (element.getAttribute("data-tabcontainer") == nameTab) {
+            element.setAttribute("data-visibility", "true");
+          }
+        });
+      });
+    });
+
+    document.querySelector(`button.tab-button[data-tab="files"]`).addEventListener("click", async function (e) {
+      const uid = document.querySelector("#usuariosAltaModal").getAttribute("data-reference");
+      const storageReference = storage.ref().child(`${CONCESIONARIOS_COLLECTION}/${uid}`);
+      const result = await storageReference.listAll();
+      if (result.items.length > 0) {
+        const urls = await Promise.all(
+          result.items.map(async (item) => {
+            try {
+              return await item.getDownloadURL();
+            } catch (error) {
+              console.error("Error obteniendo url: ", error);
+              return null;
+            }
+          })
+        );
+
+        const files = urls.map((item) => {
+          return {
+            url: item || "../assets/img/nopic.png",
+            name: item.split("%2F")[2].split("?")[0].split(".")[0].split("__")[1],
+            type: item.split("%2F")[2].split("?")[0].split(".")[1],
+          };
+        });
+
+        document.querySelectorAll("img.imagePreview").forEach((element) => {
+          const { name, alt } = element;
+          const [currentFile] = files.filter((item) => item.name === alt);
+          if (currentFile === undefined || currentFile === null) {
+            element.src = "../assets/img/nopic.png";
+          } else if (currentFile?.type === "pdf") {
+            element.src = "https://www.svgrepo.com/show/255818/pdf.svg";
+          } else {
+            element.src = currentFile?.url;
+          }
+
+          element.addEventListener("click", function (e) {
+            const modal = document.querySelector("div.modal-preview-image");
+            const modalDoc = document.querySelector("div.modal-preview-document");
+            if (currentFile?.type !== "pdf") {
+              modal.setAttribute("data-visibility", "visible");
+              document.getElementById("full-width-preview-Image").src = currentFile?.url;
+              return;
+            }
+
+            modalDoc.setAttribute("data-visibility", "visible");
+            document.getElementById("full-width-preview-Document").src = currentFile?.url;
+          });
+        });
+      }
+    });
+
+    document.querySelectorAll("div.modal-bg").forEach((element, array) =>
+      element.addEventListener("click", function (e) {
+        const modal = e.target.parentNode;
+        modal.setAttribute("data-visibility", "hidden");
+      })
+    );
+
+    async function changeStatusConductores(element, array, status) {
+      const { uid, habilitado } = element;
+      const totalHabilitado = document.querySelectorAll("button.statusButtonVehicle");
+      const statusHabilitados = [];
+      totalHabilitado.forEach((element) => {
+        statusHabilitados.push(element.dataset.status == "true");
+      });
+
+      if (statusHabilitados.filter((e) => e == true).length >= 2 && status == true) {
+        alert("Concesionario no puede tener mas de 2 conductores habilitados");
+        return;
+      }
+
+      const userUID = document.querySelector("#usuariosAltaModal").getAttribute("data-reference");
+      const message = habilitado
+        ? "Estas seguro de deshabilitar el vehiculo al concesionario?"
+        : "Estas seguro de habilitar el vehiculo al concesionario";
+      if (confirm(message)) {
+        const documentUpdated = await firestore
+          .collection(CONCESIONARIOS_COLLECTION)
+          .doc(userUID)
+          .collection("conductores")
+          .doc(uid)
+          .update({
+            habilitado: !habilitado,
+          })
+          .then(() => true)
+          .catch(() => false);
+
+        if (documentUpdated) {
+          const changeStatusResponse = await changeStatusOnRealtime(habilitado, userUID, uid);
+          alert("Se ha actualizado de manera correcta.");
+          await getAndRenderDriversFromUser();
+          return;
+        }
+        alert("No se pudo actualizar, favor de verificar.");
+      }
+    }
+
+    async function changeStatusOnRealtime(status, concesionario, conductor) {
+      try {
+        // console.log({ status, concesionario, conductor });
+        const reference = firebase.database().ref("Users/Drivers/" + conductor);
+        const snapshot = await reference.get();
+        const data = snapshot.val();
+        // console.log({ data: data.concesionarioAsignado });
+        const arrayConcesionarios = data.concesionarioAsignado.map(({ habilitado, uid }) => {
+          return uid === concesionario ? { habilitado: !status, uid } : { habilitado, uid };
+        });
+
+        return await reference
+          .update({ concesionarioAsignado: arrayConcesionarios })
+          .then(() => true)
+          .catch(() => false);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    async function changeVehicleStatus(element, array) {
+      const { uid, habilitado } = element;
+      if (array?.filter((item) => item.habilitado === true).length > 2) {
+        alert("Concesionario no puede tener mas de 2 vehiculos habilitados");
+        return;
+      }
+
+      const userUID = document.querySelector("#usuariosAltaModal").getAttribute("data-reference");
+      const message = habilitado
+        ? "Estas seguro de deshabilitar el vehiculo al usuario?"
+        : "Estas seguro de habilitar el vehiculo al usuario";
+      if (confirm(message)) {
+        const documentUpdated = await firestore
+          .collection(CONCESIONARIOS_COLLECTION)
+          .doc(userUID)
+          .collection("vehiculos")
+          .doc(uid)
+          .update({
+            habilitado: !habilitado,
+          })
+          .then(() => true)
+          .catch(() => false);
+
+        if (documentUpdated) {
+          alert("Se ha actualizado de manera correcta.");
+          await getAndRenderVehiclesFromUser();
+          return;
+        }
+        alert("No se pudo actualizar, favor de verificar.");
+      }
+    }
+
+    function createVehicleRow(element, index, array) {
+      const { marca, modelo, placa, habilitado, uid } = element;
+
+      // Crear la fila de la tabla
+      const tableRow = document.createElement("tr");
+      tableRow.className = "vehicleAssigned";
+      tableRow.dataset.reference = uid;
+
+      // Crear las celdas de la fila
+      const cells = [index + 1, marca, modelo, placa].map((content) => {
+        const cell = document.createElement("td");
+        cell.textContent = content;
+        return cell;
+      });
+
+      // Crear y configurar el botón de estado
+      const checkboxStatus = document.createElement("button");
+      checkboxStatus.type = "button";
+      checkboxStatus.dataset.status = habilitado;
+      checkboxStatus.dataset.reference = uid;
+      checkboxStatus.innerHTML = habilitado ? Iconos.success : Iconos.failure;
+      checkboxStatus.className = "statusButtonVehicle";
+      checkboxStatus.addEventListener("click", async (event) => {
+        await changeVehicleStatus(element, array);
+      });
+
+      const rowCellStatus = document.createElement("td");
+      rowCellStatus.appendChild(checkboxStatus);
+      rowCellStatus.className = "cellStatus";
+
+      const deleteButton = document.createElement("button");
+      deleteButton.type = "button";
+      deleteButton.dataset.reference = uid;
+      deleteButton.innerHTML = Iconos.eliminar;
+      deleteButton.className = "buttonDelete";
+      deleteButton.title = "Eliminar vehiculo de concesionario";
+      deleteButton.addEventListener("click", async () => {
+        await deleteVehiculoAssigned(element);
+      });
+      rowCellStatus.appendChild(deleteButton);
+      cells.push(rowCellStatus);
+
+      // Añadir todas las celdas a la fila
+      cells.forEach((cell) => tableRow.appendChild(cell));
+
+      return tableRow;
+    }
+
+    async function deleteVehiculoAssigned(element) {
+      try {
+        const message = "Estas seguro de eliminar vehiculo del concesionario correspondiente?";
+        if (!confirm(message)) return;
+        const uid = document.querySelector("#usuariosAltaModal").dataset.reference;
+        const box = document.querySelector("#vehiculos-searched");
+        const response = await firestore
+          .collection("concesionarios")
+          .doc(uid)
+          .collection("vehiculos")
+          .doc(element.uid)
+          .delete()
+          .then(() => true)
+          .catch(() => false);
+
+        if (response) {
+          const currentRow = document.querySelector(`tr[data-reference=${element.uid}]`);
+          box.style.display = "none";
+          currentRow.remove();
+          window.alert("Se ha eliminado el vehiculo del concesionario.");
+          showOrHideFormulary(1);
+        }
+      } catch (error) {
+        console.error("Se ha presentado un error...", error);
+        window.alert("Se ha presentado un error...", error);
+      }
+    }
+
+    async function deleteConductorAssigned(element) {
+      try {
+        const message = "Estas seguro de eliminar Conductor al Concesionario correspondiente?";
+        if (!confirm(message)) return;
+        const uid = document.querySelector("#usuariosAltaModal").dataset.reference;
+        const box = document.querySelector("#usuarios-searched");
+        const response = await firestore
+          .collection("concesionarios")
+          .doc(uid)
+          .collection("conductores")
+          .doc(element.uid)
+          .delete()
+          .then(() => true)
+          .catch(() => false);
+
+        if (response) {
+          const currentRow = document.querySelector(`tr[data-reference=${element.uid}]`);
+          box.style.display = "none";
+          currentRow.remove();
+          const realtimeResponse = await deleteConductorAssignedFromRealtime(uid, element.uid);
+          window.alert("Se ha eliminado el conductor del concesionario.");
+          showOrHideFormulary(0);
+        }
+      } catch (error) {
+        console.error("Se ha presentado un error...");
+        windw.alert("Se ha presentado un error...");
+      }
+    }
+
+    async function deleteConductorAssignedFromRealtime(concesionario, conductor) {
+      try {
+        const reference = firebase.database().ref("Users/Drivers/" + conductor);
+        const snapshot = await reference.get();
+        const userData = snapshot.val();
+        const arrayConcesionarios = [];
+
+        if (userData.concesionarioAsignado !== undefined) {
+          const newArrayConcesionarios = userData.concesionarioAsignado.filter(
+            ({ habilitado, uid }) => uid !== concesionario
+          );
+          // console.log({ newArrayConcesionarios });
+          await reference.update({ concesionarioAsignado: newArrayConcesionarios });
+        }
+
+        // console.log({ userData, concesionario, conductor });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    function createConductorRow(element, index, array) {
+      const { nombre, apellidoMaterno, apellidoPaterno, telefono, correoElectronico, habilitado, uid } = element;
+
+      // Crear la fila de la tabla
+      const tableRow = document.createElement("tr");
+      tableRow.dataset.reference = uid;
+      tableRow.className = "assigned";
+
+      // Crear las celdas de la fila
+      const cellsData = [
+        index + 1,
+        `${nombre} ${apellidoPaterno} ${apellidoMaterno.split("")[0]}`,
+        telefono,
+        correoElectronico,
+      ];
+
+      const cells = cellsData.map((content) => {
+        const cell = document.createElement("td");
+        cell.textContent = content;
+        return cell;
+      });
+
+      // Crear y configurar el botón de estado
+      const checkboxStatus = document.createElement("button");
+      checkboxStatus.type = "button";
+      checkboxStatus.dataset.status = habilitado;
+      checkboxStatus.dataset.reference = uid;
+      checkboxStatus.innerHTML = habilitado ? Iconos.success : Iconos.failure;
+      checkboxStatus.className = "statusButtonVehicle";
+      checkboxStatus.addEventListener("click", async (event) => {
+        await changeStatusConductores(element, array, !(event.currentTarget.dataset.status == "true"));
+      });
+
+      const rowCellStatus = document.createElement("td");
+      rowCellStatus.className = "cellStatus";
+      rowCellStatus.appendChild(checkboxStatus);
+      const deleteButton = document.createElement("button");
+      deleteButton.type = "button";
+      deleteButton.dataset.reference = uid;
+      deleteButton.innerHTML = Iconos.eliminar;
+      deleteButton.className = "buttonDelete";
+      deleteButton.title = "Eliminar conductor de concesionario";
+      deleteButton.addEventListener("click", async () => {
+        await deleteConductorAssigned(element);
+      });
+      rowCellStatus.appendChild(deleteButton);
+      cells.push(rowCellStatus);
+
+      // Añadir todas las celdas a la fila
+      cells.forEach((cell) => tableRow.appendChild(cell));
+
+      return tableRow;
+    }
+
+    async function getAndRenderVehiclesFromUser() {
+      document.querySelector("#userVehicleSearch").classList.remove("hidden");
+      document.querySelector("#placaSearch").value = "";
+      const uid = document.querySelector("#usuariosAltaModal").getAttribute("data-reference");
+      const vehiclesFromUser = await getVehiclesFromInnerDocumentCollection(uid, CONCESIONARIOS_COLLECTION);
+
+      if (vehiclesFromUser.length === 0) return;
+      vehicleTableBody.innerHTML = "";
+      document.querySelector("#vehiculos-searched").innerHTML = "";
+      document.querySelector("#vehiculos-searched").style.display = "none";
+      const table = document.createElement("table");
+      const tableBody = document.createElement("tbody");
+
+      vehiclesFromUser.forEach((element, index, array) => {
+        const tableRow = createVehicleRow(element, index, array);
+        vehicleTableBody.insertAdjacentElement("beforeend", tableRow);
+      });
+
+      showOrHideFormulary(1);
+    }
+
+    async function getAndRenderDriversFromUser() {
+      document.querySelector("#searchEmail").value = "";
+      const uid = document.querySelector("#usuariosAltaModal").getAttribute("data-reference");
+      const conductoresFromUser = await getConductoresromInnerDocumentCollection(uid, CONCESIONARIOS_COLLECTION);
+
+      if (conductoresFromUser.length === 0) return;
+      document.querySelector("table#usuarios-list tbody").innerHTML = "";
+      document.querySelector("#usuarios-searched").innerHTML = "";
+      document.querySelector("#usuarios-searched").style.display = "none";
+      const table = document.createElement("table");
+      const tableBody = document.createElement("tbody");
+
+      conductoresFromUser.forEach((element, index, array) => {
+        const tableRow = createConductorRow(element, index, array);
+        document.querySelector("table#usuarios-list tbody").insertAdjacentElement("beforeend", tableRow);
+      });
+
+      showOrHideFormulary(0);
+    }
+
+    function showOrHideFormulary(type) {
+      const totalUserAssigned = document.querySelectorAll("tr.assigned");
+      const totalVehiculeAssigned = document.querySelectorAll("tr.vehicleAssigned");
+      const userSearch = document.querySelector("#userEmailSearch");
+      const vehiculoSearch = document.querySelector("#userVehicleSearch");
+      const userSearchText = document.querySelector("#placa-search-text");
+      const vehiculoSearchText = document.querySelector("#search-item");
+      if (type === 0) {
+        if (totalUserAssigned.length > 3) {
+          userSearch.classList.add("hidden");
+          userSearchText.classList.add("hidden");
+        } else {
+          userSearch.classList.remove("hidden");
+          userSearchText.classList.remove("hidden");
+        }
+      } else {
+        if (totalVehiculeAssigned.length >= 1) {
+          vehiculoSearch.classList.add("hidden");
+          vehiculoSearchText.classList.add("hidden");
+        } else {
+          vehiculoSearch.classList.remove("hidden");
+          vehiculoSearchText.classList.remove("hidden");
+        }
+      }
+    }
+
+    $(`button.tab-button[data-tab="accounts"]`).on("click", async function (e) {
+      await getAndRenderVehiclesFromUser();
+    });
+
+    $(`button.tab-button[data-tab="drivers"]`).on("click", async function (e) {
+      await getAndRenderDriversFromUser();
+    });
+
+    window.addEventListener("DOMContentLoaded", async () => {
+      await fetchingData();
+      await rolesPermission();
+    });
+
+    document.querySelectorAll("input.documentationFiles").forEach((element, index) => {
+      element.addEventListener("change", async function (e) {
+        try {
+          const file = e.target.files[0];
+          const reader = new FileReader();
+          const { name, type } = e.target;
+          const responseUpload = await uploadImages(file, name, file.name.split(".")[1]);
+          if (responseUpload) {
+            reader.onload = function (event) {
+              const url = event.target.result;
+              const dom = name + "Preview";
+              const imageDom = document.getElementById(dom);
+              imageDom.src = file.name.split(".")[1] === "pdf" ? "https://www.svgrepo.com/show/255818/pdf.svg" : url;
+            };
+            reader.readAsDataURL(file);
+          }
+        } catch (error) {
+          console.error(error.message);
+        }
+      });
+    });
+
+    const uploadImages = async (file, name, type) => {
+      try {
+        const uid = document.getElementById("usuariosAltaModal").getAttribute("data-reference");
+
+        if (file === null || file === undefined) return;
+
+        const reference = storage.ref().child(`${CONCESIONARIOS_COLLECTION}/${uid}/` + ("__" + name + "." + type));
+        await reference.put(file);
+
+        const url = await reference.getDownloadURL();
+
+        if (url) {
+          return true;
+        } else {
+          throw new Error();
+        }
+      } catch (error) {
+        console.error("Error al subir imagenes, ", error);
+        return false;
+      }
+    };
+
+    /* Buscar y asignar Vehiculo*/
+    document.querySelector("#userVehicleSearch").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const searchString = e.target[0].value.toLowerCase();
+      const box = document.querySelector("#vehiculos-searched");
+      box.innerHTML = ""; // Limpiar resultados anteriores
+
+      try {
+        const snapshot = await firestore.collection(VEHICULOS_COLLECTION).where("placa", "==", searchString).get();
+
+        const response = snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }));
+
+        if (response) {
+          box.style.display = "block";
+          response.forEach((item) => {
+            const {
+              id,
+              data: { marca, modelo, placa },
+            } = item;
+
+            const list = document.createElement("div");
+            list.className = "optionVehicle";
+
+            const span = document.createElement("span");
+            // console.log(`${marca} ${modelo} - ${placa}`);
+            span.innerText = `${marca} ${modelo} - ${placa}`;
+            list.appendChild(span);
+
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "botonAsignar";
+            button.innerText = "Asignar";
+            button.addEventListener("click", async () => handleAssignVehicle(item));
+
+            list.appendChild(button);
+            box.appendChild(list);
+          });
+        }
+      } catch (error) {
+        console.error("Se ha presentado un error:", error);
+      }
+    });
+
+    async function handleAssignVehicle(item) {
+      const totalVehiclesAssigned = document.querySelectorAll("tr.vehicleAssigned");
+      if (permissions.assign === "0") {
+        negateAccess();
+        return;
+      }
+      if (totalVehiclesAssigned.length >= 1) {
+        window.alert("Solo puede tener asignados, un vehiculo a un Concesionario.");
+        return;
+      }
+
+      const uid = document.querySelector("#usuariosAltaModal").dataset.reference;
+      const message = "¿Estás seguro de asignar este vehículo al concesionario?";
+      if (!confirm(message)) return;
+
+      try {
+        await firestore
+          .collection(CONCESIONARIOS_COLLECTION)
+          .doc(uid)
+          .collection("vehiculos")
+          .doc(item.id)
+          .set({
+            ...item.data,
+            habilitado: false,
+          });
+        alert("Se ha asignado el vehículo al usuario.");
+        await getAndRenderVehiclesFromUser();
+      } catch (error) {
+        alert("Se ha presentado un error, favor de verificar con un administrador.");
+        console.error(error);
+      }
+    }
+
+    /* Buscar y asignar Conductor*/
+    document.querySelector("#userEmailSearch").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const searchString = String(e.target[0].value).toLowerCase();
+      const box = document.querySelector("#usuarios-searched");
+      box.innerHTML = ""; // Limpiar resultados anteriores
+
+      try {
+        const snapshot = await firestore.collection("conductores").where("numGafeteSCT", "==", searchString).get();
+        const response = snapshot.docs.map((doc) => ({ id: doc.id, data: doc.data() }));
+        console.log(response);
+        if (response.length > 0) {
+          box.style.display = "block";
+          response.forEach((item) => {
+            const {
+              id,
+              data: { nombre, apellidoPaterno, apellidoMaterno, telefono, numGafeteSCT },
+            } = item;
+
+            const list = document.createElement("div");
+            list.className = "optionVehicle";
+
+            const span = document.createElement("span");
+            span.innerText = `${nombre} ${apellidoPaterno} ${apellidoMaterno} - ${telefono}`;
+            list.appendChild(span);
+
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "botonAsignar";
+            button.innerText = "Asignar";
+            button.addEventListener("click", async () => handleAssignDriver(item));
+
+            list.appendChild(button);
+            box.appendChild(list);
+          });
+        } else {
+          window.alert("No se encuentra conductor con ese numero de Gafete.");
+        }
+      } catch (error) {
+        console.error("Se ha presentado un error:", error);
+      }
+    });
+
+    async function handleAssignDriver(item) {
+      const totalAssigned = document.querySelectorAll("tr.assigned");
+      if (permissions.assign === "0") {
+        negateAccess();
+        return;
+      }
+      if (totalAssigned.length >= 2) {
+        window.alert("No puede haber mas de 2 Conductores asignados a un Concesionario.");
+        return;
+      }
+
+      const uid = document.querySelector("#usuariosAltaModal").dataset.reference;
+      const message = "¿Estás seguro de asignar este conductor al concesionario?";
+      if (!confirm(message)) return;
+
+      // Verificar si conductor ya existe dentro de coleccion
+
+      const verifyIfExists = await firestore
+        .collection(CONCESIONARIOS_COLLECTION)
+        .doc(uid)
+        .collection("conductores")
+        .doc(item.id)
+        .get();
+
+      if (verifyIfExists.exists) {
+        window.alert("Conductor ya se encuentra asignado al concesionario, no se puede duplicar.");
+        return;
+      }
+      // Asignar conductor a concesionario
+      try {
+        await firestore
+          .collection(CONCESIONARIOS_COLLECTION)
+          .doc(uid)
+          .collection("conductores")
+          .doc(item.id)
+          .set({
+            ...item.data,
+            habilitado: false,
+          });
+
+        const vehiculosSnapshot = await firestore
+          .collection(CONCESIONARIOS_COLLECTION)
+          .doc(uid)
+          .collection("vehiculos")
+          .get();
+
+        const vehiculos = vehiculosSnapshot.docs.map(doc => ({
+          id: doc.id, // Include the document ID if needed
+          ...doc.data(), // Merge the document data
+        }));
+
+        await updateUserRealTimeAssignedConcesionario(uid, item.id, vehiculos);
+        await getAndRenderDriversFromUser();
+        window.alert("Se ha asignado el conductor al concesionario.");
+      } catch (error) {
+        alert("Se ha presentado un error, favor de verificar con un administrador.");
+        console.error(error);
+      }
+    }
+
+    async function updateUserRealTimeAssignedConcesionario(concesionario, conductor, vehiculos) {
+      try {
+        const userReference = firebase.database().ref("/Users/Drivers/" + conductor);
+        const snapshot = await userReference.get();
+        const userData = snapshot.val();
+        const hasVehicles = vehiculos.length > 0;
+        let vehiculoDefault = {
+          color: "N/A",
+          frontal: "N/A",
+          lateralDerecho: "N/A",
+          lateralIzquierdo: "N/A",
+          marca: "N/A",
+          modelo: "N/A",
+          municipio: "N/A",
+          noSerie: "N/A",
+          numeroEconomico: "N/A",
+          placa: "N/A",
+          placaNumero: "N/A",
+          placaTipo: "N/A",
+          polizaSeguro: "N/A",
+          polizaSeguroImg: "N/A",
+          tipoCombustible: "N/A",
+          tipoVehiculo: "N/A",
+          trasero: "N/A",
+          yearVehiculo: "N/A",
+        };
+
+        if(hasVehicles) {
+          for (const key in vehiculoDefault) {
+            if (vehiculos[0].hasOwnProperty(key)) {
+              vehiculoDefault[key] = vehiculos[0][key];
+            }
+          }
+        }
+
+/*
+        let arrayConcesionarios = [];
+        if (userData.concesionarioAsignado) {
+          if (Array.isArray(userData.concesionarioAsignado)) {
+            arrayConcesionarios = userData.concesionarioAsignado;
+          } else {
+            arrayConcesionarios = [userData.concesionarioAsignado];
+          }
+          arrayConcesionarios.push({ habilitado: false, uid: concesionario });
+        } else {
+          arrayConcesionarios.push({ habilitado: false, uid: concesionario });
+        }
+
+*/
+        await userReference.update(vehiculoDefault);
+
+
+        alert("Se ha asignado el conductor al concesionario.");
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    const rolesPermission = async () => {
+      const permission = sessionStorage.getItem("concesionariosPermission");
+      if (permission === null || permission === undefined) {
+        window.location.replace("../index.html");
+      }
+      permission.split("$").forEach((permit) => {
+        const name = permit.split(",")[0];
+        const value = permit.split(",")[1];
+        permissions[name] = value;
+      });
+    };
+
+    const negateAccess = () => {
+      window.alert("No cuentas con los permisos necesarios para realizar esta operación.");
+    };
+
+    document.querySelectorAll("div.imageDelete").forEach((element) => {
+      element.addEventListener("click", function (e) {
+        const imageTag = e.currentTarget.parentNode.children[0];
+        const url = imageTag.getAttribute("src");
+        if (url === "../assets/img/nopic.png") {
+          return;
+        }
+        const fileName = imageTag.getAttribute("alt");
+        const format = url.split("/")[5].split(".")[0];
+        let formatFile = null;
+        if (format == "pdf") {
+          formatFile = "pdf";
+        } else {
+          const parts = url.split("/");
+          const fileName = parts.pop().split("?")[0];
+          const fileNameParts = fileName.split(".");
+          formatFile = fileNameParts.pop();
+        }
+        const uid = document.querySelector("#usuariosAltaModal").getAttribute("data-reference");
+        const reference = storage.ref().child(`${CONCESIONARIOS_COLLECTION}/${uid}/__${fileName}.${formatFile}`);
+        reference
+          .delete()
+          .then((snapshot) => {
+            window.alert("Se ha eliminado el archivo de manera satisfactoria.");
+            imageTag.src = "../assets/img/nopic.png";
+          })
+          .catch((error) => {
+            window.alert("Se ha presentado un error.");
+            console.error(error);
+          });
+      });
+    });
+  </script>
+</html>

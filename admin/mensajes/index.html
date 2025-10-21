@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Tu Taxi | Mensajes</title>
+    <link rel="icon" href="../../assets/icons/favicon.ico" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../../css/docs/tadiDefaults.css" />
+    <link rel="stylesheet" href="./index.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Sharp" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.1.1/b-print-2.1.1/date-1.1.1/sb-1.3.0/datatables.min.css"
+    />
+    <style>
+      .containerKey {
+        display: none;
+        &.selected {
+          display: block !important;
+        }
+      }
+
+      thead th,
+      thead td {
+        padding: 10px 18px;
+        border-bottom: 1px solid #111;
+      }
+
+      button.report-button {
+        padding: 0 1rem;
+        border-radius: 3px;
+        border: none;
+        color: white;
+        background-color: #2d6e3dc0;
+      }
+
+      button.report-button:hover {
+        cursor: pointer;
+      }
+
+      button.report-button:disabled {
+        background-color: rgb(179, 179, 179);
+        color: whitesmoke;
+      }
+
+      .driverResultContainer label {
+        text-transform: uppercase;
+        margin-left: 4px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root" class="preload">
+      <!-- Aside -->
+      <aside>
+        <div id="aside-container">
+          <div class="logo">
+            <a class="home-link" href="../../docs/main.html">Tu Taxi | Backoffice</a>
+          </div>
+          <hr />
+          <ul class="nav">
+            <li class="nav-item" id="mapa-menu-li" style="display: none">
+              <a class="nav-link" href="../../docs/maps.html">
+                <span class="link-icons material-icons-sharp">map</span>
+                MAPA
+              </a>
+            </li>
+            <li class="nav-item" id="concesionario-menu-li" style="display: none">
+              <a class="nav-link" href="../../docs/concesionarios.html" id="concesionario">
+                <span class="link-icons material-icons-sharp">person</span>
+                CONCESIONARIOS
+              </a>
+            </li>
+            <li class="nav-item" id="vehiculos-menu-li">
+              <a class="nav-link" href="../../docs/vehicles.html">
+                <span class="link-icons material-icons-sharp">directions_car</span>
+                VEHICULOS
+              </a>
+            </li>
+            <li class="nav-item" id="conductores-menu-li">
+              <a class="nav-link" href="../../docs/users.html">
+                <span class="link-icons material-icons-sharp">person</span>
+                CONDUCTORES
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">
+                <span class="link-icons material-icons-sharp">chat</span>
+                CHATS
+              </a>
+            </li>
+            <li class="nav-item menu-button menu-closed" id="historico-menu-li">
+              <a class="nav-link" href="#" id="historico">
+                <span class="link-icons material-icons-sharp">token</span>
+                HISTORICO DE VIAJES
+              </a>
+              <div id="historico-submenu" data-displayed="hidden">
+                <ul>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../../docs/historico-conductores.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      CONDUCTORES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../../historico-clientes.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      CLIENTES
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item menu-button menu-closed" id="admin-menu-li" style="display: none">
+              <a class="nav-link" href="#" id="administracion">
+                <span class="link-icons material-icons-sharp">manage_accounts</span>
+                ADMINISTRACIÓN
+              </a>
+              <div id="administracion-submenu" data-displayed="hidden">
+                <ul>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="#">
+                      <span class="link-icons material-icons-sharp">chat</span>
+                      MENSAJES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink selectedPage" href="../administradores/">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      ADMINISTRADORES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden" id="roles-menu-li" style="display: none">
+                    <a class="nav-sublink" href="../roles/">
+                      <span class="link-icons material-icons-sharp">groups</span>
+                      ROLES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../rates.html">
+                      <span class="link-icons material-icons-sharp">paid</span>
+                      TARIFAS
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../base_rates.html">
+                      <span class="link-icons material-icons-sharp">attach_money</span>
+                      TARIFAS BASE
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../../docs/accesos.html">
+                      <span class="link-icons material-icons-sharp">history</span>
+                      ACCESOS
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../clientes/index.html">
+                <span class="link-icons material-icons-sharp">person_pin</span>
+                CLIENTES
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../../docs/seguridad-publica.html">
+                <span class="link-icons material-icons-sharp">local_police</span>
+                Seguridad Pública
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../../docs/mapa-seguridad.html">
+                <span class="link-icons material-icons-sharp">local_police</span>
+                Mapa Seguridad
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Header  -->
+      <header>
+        <nav style="position: relative; z-index: 1;">
+          <h1 class="app-title">Tu taxi - Portal Administrativo</h1>
+          <button class="close-app" id="signout-button">
+            <span class="material-icons-sharp">logout</span>
+            Cerrar Sesión
+          </button>
+        </nav>
+        <div class="header-bg-image" style="z-index: 0;"></div>
+      </header>
+
+      <!-- Main -->
+      <main style="position: relative">
+        <div class="page-title">
+          <h2 class="header-module-title">Mensajes</h2>
+        </div>
+        <div class="container">
+          <div class="tabsContainer">
+            <button type="button" class="tab" type="button" data-tabkey="0">Mensajes enviados</button>
+            <button type="button" class="tab selected" type="button" data-tabkey="1">Enviar mensaje</button>
+            <button type="button" class="report-button" data-type="object" disabled>Reportar objeto perdido</button>
+            <button type="button" class="report-button" data-type="complaints" disabled>
+              Reportar quejas y sugerencias
+            </button>
+          </div>
+
+          <div class="container-module col-12">
+            <div class="module-body" style="padding-top: 0">
+              <div class="containerKey table_container" data-tabkey="0">
+                <table id="messages-list">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Tipo de Mensaje</th>
+                      <th>Estado</th>
+                      <th>Canal</th>
+                      <th>Destinatario</th>
+                      <th>Fecha de emisión</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <div class="containerKey selected" data-tabkey="1">
+                <div class="sendMessageContainer">
+                  <div class="containerDriver" id="containerDriver">
+                    <div class="messagesTypeContainer">
+                      <p>Selecciona el tipo de mensaje:</p>
+                      <br />
+                      <label for="unique">
+                        <input type="radio" name="messageType" id="unique" checked class="messageType" />
+                        Mensaje con destino único
+                      </label>
+                      <label for="massive">
+                        <input type="radio" name="messageType" id="massive" class="messageType" />
+                        Mensaje masivo
+                      </label>
+                    </div>
+
+                    <form action="" id="conductorToSearch" style="padding-top: 0.37rem">
+                      <label for="conductorSearching">
+                        Buscar conductor por nombre o número de gafete.
+                        <input
+                          type="text"
+                          placeholder="Buscar ..."
+                          name="conductorSearching"
+                          id="conductorSearching"
+                          class="onlyUnique"
+                          autocomplete="off"
+                        />
+                      </label>
+                      <button type="submit">Buscar</button>
+                    </form>
+                  </div>
+                  <div class="containerBody">
+                    <form action="" id="sendMessageForm" autocomplete="off">
+                      <label for="title" style="visibility: hidden" class="afterSearchedDriver"
+                        >Destinatario:
+                        <input
+                          type="text"
+                          name="receiver"
+                          id="receiver"
+                          placeholder="Destinatario"
+                          disabled
+                          autocomplete="off"
+                        />
+                      </label>
+                      <label for="title" class="afterSearchedDriver"
+                        >Titulo del mensaje
+                        <input
+                          type="text"
+                          name="title"
+                          id="title"
+                          placeholder="Titulo del mensaje"
+                          disabled
+                          class="afterSearchedDriver massive"
+                          autocomplete="off"
+                        />
+                      </label>
+                      <label for="title"
+                        >Titulo del mensaje
+                        <textarea
+                          type="text"
+                          name="body"
+                          id="body"
+                          class="afterSearchedDriver massive"
+                          placeholder="Cuerpo del mensaje"
+                          disabled
+                          autocomplete="off"
+                        ></textarea>
+                      </label>
+                      <button type="submit">Enviar mensaje</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <div class="containerKey" data-tabkey="2"></div>
+              <div class="containerKey" data-tabkey="3"></div>
+            </div>
+          </div>
+        </div>
+        <div class="aside-dialog" data-visibility="hidden">
+          <div class="aside-dialog-background"></div>
+          <aside>
+            <div class="aside-content"></div>
+          </aside>
+        </div>
+        <div id="modalDialog" class="modalDialog" data-visibility="hidden">
+          <div id="dialogBackground"></div>
+          <div class="dialogContent">
+            <div class="dialogTitle">
+              <h2
+                style="
+                  font-size: 24px;
+                  color: #123019;
+                  line-height: 36px;
+                  font-weight: 600;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  font-family: Montserrat-Regular;
+                  text-align: start;
+                "
+              >
+                Dar de alta un nuevo mensaje
+              </h2>
+            </div>
+            <div class="dialogContainer">
+              <div class="formContainer">
+                <form id="messagesForm">
+                  <div class="formGroup inputForm" style="width: 100%; max-width: 100%">
+                    <label for="message">Mensaje</label>
+                    <input type="text" name="message" id="message" placeholder="Mensaje" />
+                  </div>
+                  <div class="formGroup inputForm" style="width: 100%; max-width: 100%">
+                    <label for="descripcion">Descripción</label>
+                    <input type="text" name="descripcion" id="descripcion" placeholder="Descripción" />
+                  </div>
+                  <div class="formGroup inputForm" style="width: 100%; max-width: 100%">
+                    <label for="destino">Destino</label>
+                    <input type="text" name="destino" id="destino" placeholder="destino" />
+                  </div>
+                  <div class="buttonsTools" style="margin-top: 1rem">
+                    <button type="button" id="modalFormCancel">
+                      <span>Cancelar</span>
+                    </button>
+                    <button type="submit" id="modalFormSubmit">
+                      <span>Agregar</span>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- Footer -->
+      <footer>
+        <p id="copyrightFooter"></p>
+      </footer>
+    </div>
+  </body>
+
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-firestore.js"></script>
+  <script src="../../js/config/auth-config.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-storage.js"></script>
+  <script src="../../js/global-context.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script
+    type="text/javascript"
+    src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.1.1/b-print-2.1.1/date-1.1.1/sb-1.3.0/datatables.min.js"
+  ></script>
+  <script>
+    const bgModal = document.querySelector("#dialogBackground");
+    const cancelButton = document.getElementById("modalFormCancel");
+
+    const toggleModal = (e) => {
+      const modal = document.getElementById("modalDialog");
+      const openStatus = modal.getAttribute("data-visibility");
+      const revertStatus = openStatus === "visible" ? "hidden" : "visible";
+      modal.setAttribute("data-visibility", revertStatus);
+    };
+
+    bgModal.addEventListener("click", toggleModal);
+    cancelButton.addEventListener("click", toggleModal);
+  </script>
+  <script async defer>
+    const firestore = firebase.firestore();
+    let messageTableContext = null;
+    let messageReceiverUser = null;
+    let isThisMessageUnique = null;
+
+    const addDocumentToMessageCollection = async (e) => {
+      let firestoreData = {};
+
+      firestoreData = Object.assign(e, { fechaAlta: new Date().toISOString() });
+
+      return await firestore
+        .collection("Mensajes")
+        .doc()
+        .set(firestoreData)
+        .then((result) => true)
+        .catch((error) => false);
+    };
+
+    const getDocumentsFromMessageCollection = async () => {
+      return await firebase
+        .database()
+        .ref()
+        .child("MensajesSLP")
+        .once("value")
+        .then(function (snapshot) {
+          let information = [];
+          snapshot.forEach((item, index) => {
+            const { body, epoch, from, receiver, timestamp, title, to, type } = item.val();
+            information.push([timestamp, type, from, receiver, title, ""]);
+          });
+          return information;
+        })
+        .catch((error) => {
+          console.error(error);
+          return false;
+        });
+    };
+
+    document.getElementById("messagesForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const formData = Object.entries(e.target)
+        .filter((item) => item[1].type !== "submit" && item[1].type !== "button")
+        .map((item) => item[1]);
+      const objectData = {};
+      formData.forEach((element) => {
+        const { name, value, type, checked } = element;
+        const elementValue = type === "text" ? { [name]: value } : { [name]: checked };
+        Object.assign(objectData, elementValue);
+      });
+      const result = await addDocumentToMessageCollection(objectData);
+
+      if (result) {
+        alert("Se ha creado un mensaje nuevo.");
+        generateTable();
+        toggleModal();
+      } else {
+        alert("Se ha presentado un error.");
+      }
+    });
+
+    const generateTable = async () => {
+      const information = await getDocumentsFromMessageCollection();
+      await createRowToTable(information);
+
+      const exportOptions = {
+        columns: [0, 1, 2, 3, 4, 5],
+      };
+
+      messageTableContext = await new DataTable("#messages-list", {
+        dom: "<'datatable-top'fB><'datatable-middle't><'datatable-bottom'lp>",
+        buttons: [
+          {
+            extend: "excelHtml5",
+            exportOptions,
+          },
+          {
+            extend: "pdfHtml5",
+            orientation: "landscape",
+            pageSize: "A4",
+            exportOptions,
+          },
+          {
+            extend: "print",
+            exportOptions,
+          },
+        ],
+        oLanguage: {
+          sSearch: "Busqueda:",
+          oPaginate: {
+            sFirst: "Primera",
+            sPrevious: "Anterior",
+            sNext: "Siguiente",
+            sLast: "Ultima",
+          },
+        },
+        language: {
+          info: "Se muestran los registros _START_ al _END_ de _TOTAL_. ",
+          infoEmpty: "No se muestran registros.",
+          emptyTable: "No se registran datos en la tabla.",
+          infoFiltered: "(Filtrado de _MAX_ registros).",
+        },
+      });
+    };
+
+    function createRowToTable(list) {
+      console.log({ list });
+      list.forEach((item) => {
+        const tableRow = document.createElement("tr");
+        item.forEach((cell) => {
+          const tableCell = document.createElement("td");
+          const cellNode = document.createTextNode(cell);
+          tableCell.appendChild(cellNode);
+          tableRow.appendChild(tableCell);
+        });
+        document.querySelector("table#messages-list tbody").insertAdjacentElement("beforeend", tableRow);
+      });
+    }
+
+    /*
+     ** ==========================
+     */
+    const tabButtons = document.querySelectorAll(".tabsContainer button.tab");
+    const containers = document.querySelectorAll(".containerKey");
+
+    tabButtons.forEach(function (tab) {
+      tab.addEventListener("click", function (event) {
+        tabButtons.forEach(function (_tab) {
+          _tab.classList.remove("selected");
+        });
+        event.target.classList.add("selected");
+        const tabIndex = event.target.getAttribute("data-tabKey");
+        containers.forEach(function (container) {
+          container.classList.remove("selected");
+        });
+        containers[parseInt(tabIndex)].classList.add("selected");
+      });
+    });
+
+    const messageTypes = document.querySelectorAll("input[type='radio'].messageType");
+
+    messageTypes.forEach(function (radioButton) {
+      const messageConditionElements = document.querySelectorAll(".onlyUnique");
+      const massiveElements = document.querySelectorAll(".massive");
+      const searchFormButton = document.querySelector("#conductorToSearch button");
+
+      radioButton.addEventListener("change", function (event) {
+        const id = event.target.id;
+        if (id === "unique") {
+          isThisMessageUnique = true;
+          messageConditionElements.forEach(function (element) {
+            element.disabled = false;
+          });
+          massiveElements.forEach(function (element) {
+            element.disabled = true;
+          });
+          searchFormButton.disabled = true;
+        }
+        if (id === "massive") {
+          isThisMessageUnique = false;
+          messageConditionElements.forEach(function (element) {
+            element.disabled = true;
+          });
+          massiveElements.forEach(function (element) {
+            element.disabled = false;
+          });
+          searchFormButton.disabled = false;
+        }
+      });
+    });
+
+    /*
+     *-----------------------------------------------
+     */
+    const searchDriverForm = document.querySelector("form#conductorToSearch");
+
+    searchDriverForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const inputSearch = document.querySelector("#conductorSearching");
+      const result = await firestore
+        .collection("conductores")
+        .where("numGafeteSCT", "==", inputSearch.value)
+        .get()
+        .then(function (snapshot) {
+          const arrayData = [];
+          snapshot.docs.forEach(function (document) {
+            arrayData.push({ uid: document.id, ...document.data() });
+          });
+          return arrayData;
+        });
+
+      const containerToRender = document.querySelector("#containerDriver");
+
+      result.forEach(function (documento) {
+        const boxElement = document.createElement("div");
+        boxElement.classList.add("driverResultContainer");
+        const inputElement = document.createElement("input");
+        inputElement.type = "checkbox";
+        inputElement.classList.add("driverResult");
+        inputElement.setAttribute("data-reference", documento.uid);
+        inputElement.id = "driver-" + documento.uid;
+        inputElement.addEventListener("click", function (event) {
+          const receiver = document.querySelector("#receiver");
+          document.querySelectorAll(".afterSearchedDriver").forEach(function (input) {
+            input.disabled = false;
+            input.style.visibility = "visible";
+          });
+          receiver.style.visibility = "visible";
+          receiver.value = [documento.nombre, documento.apellidoPaterno, documento.apellidoMaterno].join(" ");
+          messageReceiverUser = documento.uid;
+          document.querySelectorAll("button.report-button").forEach(function (button) {
+            button.disabled = false;
+          });
+        });
+        const labelElement = document.createElement("label");
+        labelElement.innerText = [documento.nombre, documento.apellidoPaterno, documento.apellidoMaterno].join(" ");
+        labelElement.setAttribute("for", "driver-" + documento.uid);
+        boxElement.insertAdjacentElement("afterbegin", inputElement);
+        boxElement.insertAdjacentElement("beforeend", labelElement);
+        containerToRender.insertAdjacentElement("beforeend", boxElement);
+      });
+    });
+
+    /*
+     **
+     */
+
+    const sendMessageForm = document.querySelector("#sendMessageForm");
+
+    sendMessageForm.addEventListener("submit", async function (event) {
+      event.preventDefault();
+
+      let elements = new Array(...event.target.elements);
+      elements.pop();
+
+      const formBodyObject = {
+        timestamp: new Date().toISOString(),
+        epoch: new Date().getTime(),
+        type: isThisMessageUnique ? "singular" : "massive",
+        to: isThisMessageUnique ? messageReceiverUser : "all",
+        from: sessionStorage.getItem("user"),
+        estatus: "open",
+      };
+
+      elements.map(function (element, index) {
+        formBodyObject[element.name] = element.value;
+        return;
+      });
+
+      await sendMessage(formBodyObject, isThisMessageUnique);
+    });
+
+    async function sendMessage(data, unique) {
+      const reference = unique
+        ? firebase.database().ref().child(`MensajesSLP/Singular/${data.to}/${data.epoch}`)
+        : firebase.database().ref().child(`MensajesSLP/Massive/${data.epoch}`);
+      const messageResponse = await reference.set(data).catch(function (error) {
+        console.error(error);
+        return error;
+      });
+    }
+
+    /*
+     **
+     */
+
+    const reportButton = document.querySelector("button.report-button[data-type='object']");
+    const complaintsButton = document.querySelector("button.report-button[data-type='complaints']");
+
+    reportButton.addEventListener("click", function (event) {
+      const message =
+        "Se le enviará al usuario un mensaje de reporte de objeto perdido en su unidad, ¿Deseas enviar el mensaje?";
+      if (confirm(message)) {
+        const epoch = new Date().getTime();
+        const realtimeResponse = firebase
+          .database()
+          .ref()
+          .child(`MensajesSLP/Reports/${messageReceiverUser}/${epoch}`)
+          .set({
+            body: "El cliente ha reportado un objeto perdido en su unidad.",
+            timestamp: new Date().toISOString(),
+            epoch,
+            uuid: messageReceiverUser,
+            type: "report",
+            title: "Reporte de objeto perdido.",
+            estatus: "open",
+          })
+          .then(() => true)
+          .catch(() => false);
+        if (realtimeResponse) {
+          setTimeout(() => {
+            window.alert("Mensaje de reporte por objeto perdido enviado correctamente.");
+          }, 500);
+        }
+      }
+    });
+
+    complaintsButton.addEventListener("click", function (event) {
+      const message = "Se le enviará al usuario un mensaje de quejas y sugerencias, ¿Deseas enviar el mensaje?";
+      if (confirm(message)) {
+        const queja = window.prompt("Introduzca queja y presione 'OK' para enviar el reporte al usuario.");
+        const epoch = new Date().getTime();
+        const realtimeResponse = firebase
+          .database()
+          .ref()
+          .child(`MensajesSLP/Complaints/${messageReceiverUser}/${epoch}`)
+          .set({
+            body: queja,
+            timestamp: new Date().toISOString(),
+            epoch,
+            uuid: messageReceiverUser,
+            type: "queja",
+            title: "Reporte de queja y sugerencias",
+            estatus: "open",
+          })
+          .then(() => true)
+          .catch(() => false);
+        if (realtimeResponse) {
+          setTimeout(() => {
+            window.alert("Mensaje se ha enviado correctamente.");
+          }, 500);
+        }
+      }
+    });
+
+    document.addEventListener("DOMContentLoaded", async function (e) {
+      await generateTable();
+    });
+  </script>
+</html>

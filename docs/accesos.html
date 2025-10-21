@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tu Taxi | Accesos a plataforma</title>
+    <link rel="stylesheet" href="../css/docs/tadiDefaults.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Sharp" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.1.1/b-print-2.1.1/date-1.1.1/sb-1.3.0/datatables.min.css"
+    />
+    <style>
+      table#access-list {
+        width: 100%;
+        display: table;
+        position: relative;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        text-transform: uppercase;
+        border-collapse: collapse;
+      }
+
+      table#access-list tbody tr.even {
+        background-color: #fff;
+        transition: background-color 100ms linear;
+      }
+
+      table#access-list tbody tr.odd {
+        background-color: rgba(40, 40, 40, 0.05);
+        transition: background-color 100ms linear;
+      }
+
+      table#access-list tbody tr:hover {
+        background-color: #0c5a0f2a;
+        cursor: pointer;
+        transition: background-color 100ms linear;
+      }
+
+      table#access-list thead tr th {
+        color: #2d6e3d;
+        text-align: start;
+        font-size: 14px;
+        background-color: #fff;
+        white-space: nowrap;
+      }
+
+      table#access-list tbody tr td {
+        font-size: 14px;
+        height: 2.5rem;
+        padding: 0 8px !important;
+        text-transform: uppercase !important;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" class="preload">
+      <!-- Aside -->
+      <aside>
+        <div id="aside-container">
+          <div class="logo">
+            <a class="home-link" href="./main.html">Tu Taxi | Backoffice</a>
+          </div>
+          <hr />
+          <ul class="nav">
+            <li class="nav-item" id="mapa-menu-li" style="display: none">
+              <a class="nav-link" href="./maps.html">
+                <span class="link-icons material-icons-sharp">map</span>
+                MAPA
+              </a>
+            </li>
+            <li class="nav-item" id="concesionario-menu-li" style="display: none">
+              <a class="nav-link" href="./concesionarios.html" id="concesionario">
+                <span class="link-icons material-icons-sharp">person</span>
+                CONCESIONARIO
+              </a>
+            </li>
+            <li class="nav-item" id="vehiculos-menu-li" style="display: none">
+              <a class="nav-link" href="./vehicles.html">
+                <span class="link-icons material-icons-sharp">directions_car</span>
+                VEHICULO
+              </a>
+            </li>
+            <li class="nav-item" id="conductores-menu-li" style="display: none">
+              <a class="nav-link" href="./users.html">
+                <span class="link-icons material-icons-sharp">person</span>
+                CONDUCTORES
+              </a>
+            </li>
+            <li class="nav-item" id="chats-menu-li">
+              <a class="nav-link" href="#">
+                <span class="link-icons material-icons-sharp">chat</span>
+                CHATS
+              </a>
+            </li>
+            <li class="nav-item menu-button menu-closed" id="historico-menu-li">
+              <a class="nav-link" href="#" id="historico">
+                <span class="link-icons material-icons-sharp">token</span>
+                HISTORICO DE VIAJES
+              </a>
+              <div id="historico-submenu" data-displayed="hidden">
+                <ul>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="./historico-conductores.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      CONDUCTORES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="./historico-clientes.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      CLIENTES
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item menu-button menu-closed" id="admin-menu-li" style="display: none">
+              <a class="nav-link" href="#" id="administracion">
+                <span class="link-icons material-icons-sharp">manage_accounts</span>
+                ADMINISTRACIÓN
+              </a>
+              <div id="administracion-submenu" data-displayed="hidden">
+                <ul>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/mensajes/index.html">
+                      <span class="link-icons material-icons-sharp">chat</span>
+                      MENSAJES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/administradores/index.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      ADMINISTRADORES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden" id="roles-menu-li">
+                    <a class="nav-sublink" href="../admin/roles/index.html">
+                      <span class="link-icons material-icons-sharp">groups</span>
+                      ROLES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/rates.html">
+                      <span class="link-icons material-icons-sharp">paid</span>
+                      TARIFAS
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/base_rates.html">
+                      <span class="link-icons material-icons-sharp">attach_money</span>
+                      TARIFAS BASE
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="#">
+                      <span class="link-icons material-icons-sharp">history</span>
+                      ACCESOS
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../admin/clientes/index.html">
+                <span class="link-icons material-icons-sharp">person_pin</span>
+                CLIENTES
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./seguridad-publica.html">
+                <span class="link-icons material-icons-sharp">local_police</span>
+                Seguridad Pública
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./mapa-seguridad.html">
+                <span class="link-icons material-icons-sharp">local_police</span>
+                Mapa Seguridad
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Header  -->
+      <header>
+        <nav style="position: relative; z-index: 1;">
+          <h1 class="app-title">Tu taxi - Portal Administrativo</h1>
+          <button class="close-app" id="signout-button">
+            <span class="material-icons-sharp">logout</span>
+            Cerrar Sesión
+          </button>
+        </nav>
+        <div class="header-bg-image" style="z-index: 0;"></div>
+      </header>
+
+      <!-- Main -->
+      <main>
+        <div class="page-title">
+          <h2 class="header-module-title">Ultimos Accesos</h2>
+        </div>
+
+        <div class="container-module col-12">
+          <div class="module-body" style="max-width: 1280px; margin-inline: auto; padding: 0 1.5rem 1.5rem">
+            <div class="table_container" style="margin-top: 1rem;">
+              <table id="access-list">
+                <thead>
+                  <th>Correo electrónico</th>
+                  <th>Usuario</th>
+                  <th>Fecha de acceso</th>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </main>
+      <!-- Footer -->
+      <footer>
+        <p id="copyrightFooter"></p>
+      </footer>
+    </div>
+  </body>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-firestore.js"></script>
+  <script type="module" src="../js/config/auth-config.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+  <script
+    type="text/javascript"
+    src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.3/b-2.1.1/b-html5-2.1.1/b-print-2.1.1/date-1.1.1/sb-1.3.0/datatables.min.js"
+  ></script>
+  <script src="../js/global-context.js"></script>
+  <script type="module">
+    const firestore = firebase.firestore();
+
+    const showAccesos = async () => {
+      const accesos = await firestore
+        .collection("loginAccesos")
+        .orderBy("timestamp", "desc")
+        .limit(20)
+        .get()
+        .then((snapshot) => {
+          let array = [];
+          snapshot.docs.forEach((document) => {
+            array.push(document.data());
+          });
+          return array;
+        });
+      console.log({ accesos });
+      return accesos;
+    };
+    async function generateTable() {
+      const logs = await showAccesos();
+
+      await insertDataIntoTable(logs);
+
+      new DataTable("#access-list", {
+        dom: "<'datatable-top'fB><'datatable-middle't><'datatable-bottom'lp>",
+        buttons: [
+          {
+            extend: "collection",
+            text: "Exportar",
+            buttons: ["excelHtml5", "pdfHtml5", "print"],
+          },
+        ],
+        oLanguage: {
+          sSearch: "Busqueda:",
+          oPaginate: {
+            sFirst: "Primera", // This is the link to the first page
+            sPrevious: "Anterior", // This is the link to the previous page
+            sNext: "Siguiente", // This is the link to the next page
+            sLast: "Ultima", // This is the link to the last page
+          },
+        },
+        language: {
+          info: "Se muestran los registros _START_ al _END_ de _TOTAL_. ",
+          infoEmpty: "No se muestran registros.",
+          emptyTable: "No se registran datos en la tabla.",
+          infoFiltered: "(Filtrado de _MAX_ registros).",
+        },
+      });
+    }
+
+    async function insertDataIntoTable(data) {
+      for (let index = 0; index < data.length - 1; index++) {
+        const rowElement = document.createElement("tr");
+        const correo = document.createElement("td");
+        correo.innerHTML = data[index].email;
+        const timestamp = document.createElement("td");
+        timestamp.innerHTML = data[index].timestamp;
+        const usuario = document.createElement("td");
+        usuario.innerHTML = data[index].username;
+        [correo, usuario, timestamp].forEach((element) => {
+          rowElement.insertAdjacentElement("beforeend", element);
+        });
+        document.querySelector("table#access-list tbody").insertAdjacentElement("beforeend", rowElement);
+      }
+    }
+
+    generateTable();
+  </script>
+</html>

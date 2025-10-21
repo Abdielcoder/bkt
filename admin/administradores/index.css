@@ -1,0 +1,252 @@
+main {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+ 
+table#table-administradores {
+  width: 100%;
+  display: table;
+  position: relative;
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+table#table-administradores tbody tr.even {
+  background-color: #fff;
+}
+
+table#table-administradores tbody tr.odd {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+table#table-administradores tbody tr:hover {
+  background-color: #2d6e3d45;
+}
+table#table-administradores thead th {
+  color: #2d6e3d;
+  text-align: start;
+}
+
+table#table-administradores tbody tr td {
+  font-size: 14px;
+  height: 2.5rem;
+  padding: 0 8px !important;
+  text-transform: uppercase !important;
+  white-space: nowrap; 
+}
+
+table#table-administradores tbody tr td[data-type="tools"] {
+  display: flex;
+  flex-flow: row nowrap;
+  gap: 4px;
+}
+
+div#table-administradores > label {
+  background-color: #2d6e3d;
+  padding-left: 8px;
+  border-radius: 3px;
+  color: whitesmoke;
+  display: inline-block;
+  font-size: 0.8571em;
+  margin-bottom: 5px;
+}
+
+input[aria-controls="table-administradores"] {
+  width: 400px;
+  background-color: whitesmoke !important;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-left: none !important;
+  border-bottom-left-radius: 0px !important;
+  border-top-left-radius: 0px !important;
+  outline: 1px solid transparent;
+}
+
+div.datatable_operation_buttons {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+ 
+input[aria-controls="table-administradores"] {
+  width: 400px;
+  background-color: whitesmoke !important;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-left: none !important;
+  border-bottom-left-radius: 0px !important;
+  border-top-left-radius: 0px !important;
+  outline: 1px solid transparent;
+}
+
+.cup-button {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  margin-right: 0.167em;
+  margin-bottom: 0.333em;
+  padding: 0.2em 1em;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 2px;
+  cursor: pointer;
+  font-size: 0.88em;
+  line-height: 1.6em;
+  color: black;
+  white-space: nowrap;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.1);
+  background: linear-gradient(to bottom, rgba(230, 230, 230, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%);
+  user-select: none;
+  text-decoration: none;
+  outline: none;
+  text-overflow: ellipsis;
+}
+.cup-button:hover:not(:disabled) {
+  background: linear-gradient(to bottom, rgba(153, 153, 153, 0.1) 0%, rgba(0, 0, 0, 0.1) 100%);
+  border: 1px solid #666;
+}
+
+.cup-button:disabled {
+  background-color: #d3d3d3;
+  cursor: default;
+  color: #9a9a9a;
+}
+
+/* Modal */
+div.modalForm {
+  position: absolute;
+  z-index: 1015;
+  background-color: rgba(30, 29, 29, 0.43);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+div.modalForm.expanded {
+  display: block;
+}
+
+div.modalContent {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  height: auto;
+  width: 600px;
+  border-radius: 5px;
+  background-color: rgb(252, 252, 252);
+  box-shadow: 0px 0px 8px 4px #80808094;
+  padding: 24px;
+}
+div.close_modal {
+  position: absolute;
+  display: block;
+  top: 0.5rem;
+  right: 1rem;
+  color: #3d3838;
+}
+div.close_modal:hover {
+  cursor: pointer;
+  color: #2d6e3d;
+}
+
+div.close_modal span {
+  display: block;
+  transform: rotate(45deg);
+  font-size: 2rem;
+  font-family: monospace;
+  font-weight: 700;
+}
+input[type="radio"] {
+  cursor: pointer;
+}
+div.radio_form {
+  display: flex;
+  flex-flow: row nowrap;
+  position: relative;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1rem 0px;
+}
+div.radio_form label {
+  margin-left: 6px;
+  margin-right: 1rem;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  display: block;
+  color: #2d6e3d;
+}
+button#modalFormSubmit {
+  background-color: #2d6e3d;
+  color: white;
+  padding: 0.5rem 0;
+  border: none;
+  border-radius: 3px;
+}
+button#modalFormSubmit:hover {
+  background-color: #2d6e3de6;
+  cursor: pointer;
+}
+
+tr.isSelected {
+  background-color: #2d6e3d45 !important;
+}
+tr.isSelected td {
+  color: white;
+}
+
+table#table-administradores tbody tr:hover {
+  background-color: #2d6e3d45;
+}
+
+input[type="checkbox"].check_button {
+  cursor: pointer;
+}
+
+#button-add {
+  display: flex;
+  gap: 0.5rem;
+  height: 32px;
+  align-items: center;
+  float: right;
+  padding: 0 2rem;
+  border: none;
+  font-size: 12px;
+  background: rgb(45, 110, 61);
+  border-radius: 4px;
+  transition: all 100ms linear;
+  color: white;
+}
+
+#button-add:hover {
+  cursor: pointer;
+  background: rgb(45, 90, 61);
+  transition: all 100ms linear;
+}
+
+table.dataTable tbody th,
+table.dataTable tbody td {
+  padding: 4px 8px !important;
+  font-size: 14px;
+}
+
+.form-columns {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cellButtonTool {
+  background: transparent;
+  border: none;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 4px;
+}
+
+.cellButtonTool:hover {
+  cursor: pointer;
+}
