@@ -728,4 +728,295 @@ div.dt-button-collection {
 .cellButtonTool:hover {
   cursor: pointer;
 }
- 
+
+/* Responsive Design */
+
+/* Tablets medianas (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+  div#root {
+    grid-template-columns: 220px 1fr;
+    grid-template-rows: 58px calc(100vh - 96px) 38px;
+  }
+
+  aside div.logo {
+    height: 58px;
+  }
+
+  aside a.home-link {
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  aside a.nav-link,
+  aside a.nav-sublink {
+    font-size: 9px;
+    gap: 0.5rem;
+  }
+
+  aside a.nav-link span,
+  aside a.nav-sublink span {
+    margin-left: 1rem;
+  }
+
+  header nav h1.app-title {
+    font-size: 20px;
+  }
+
+  button.close-app {
+    font-size: 11px;
+  }
+
+  .page-title > h2 {
+    font-size: 28px;
+  }
+
+  #historico-submenu,
+  #administracion-submenu {
+    left: 220px;
+    width: 220px;
+  }
+}
+
+/* Tablets pequeñas (481px - 768px) */
+@media screen and (max-width: 768px) {
+  div#root {
+    grid-template-columns: 1fr;
+    grid-template-rows: 58px calc(100vh - 96px) 38px;
+    grid-template-areas: 
+      "header"
+      "main"
+      "footer";
+  }
+
+  aside {
+    position: fixed;
+    left: -258px;
+    top: 0;
+    width: 258px;
+    height: 100vh;
+    z-index: 1090;
+    transition: left 300ms ease-in-out;
+  }
+
+  aside.mobile-menu-open {
+    left: 0;
+    transition: left 300ms ease-in-out;
+  }
+
+  /* Botón hamburguesa */
+  header nav::before {
+    content: '☰';
+    font-size: 28px;
+    color: whitesmoke;
+    cursor: pointer;
+    margin-right: 1rem;
+    padding: 0 0.5rem;
+    border-radius: 4px;
+    transition: background-color 150ms ease;
+  }
+
+  header nav::before:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  header nav h1.app-title {
+    font-size: 16px;
+  }
+
+  button.close-app {
+    font-size: 10px;
+    padding: 0 0.25rem;
+  }
+
+  button.close-app span {
+    display: none;
+  }
+
+  .page-title {
+    padding: 1rem 1rem 0 1rem;
+  }
+
+  .page-title > h2 {
+    font-size: 24px;
+    line-height: 36px;
+  }
+
+  main div.container {
+    padding: 0 1rem 1rem;
+  }
+
+  #historico-submenu,
+  #administracion-submenu {
+    left: 258px;
+  }
+
+  /* Overlay para cerrar menú */
+  body::after {
+    content: '';
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1089;
+  }
+
+  body.menu-open::after {
+    display: block;
+  }
+}
+
+/* Móviles (320px - 480px) */
+@media screen and (max-width: 480px) {
+  div#root {
+    grid-template-rows: 52px calc(100vh - 86px) 34px;
+  }
+
+  header nav {
+    height: 52px;
+    padding: 0 0.5rem;
+  }
+
+  header nav::before {
+    font-size: 24px;
+    margin-right: 0.5rem;
+  }
+
+  header nav h1.app-title {
+    font-size: 13px;
+  }
+
+  button.close-app {
+    font-size: 20px;
+  }
+
+  header div.header-bg-image {
+    height: 52px;
+  }
+
+  .page-title {
+    padding: 0.75rem 0.75rem 0 0.75rem;
+  }
+
+  .page-title > h2 {
+    font-size: 20px;
+    line-height: 30px;
+  }
+
+  main div.container {
+    padding: 0 0.75rem 0.75rem;
+  }
+
+  .header-module-title {
+    font-size: 22px;
+    line-height: 33px;
+  }
+
+  footer {
+    padding-right: 0.5rem;
+  }
+
+  #copyrightFooter {
+    font-size: 10px;
+  }
+
+  /* Formularios */
+  .formGroup.inputForm,
+  .formGroup.selectForm {
+    max-width: 100%;
+  }
+
+  div[data-columns="2"] {
+    grid-template-columns: 1fr;
+  }
+
+  .buttonsTools {
+    flex-direction: column;
+  }
+
+  .buttonsTools > button {
+    width: 100%;
+  }
+}
+
+/* DataTables Responsive */
+@media screen and (max-width: 768px) {
+  .datatable-top {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .dataTables_filter {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .dataTables_filter label {
+    width: 100%;
+  }
+
+  .dataTables_filter input {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .tools[data-type="tools"] {
+    width: 100%;
+    margin-left: 0;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .dt-button.buttons-collection {
+    font-size: 12px !important;
+  }
+
+  .datatable-middle {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table.dataTable {
+    min-width: 600px;
+  }
+
+  table.dataTable thead th,
+  table.dataTable tbody td {
+    white-space: nowrap;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .dataTables_filter label {
+    font-size: 14px;
+    padding-left: 12px;
+  }
+
+  .dataTables_filter input {
+    font-size: 14px;
+    padding: 6px !important;
+  }
+
+  .dt-button.buttons-collection {
+    font-size: 11px !important;
+    height: 28px !important;
+  }
+
+  .tableTools {
+    padding: 0 6px !important;
+  }
+
+  .tableTools > span {
+    font-size: 12px;
+  }
+
+  button[type="button"].create-new {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  button[type="button"].create-new > span {
+    font-size: 12px;
+  }
+}
+

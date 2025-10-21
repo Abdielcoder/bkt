@@ -38,7 +38,7 @@ div.bg_logo::after {
 
 div.bg_logo::before {
   content: "";
-  background-image: url("../assets/img/tutaxi.png");
+  background-image: url("../assets/img/tadiapp.png");
   /* background-image: url("../assets/img/cloudTaxiLogo.jpeg"); */
   background-position: center;
   width: 100%;
@@ -144,4 +144,127 @@ form input[type="submit"]:hover {
 .floating-image-container img {
   display: block;
   width: inherit;
+}
+
+/* Responsive Design */
+
+/* Tablets y dispositivos medianos (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+  div.container {
+    flex-flow: column nowrap;
+  }
+
+  div.bg_logo {
+    width: 100%;
+    height: 30vh;
+    min-height: 200px;
+  }
+
+  div.bg_logo::after {
+    height: 100%;
+  }
+
+  div.bg_logo::before {
+    background-size: contain;
+  }
+
+  div.form_container {
+    width: 100%;
+    height: 70vh;
+  }
+
+  .floating-image-container {
+    width: 280px;
+    top: 3%;
+  }
+
+  div.loginForm {
+    max-width: 70%;
+  }
+}
+
+/* Tablets pequeñas y móviles grandes (481px - 768px) */
+@media screen and (max-width: 768px) {
+  div.bg_logo {
+    height: 25vh;
+    min-height: 180px;
+  }
+
+  div.form_container {
+    height: 75vh;
+  }
+
+  .floating-image-container {
+    width: 220px;
+    top: 2%;
+  }
+
+  div.loginForm {
+    max-width: 80%;
+  }
+
+  div.loginForm h2 {
+    font-size: 1.5rem;
+  }
+
+  form {
+    gap: 1rem;
+  }
+
+  .sub_form {
+    max-width: 92%;
+  }
+}
+
+/* Móviles (320px - 480px) */
+@media screen and (max-width: 480px) {
+  div.bg_logo {
+    height: 20vh;
+    min-height: 150px;
+  }
+
+  div.form_container {
+    height: 80vh;
+    padding: 1rem 0;
+  }
+
+  .floating-image-container {
+    width: 180px;
+    top: 1%;
+  }
+
+  div.loginForm {
+    max-width: 90%;
+    padding: 0.5rem 0;
+  }
+
+  .sub_form {
+    max-width: 95%;
+  }
+
+  div.loginForm h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.25rem;
+  }
+
+  div.loginForm p {
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+
+  form {
+    gap: 0.875rem;
+  }
+
+  form input {
+    height: 38px;
+  }
+
+  form a {
+    font-size: 0.875rem;
+  }
+
+  form input[type="submit"] {
+    font-size: 0.9rem;
+  }
 }

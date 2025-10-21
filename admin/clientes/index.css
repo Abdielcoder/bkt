@@ -58,3 +58,47 @@ table#clientes tbody tr td {
 .middle-content {
   margin-inline: auto;
 }
+
+/* Responsive Design */
+
+/* Tablets pequeñas y móviles grandes (481px - 768px) */
+@media screen and (max-width: 768px) {
+  table#clientes thead tr th {
+    font-size: 12px;
+  }
+
+  table#clientes tbody tr td {
+    font-size: 12px;
+    padding: 8px 10px !important;
+  }
+
+  .clientProfilePic {
+    width: 40px;
+    height: 40px;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+}
+
+/* Móviles (320px - 480px) */
+@media screen and (max-width: 480px) {
+  table#clientes {
+    font-size: 11px;
+  }
+
+  table#clientes thead tr th {
+    font-size: 11px;
+  }
+
+  table#clientes tbody tr td {
+    font-size: 11px;
+    padding: 6px 8px !important;
+  }
+
+  .clientProfilePic {
+    width: 35px;
+    height: 35px;
+  }
+}

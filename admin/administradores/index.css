@@ -250,3 +250,126 @@ table.dataTable tbody td {
 .cellButtonTool:hover {
   cursor: pointer;
 }
+
+/* Responsive Design */
+
+/* Tablets medianas (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+  div.modalContent {
+    width: 540px;
+  }
+
+  .form-columns {
+    gap: 0.75rem;
+  }
+}
+
+/* Tablets pequeñas y móviles grandes (481px - 768px) */
+@media screen and (max-width: 768px) {
+  div.modalContent {
+    width: 90vw;
+    padding: 20px;
+  }
+
+  .form-columns {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .form-columns .formGroup {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  table#table-administradores {
+    font-size: 12px;
+  }
+
+  table#table-administradores thead th {
+    font-size: 12px;
+  }
+
+  table#table-administradores tbody tr td {
+    font-size: 12px;
+    padding: 0 6px !important;
+  }
+
+  input[aria-controls="table-administradores"] {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .dataTables_filter {
+    max-width: 100% !important;
+  }
+
+  .module-body {
+    padding: 16px 0;
+  }
+
+  .table-container {
+    overflow-x: auto;
+  }
+}
+
+/* Móviles (320px - 480px) */
+@media screen and (max-width: 480px) {
+  div.modalContent {
+    width: 95vw;
+    padding: 16px;
+  }
+
+  .containerHead h2 {
+    font-size: 20px !important;
+    line-height: 30px !important;
+  }
+
+  .containerBody {
+    max-height: 500px !important;
+    padding-top: 12px !important;
+  }
+
+  .form-columns .formGroup label {
+    font-size: 12px;
+  }
+
+  .form-columns .formGroup input,
+  .form-columns .formGroup select {
+    font-size: 14px;
+  }
+
+  button#modalFormSubmit,
+  .close-button {
+    font-size: 12px;
+    padding: 8px 0;
+  }
+
+  table#table-administradores {
+    font-size: 11px;
+  }
+
+  table#table-administradores thead th {
+    font-size: 11px;
+  }
+
+  table#table-administradores tbody tr td {
+    font-size: 11px;
+    padding: 0 4px !important;
+  }
+
+  .cellButtonTool {
+    font-size: 10px;
+  }
+
+  #button-add {
+    height: 28px;
+    padding: 0 1rem;
+    font-size: 11px;
+  }
+
+  input[aria-controls="table-administradores"] {
+    max-width: 240px;
+    font-size: 14px;
+  }
+}
