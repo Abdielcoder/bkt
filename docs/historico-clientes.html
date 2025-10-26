@@ -220,13 +220,13 @@
               </div>
               <div id="body-content">
                 <div class="filter-container" style="margin-bottom: 1rem">
-                  <label for="filterCliente" style="flex-grow: 1">
+                  <label for="filtercliente" style="flex-grow: 1">
                     Buscar cliente por email o nombre
                     <div style="display: flex; flex-flow: row nowrap; column-gap: 0.5rem">
                       <input
                         type="text"
-                        name="filterCliente"
-                        id="filterCliente"
+                        name="filtercliente"
+                        id="filtercliente"
                         placeholder="Introducir email o nombre"
                         style="width: 100%; text-transform: none;"
                       />
@@ -782,7 +782,7 @@
      * Buscar cliente para desplegar su informacion en la tabla
      **/
 
-    const searchClientInput = document.querySelector("#filterCliente");
+    const searchClientInput = document.querySelector("#filtercliente");
     const searchClientButton = document.querySelector("#filterClienteButton");
     const showAllTripsButton = document.querySelector("#showAllTripsButton");
 
@@ -878,7 +878,6 @@
     });
 
     // Prevenir conversión automática a mayúsculas en el campo de búsqueda
-    const searchClientInput = document.querySelector("#filterCliente");
     searchClientInput.addEventListener("input", function(event) {
       // Guardar la posición del cursor
       const cursorPosition = event.target.selectionStart;
