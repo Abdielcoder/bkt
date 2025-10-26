@@ -49,6 +49,18 @@
       label[data-format="currency"] input[type="text"] {
         padding-left: 1.5rem;
       }
+
+      /* Clase específica para evitar mayúsculas en campos de búsqueda */
+      .no-uppercase {
+        text-transform: none !important;
+        font-variant: normal !important;
+        text-rendering: auto !important;
+      }
+      
+      .no-uppercase::placeholder {
+        text-transform: none !important;
+        font-variant: normal !important;
+      }
     </style>
   </head>
 
@@ -228,7 +240,8 @@
                         name="filtercliente"
                         id="filtercliente"
                         placeholder="Introducir email o nombre"
-                        style="width: 100%; text-transform: none;"
+                        class="no-uppercase"
+                        style="width: 100%;"
                       />
                       <input
                         type="button"
