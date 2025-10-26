@@ -290,7 +290,6 @@
                         <th>#</th>
                         <th>Fecha</th>
                         <th>Monto</th>
-                        <th>Recibo</th>
                         <th>Trayectoria</th>
                         <th>Partida</th>
                         <th>Destino</th>
@@ -426,6 +425,18 @@
       return trips;
     }
 
+    // Función para formatear fecha desde timestamp (mm-dd-aaaa)
+    function formatDateFromTimestamp(timestamp) {
+      if (!timestamp) return 'N/A';
+      
+      const date = new Date(parseInt(timestamp));
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      const year = date.getFullYear();
+      
+      return `${month}-${day}-${year}`;
+    }
+
     // Función para obtener información del conductor por ID
     async function getDriverInfo(driverId) {
       const driverInfo = await firebase
@@ -510,7 +521,7 @@
 
     function generateDataTable() {
       const exportOptions = {
-        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        columns: [0, 1, 2, 3, 4, 5, 6, 7],
       };
       DATATABLE_CONTEXT = new DataTable(TABLA_HISTORICO, {
         dom: "<'datatable-top'fB><'datatable-middle't><'datatable-bottom'lp>",
@@ -672,35 +683,26 @@
           console.log("Campo fecha_finalizacion encontrado:", trip.fecha_finalizacion);
           const rowElement = document.createElement("tr");
           
-          // Formatear fecha desde fecha_finalizacion (timestamp en milisegundos como string)
-          const fechaFormateada = trip.fecha_finalizacion ? 
-            new Date(parseInt(trip.fecha_finalizacion)).toLocaleDateString('es-MX') : 
-            'N/A';
-          
-          // Formatear hora desde timestamp
-          const horaFormateada = trip.timestamp ? 
-            new Date(trip.timestamp * 1000).toLocaleTimeString('es-MX') : 
-            'N/A';
-          
           // Mapear campos según la estructura real de los datos
           const monto = trip.costo;
-          const recibo = trip.uid || trip.recibo || trip.receipt || trip.folio || trip.id;
           const trayectoria = trip.trayectoria || trip.ruta || trip.route || trip.path || 'N/A';
           const partida = trip.origin;
           const destino = trip.destination;
           const calificacion = trip.calificacion || trip.rating || trip.score || trip.estrellas || 'N/A';
           const resena = trip.resena || trip.review || trip.comentario || trip.comment || trip.feedback || 'N/A';
           
+          // Usar la nueva función para formatear la fecha
+          const fechaFormateada = formatDateFromTimestamp(trip.fecha_finalizacion);
+          
           const cellsValues = [
             counter + 1,
             fechaFormateada,
             monto ? `$ ${monto}` : 'N/A',
-            recibo || 'N/A',
-            trayectoria || 'N/A',
-            partida || 'N/A',
-            destino || 'N/A',
-            calificacion || 'N/A',
-            resena || 'N/A',
+            trayectoria,
+            partida,
+            destino,
+            calificacion,
+            resena,
           ];
 
           console.log("Valores de celdas:", cellsValues);
@@ -795,12 +797,11 @@
             counter + 1,
             fechaFormateada,
             monto ? `$ ${monto}` : 'N/A',
-            recibo || 'N/A',
-            trayectoria || 'N/A',
-            partida || 'N/A',
-            destino || 'N/A',
-            calificacion || 'N/A',
-            resena || 'N/A',
+            trayectoria,
+            partida,
+            destino,
+            calificacion,
+            resena,
           ];
 
           console.log("Valores de celdas en vista general:", cellsValues);
