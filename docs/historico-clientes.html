@@ -221,12 +221,13 @@
               <div id="body-content">
                 <div class="filter-container" style="margin-bottom: 1rem">
                   <label for="filterCliente" style="flex-grow: 1">
-                    Buscar cliente
+                    Buscar cliente por email o nombre
                     <div style="display: flex; flex-flow: row nowrap; column-gap: 0.5rem">
                       <input
                         type="text"
                         name="filterCliente"
                         id="filterCliente"
+                        placeholder="Introducir email o nombre"
                         style="width: 100%"
                       />
                       <input
@@ -234,6 +235,12 @@
                         value="buscar"
                         id="filterClienteButton"
                         style="background-color: #2d6e3d; border-radius: 3px; color: whitesmoke"
+                      />
+                      <input
+                        type="button"
+                        value="ver todos"
+                        id="showAllTripsButton"
+                        style="background-color: #1976d2; border-radius: 3px; color: whitesmoke"
                       />
                     </div>
                   </label>
@@ -282,9 +289,8 @@
                       <tr>
                         <th>#</th>
                         <th>Fecha</th>
+                        <th>Hora Viaje</th>
                         <th>Monto</th>
-                        <th>Recibo</th>
-                        <th>Trayectoria</th>
                         <th>Partida</th>
                         <th>Destino</th>
                         <th>Calificación</th>
@@ -360,55 +366,161 @@
     const realtime = firebase.database().ref();
     const firestore = firebase.firestore();
 
-    let CLIENTES_REFERENCE = firestore.collection("clientes");
-    let CLIENT_TRIPS_REFERENCE = firestore.collection("clientTrips");
-    let LISTADO_CLIENTES = document.querySelector("select#listadoClientes");
     let TABLA_HISTORICO = document.querySelector("#table-historico");
     let DATATABLE_CONTEXT = null;
     let CLIENTES_ARRAY = [];
 
-    const getClientes = async () => {
-      const { docs } = await CLIENTES_REFERENCE.get().catch((error) => false);
-      if (docs) {
-        let clientesList = [];
-        docs.forEach((doc, index) => {
-          const cliente = { uid: doc.id, ...doc.data() };
-          clientesList.push(cliente);
-        });
-        return clientesList;
-      }
-    };
-
-    function createOptionElements({ uid, data }, index) {
-      const optionTag = document.createElement("option");
-      const { correoElectronico, nombre, apellidoPaterno, apellidoMaterno } = data;
-      optionTag.value = uid;
-      optionTag.dataset.key = index;
-      optionTag.innerHTML = `${correoElectronico} - ${nombre} ${apellidoPaterno} ${apellidoMaterno}`;
-      LISTADO_CLIENTES.insertAdjacentElement("beforeend", optionTag);
-    }
-
-    async function getDriverTrips() {
+    // Función para obtener todos los viajes del histórico desde Realtime Database
+    async function getAllHistoricTrips() {
+      console.log("Obteniendo todos los viajes del histórico...");
       const trips = await firebase
-        .firestore()
-        .collection("driverTripSlp")
-        .get()
+        .database()
+        .ref("historico_viajes")
+        .once("value")
         .then((snapshot) => {
           let array = [];
-          snapshot.docs.forEach((document) => {
-            array.push({ uid: document.id, ...document.data() });
-          });
+          if (snapshot.exists()) {
+            snapshot.forEach((child) => {
+              const tripData = child.val();
+              console.log("Viaje encontrado:", child.key, tripData);
+              array.push({ 
+                uid: child.key, 
+                ...tripData 
+              });
+            });
+          } else {
+            console.log("No se encontraron viajes en historico_viajes");
+          }
+          console.log("Total de viajes encontrados:", array.length);
           return array;
         })
         .catch((error) => {
-          console.error({ error });
+          console.error("Error al obtener viajes:", error);
           return false;
         });
+      return trips;
+    }
+
+    // Función para formatear fecha desde tiempo_viaje_aceptado (mm-dd-aaaa)
+    function formatDateFromString(dateString) {
+      if (!dateString) return 'N/A';
+      
+      // formato esperado: "2025-10-14 11:58:01"
+      const parts = dateString.split(' ')[0].split('-');
+      if (parts.length !== 3) return 'N/A';
+      
+      const year = parts[0];
+      const month = parts[1];
+      const day = parts[2];
+      
+      return `${month}-${day}-${year}`;
+    }
+
+    // Función para extraer la hora desde tiempo_viaje_aceptado
+    function extractTimeFromString(dateString) {
+      if (!dateString) return 'N/A';
+      
+      // formato esperado: "2025-10-14 11:58:01"
+      const parts = dateString.split(' ');
+      if (parts.length !== 2) return 'N/A';
+      
+      return parts[1]; // Retorna "11:58:01"
+    }
+
+    // Función para obtener información del cliente por ID
+    async function getClientInfo(clientId) {
+      const clientInfo = await firebase
+        .database()
+        .ref(`Users/Clients/${clientId}`)
+        .once("value")
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            return { uid: clientId, ...snapshot.val() };
+          }
+          return null;
+        })
+        .catch((error) => {
+          console.error({ error });
+          return null;
+        });
+      return clientInfo;
+    }
+
+    // Función para obtener viajes filtrados por cliente desde Realtime Database
+    async function getClientTripsByEmailOrName(searchValue) {
+      console.log("Buscando cliente con:", searchValue);
+      
+      // Buscar cliente por email o nombre en Users/Clients
+      const clientSnapshot = await firebase
+        .database()
+        .ref("Users/Clients")
+        .once("value");
+      
+      if (!clientSnapshot.exists()) {
+        console.log("No se encontraron clientes en Users/Clients");
+        return null;
+      }
+
+      let clientId = null;
+      let clientData = null;
+      
+      clientSnapshot.forEach((child) => {
+        const client = child.val();
+        const email = client.email || client.correo || '';
+        const name = client.name || client.nombre || '';
+        
+        // Buscar por email o nombre (case insensitive)
+        if (email.toLowerCase().includes(searchValue.toLowerCase()) || 
+            name.toLowerCase().includes(searchValue.toLowerCase())) {
+          clientId = child.key;
+          clientData = client;
+          console.log("Cliente encontrado:", child.key, client);
+          return true; // Solo necesitamos el primer resultado
+        }
+      });
+
+      if (!clientId) {
+        console.log("No se encontró cliente con:", searchValue);
+        return null;
+      }
+
+      console.log("Buscando viajes para cliente ID:", clientId);
+
+      // Obtener los viajes del cliente desde historico_viajes en Realtime Database
+      const trips = await firebase
+        .database()
+        .ref("historico_viajes")
+        .orderByChild("idClient")
+        .equalTo(clientId)
+        .once("value")
+        .then((snapshot) => {
+          let array = [];
+          if (snapshot.exists()) {
+            snapshot.forEach((child) => {
+              const tripData = child.val();
+              console.log("Viaje del cliente encontrado:", child.key, tripData);
+              array.push({ 
+                uid: child.key, 
+                ...tripData 
+              });
+            });
+          } else {
+            console.log("No se encontraron viajes para el cliente ID:", clientId);
+          }
+          console.log("Total de viajes del cliente:", array.length);
+          return array;
+        })
+        .catch((error) => {
+          console.error("Error al obtener viajes del cliente:", error);
+          return false;
+        });
+
+      return { clientId, trips, clientData };
     }
 
     function generateDataTable() {
       const exportOptions = {
-        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+        columns: [0, 1, 2, 3, 4, 5, 6, 7],
       };
       DATATABLE_CONTEXT = new DataTable(TABLA_HISTORICO, {
         dom: "<'datatable-top'fB><'datatable-middle't><'datatable-bottom'lp>",
@@ -446,113 +558,324 @@
       });
     }
 
-    function insertDataToRowTable(data) {
-      const rowTag = document.createElement("tr");
-      data.forEach((cell) => {
-        const tableCell = document.createElement("td");
-        tableCell.innerHTML = cell;
-        rowTag.append(tableCell);
-      });
-      TABLA_HISTORICO.children[1].append(rowTag);
-    }
- 
-    function formatTimestampToString(timestamp) {
-      const datetime = new Date(parseInt(timestamp) * 1000).toLocaleString("en-US", {
-        timeZone: "America/Mexico_City",
-      });
-      return datetime.split(", ");
-    }
-
     function clearDataTable() {
       DATATABLE_CONTEXT.clear().destroy();
     }
 
+    // Función para mostrar todos los viajes con filtros
+    async function showAllTripsWithFilters() {
+      try {
+        const trips = await getAllHistoricTrips();
+        
+        if (!trips || trips.length === 0) {
+          window.alert("No hay viajes registrados en el histórico.");
+          return;
+        }
+
+        // Obtener filtros del formulario
+        const filters = {
+          fechaInicio: document.querySelector("#filterStartDate").value,
+          fechaFinal: document.querySelector("#filterEndDate").value,
+          montoMin: document.querySelector("#filterCantidadMin").value,
+          montoMax: document.querySelector("#filterCantidadMax").value,
+          calificacion: (() => {
+            const checked = document.querySelector('input[name="filterCalificacion"]:checked');
+            return checked ? checked.id.replace('rate', '') : null;
+          })()
+        };
+
+        // Aplicar filtros
+        const filteredTrips = applyFilters(trips, filters);
+        
+        if (filteredTrips.length === 0) {
+          window.alert("No se encontraron viajes con los filtros aplicados.");
+          return;
+        }
+
+        // Limpiar tabla y mostrar datos
+        clearDataTable();
+        let counter = 0;
+        
+        // Ordenar por tiempo_viaje_aceptado descendente
+        filteredTrips.sort((a, b) => {
+          if (!a.tiempo_viaje_aceptado || !b.tiempo_viaje_aceptado) return 0;
+          return new Date(b.tiempo_viaje_aceptado) - new Date(a.tiempo_viaje_aceptado);
+        });
+        
+        for (const trip of filteredTrips) {
+          console.log("Procesando viaje en vista general:", trip);
+          
+          // Obtener información del cliente para cada viaje
+          const clientInfo = await getClientInfo(trip.idClient);
+          
+          const rowElement = document.createElement("tr");
+          
+          // Mapear campos según la estructura real de los datos
+          const monto = trip.costo;
+          const partida = trip.origin;
+          const destino = trip.destination;
+          const calificacion = trip.calificacion || trip.rating || trip.score || trip.estrellas || 'N/A';
+          const resena = trip.resena || trip.review || trip.comentario || trip.comment || trip.feedback || 'N/A';
+          
+          // Usar las nuevas funciones para formatear fecha y hora
+          const fechaFormateada = formatDateFromString(trip.tiempo_viaje_aceptado);
+          const horaViaje = extractTimeFromString(trip.tiempo_viaje_aceptado);
+          
+          const cellsValues = [
+            counter + 1,
+            fechaFormateada,
+            horaViaje,
+            monto ? `$ ${monto}` : 'N/A',
+            partida,
+            destino,
+            calificacion,
+            resena,
+          ];
+
+          console.log("Valores de celdas en vista general:", cellsValues);
+          console.log("Campo origin encontrado:", trip.origin);
+          console.log("Campo fecha_finalizacion encontrado:", trip.fecha_finalizacion);
+          console.log("Campo costo encontrado:", trip.costo);
+          console.log("Campo destination encontrado:", trip.destination);
+
+          Object.values(cellsValues).forEach(function (cell) {
+            const cellElement = document.createElement("td");
+            cellElement.innerText = cell;
+            rowElement.insertAdjacentElement("beforeend", cellElement);
+          });
+          
+          TABLA_HISTORICO.children[1].append(rowElement);
+          counter = counter + 1;
+        }
+        
+        generateDataTable();
+        
+      } catch (error) {
+        console.error("Error al obtener viajes:", error);
+        window.alert("Error al obtener viajes. Intente nuevamente.");
+      }
+    }
+
+    // Función para aplicar filtros a los viajes
+    function applyFilters(trips, filters) {
+      let filteredTrips = [...trips];
+      
+      // Filtro por fecha de inicio
+      if (filters.fechaInicio) {
+        const fechaInicio = new Date(filters.fechaInicio);
+        filteredTrips = filteredTrips.filter(trip => {
+          if (!trip.tiempo_viaje_aceptado) return false;
+          const tripDate = new Date(trip.tiempo_viaje_aceptado.split(' ')[0]);
+          return tripDate >= fechaInicio;
+        });
+      }
+      
+      // Filtro por fecha final
+      if (filters.fechaFinal) {
+        const fechaFinal = new Date(filters.fechaFinal);
+        filteredTrips = filteredTrips.filter(trip => {
+          if (!trip.tiempo_viaje_aceptado) return false;
+          const tripDate = new Date(trip.tiempo_viaje_aceptado.split(' ')[0]);
+          return tripDate <= fechaFinal;
+        });
+      }
+      
+      // Filtro por monto mínimo
+      if (filters.montoMin) {
+        filteredTrips = filteredTrips.filter(trip => 
+          trip.costo >= parseFloat(filters.montoMin)
+        );
+      }
+      
+      // Filtro por monto máximo
+      if (filters.montoMax) {
+        filteredTrips = filteredTrips.filter(trip => 
+          trip.costo <= parseFloat(filters.montoMax)
+        );
+      }
+      
+      // Filtro por calificación
+      if (filters.calificacion) {
+        filteredTrips = filteredTrips.filter(trip => 
+          trip.calificacion == filters.calificacion
+        );
+      }
+      
+      return filteredTrips;
+    }
+
+    // Función alternativa para probar diferentes estructuras de datos
+    async function testDataStructure() {
+      console.log("=== PROBANDO ESTRUCTURA DE DATOS ===");
+      
+      // Probar diferentes rutas posibles para los datos
+      const possiblePaths = [
+        "historico_viajes",
+        "historicoViajes", 
+        "historial_viajes",
+        "historialViajes",
+        "viajes_historico",
+        "viajesHistorico",
+        "trips_history",
+        "tripsHistory",
+        "DriverTripTadi",
+        "DriverTrip",
+        "trips"
+      ];
+      
+      for (const path of possiblePaths) {
+        try {
+          console.log(`Probando ruta: ${path}`);
+          const snapshot = await firebase.database().ref(path).once("value");
+          if (snapshot.exists()) {
+            console.log(`✅ Datos encontrados en: ${path}`);
+            console.log("Estructura:", snapshot.val());
+            
+            // Mostrar algunos ejemplos
+            let count = 0;
+            snapshot.forEach((child) => {
+              if (count < 3) {
+                console.log(`Ejemplo ${count + 1}:`, child.key, child.val());
+                count++;
+              }
+            });
+          } else {
+            console.log(`❌ No hay datos en: ${path}`);
+          }
+        } catch (error) {
+          console.log(`❌ Error al acceder a: ${path}`, error);
+        }
+      }
+      
+      // También probar la estructura de clientes
+      console.log("=== PROBANDO ESTRUCTURA DE CLIENTES ===");
+      try {
+        const clientsSnapshot = await firebase.database().ref("Users/Clients").once("value");
+        if (clientsSnapshot.exists()) {
+          console.log("✅ Clientes encontrados en Users/Clients");
+          let count = 0;
+          clientsSnapshot.forEach((child) => {
+            if (count < 2) {
+              console.log(`Cliente ${count + 1}:`, child.key, child.val());
+              count++;
+            }
+          });
+        }
+      } catch (error) {
+        console.log("❌ Error al acceder a clientes:", error);
+      }
+    }
+
     async function main() {
-      const clientes = await getClientes();
-      CLIENTES_ARRAY = [...clientes];
-      await getDriverTrips();
       generateDataTable();
+      
+      // Ejecutar prueba de estructura de datos
+      await testDataStructure();
+      
+      // Cargar todos los viajes por defecto
+      await showAllTripsWithFilters();
     }
 
     main();
- 
+
     /**
      * Buscar cliente para desplegar su informacion en la tabla
      **/
 
-    const searchDriverInput = document.querySelector("#filterCliente");
-    const searchDriverButton = document.querySelector("#filterClienteButton");
+    const searchClientInput = document.querySelector("#filterCliente");
+    const searchClientButton = document.querySelector("#filterClienteButton");
+    const showAllTripsButton = document.querySelector("#showAllTripsButton");
 
-    searchDriverButton.addEventListener("click", async function (event) {
-      const stringValue = searchDriverInput.value;
-      const [{ uid }] = await firestore
-        .collection("clientes")
-        .where("numGafeteSCT", "==", String(stringValue).toUpperCase())
-        .get()
-        .then((snapshot) => {
-          let array = [];
-          snapshot.docs.forEach((document) => {
-            array.push({ uid: document.id, ...document.data() });
-          });
-          return array;
-        })
-        .catch((error) => {
-          console.error({ error });
-          return false;
-        });
-      if (uid !== false) {
-        const trips = await firestore
-          .collection("driverTripSlp")
-          .doc(uid)
-          .collection("trips")
-          .get()
-          .then((snapshot) => {
-            let array = [];
-            snapshot.docs.forEach((document) => {
-              array.push({ uid: document.id, ...document.data() });
-            });
-            return array;
-          })
-          .catch((error) => {
-            console.error({ error });
-            return false;
-          });
-        if (trips !== false) {
-          let counter = 0;
-          clearDataTable();
-          trips.forEach(function (trip) {
-            const rowElement = document.createElement("tr");
-            const cellsValues = [
-              counter + 1,
-              trip.fecha,
-              "$ " + trip.totalPagasScope,
-              "$ " + trip.totalPagasScope,
-              "N/A",
-              trip.origen,
-              trip.destination,
-              "N/A",
-              "N/A",
-            ];
-
-            Object.values(cellsValues).forEach(function (cell) {
-              const cellElement = document.createElement("td");
-              cellElement.innerText = cell;
-              rowElement.insertAdjacentElement("beforeend", cellElement);
-            });
-            TABLA_HISTORICO.children[1].append(rowElement);
-            counter = counter + 1;
-          });
-          generateDataTable();
-        } else {
-          window.alert("Cliente registrado, sin embargo no cuenta con viajes registrados.");
-        }
-      } else {
-        window.alert("No se encontró cliente, intente con otro número de gafete.");
+    searchClientButton.addEventListener("click", async function (event) {
+      const searchValue = searchClientInput.value.trim();
+      
+      if (!searchValue) {
+        window.alert("Por favor ingrese un email o nombre de cliente.");
         return;
+      }
+
+      try {
+        // Buscar cliente y sus viajes usando las nuevas funciones
+        const result = await getClientTripsByEmailOrName(searchValue);
+        
+        if (!result) {
+          window.alert("No se encontró cliente con ese email o nombre.");
+          return;
+        }
+
+        const { clientId, trips, clientData } = result;
+        
+        if (!trips || trips.length === 0) {
+          window.alert("Cliente encontrado, pero no cuenta con viajes registrados.");
+          return;
+        }
+
+        // Limpiar tabla y mostrar datos
+        clearDataTable();
+        let counter = 0;
+        
+        trips.forEach(function (trip) {
+          console.log("Procesando viaje:", trip);
+          console.log("Todos los campos disponibles:", Object.keys(trip));
+          console.log("Campo Origin encontrado:", trip.Origin);
+          console.log("Campo fecha_finalizacion encontrado:", trip.fecha_finalizacion);
+          const rowElement = document.createElement("tr");
+          
+          // Mapear campos según la estructura real de los datos
+          const monto = trip.costo;
+          const partida = trip.origin;
+          const destino = trip.destination;
+          const calificacion = trip.calificacion || trip.rating || trip.score || trip.estrellas || 'N/A';
+          const resena = trip.resena || trip.review || trip.comentario || trip.comment || trip.feedback || 'N/A';
+          
+          // Usar las nuevas funciones para formatear fecha y hora
+          const fechaFormateada = formatDateFromString(trip.tiempo_viaje_aceptado);
+          const horaViaje = extractTimeFromString(trip.tiempo_viaje_aceptado);
+          
+          const cellsValues = [
+            counter + 1,
+            fechaFormateada,
+            horaViaje,
+            monto ? `$ ${monto}` : 'N/A',
+            partida,
+            destino,
+            calificacion,
+            resena,
+          ];
+
+          console.log("Valores de celdas:", cellsValues);
+          console.log("Campo origin encontrado:", trip.origin);
+          console.log("Campo fecha_finalizacion encontrado:", trip.fecha_finalizacion);
+          console.log("Campo costo encontrado:", trip.costo);
+          console.log("Campo destination encontrado:", trip.destination);
+
+          Object.values(cellsValues).forEach(function (cell) {
+            const cellElement = document.createElement("td");
+            cellElement.innerText = cell;
+            rowElement.insertAdjacentElement("beforeend", cellElement);
+          });
+          
+          TABLA_HISTORICO.children[1].append(rowElement);
+          counter = counter + 1;
+        });
+        
+        generateDataTable();
+        
+        // Mostrar información del cliente encontrado
+        if (clientData) {
+          console.log(`Cliente encontrado: ${clientData.name || clientData.email} (ID: ${clientId})`);
+        }
+        
+      } catch (error) {
+        console.error("Error al buscar cliente:", error);
+        window.alert("Error al buscar cliente. Intente nuevamente.");
       }
     });
 
-    function findDriverByNameOrGafete() {}
+    // Event listener para el botón "ver todos"
+    showAllTripsButton.addEventListener("click", async function (event) {
+      await showAllTripsWithFilters();
+    });
   </script>
 </html>
 
