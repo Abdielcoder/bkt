@@ -572,8 +572,10 @@
     async function main() {
       const conductores = await getConductores();
       CONDUCTORES_ARRAY = [...conductores];
-      await getDriverTrips();
       generateDataTable();
+      
+      // Cargar todos los viajes por defecto
+      await showAllTripsWithFilters();
     }
 
     main();
@@ -706,7 +708,10 @@
           fechaFinal: document.querySelector("#filterEndDate").value,
           montoMin: document.querySelector("#filterCantidadMin").value,
           montoMax: document.querySelector("#filterCantidadMax").value,
-          calificacion: document.querySelector('input[name="filterCalificacion"]:checked')?.id?.replace('rate', '')
+          calificacion: (() => {
+            const checked = document.querySelector('input[name="filterCalificacion"]:checked');
+            return checked ? checked.id.replace('rate', '') : null;
+          })()
         };
 
         // Aplicar filtros
@@ -813,16 +818,6 @@
     showAllTripsButton.addEventListener("click", async function (event) {
       await showAllTripsWithFilters();
     });
-
-    // Función main actualizada
-    async function main() {
-      const conductores = await getConductores();
-      CONDUCTORES_ARRAY = [...conductores];
-      generateDataTable();
-      
-      // Cargar todos los viajes por defecto
-      await showAllTripsWithFilters();
-    }
   </script>
 </html>
 
