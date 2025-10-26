@@ -876,6 +876,25 @@
     showAllTripsButton.addEventListener("click", async function (event) {
       await showAllTripsWithFilters();
     });
+
+    // Prevenir conversión automática a mayúsculas en el campo de búsqueda
+    const searchClientInput = document.querySelector("#filterCliente");
+    searchClientInput.addEventListener("input", function(event) {
+      // Guardar la posición del cursor
+      const cursorPosition = event.target.selectionStart;
+      
+      // Convertir el valor a minúsculas
+      const originalValue = event.target.value;
+      const lowercaseValue = originalValue.toLowerCase();
+      
+      // Solo actualizar si hay diferencia
+      if (originalValue !== lowercaseValue) {
+        event.target.value = lowercaseValue;
+        
+        // Restaurar la posición del cursor
+        event.target.setSelectionRange(cursorPosition, cursorPosition);
+      }
+    });
   </script>
 </html>
 
