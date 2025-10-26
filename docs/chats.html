@@ -32,11 +32,40 @@
       }
 
       .chat-header {
-        padding: 15px;
-        background-color: #2d6e3d;
+        padding: 12px 16px;
+        background: linear-gradient(90deg, #2d6e3d, #1f5330);
         color: white;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid #1e472b;
+        display: flex;
+        align-items: center;
+        gap: 12px;
       }
+      .header-avatars {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .participant {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 2px solid rgba(255,255,255,0.6);
+        background: #e0e0e0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+      }
+      .avatar img { width: 100%; height: 100%; object-fit: cover; }
+      .header-info { display: flex; flex-direction: column; line-height: 1.1; }
+      .header-title { font-size: 14px; opacity: 0.95; }
+      .header-sub { font-size: 12px; opacity: 0.8; }
 
       .chat-messages {
         flex: 1;
@@ -44,12 +73,31 @@
         overflow-y: auto;
         background-color: #f5f5f5;
       }
+      .date-separator {
+        text-align: center;
+        margin: 16px 0;
+        position: relative;
+        color: #556;
+        font-size: 12px;
+      }
+      .date-separator::before,
+      .date-separator::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        width: 40%;
+        height: 1px;
+        background: #d0d0d0;
+      }
+      .date-separator::before { left: 0; }
+      .date-separator::after { right: 0; }
 
       .message {
         margin-bottom: 15px;
         display: flex;
         align-items: flex-start;
       }
+      .message .avatar { width: 28px; height: 28px; border: none; margin: 0 6px; }
 
       .message.conductor {
         justify-content: flex-end;
@@ -83,6 +131,21 @@
         font-size: 12px;
         margin-top: 5px;
         opacity: 0.7;
+      }
+      .message-text { white-space: pre-wrap; word-break: break-word; }
+      .copied-toast {
+        position: fixed;
+        bottom: 24px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(33, 33, 33, 0.92);
+        color: white;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 13px;
+        z-index: 9999;
+        opacity: 0;
+        transition: opacity .2s ease;
       }
 
       .trip-item {
@@ -309,7 +372,18 @@
                 <!-- Área principal de chat -->
                 <div class="chat-main">
                   <div class="chat-header">
-                    <h3 id="chatTitle">Selecciona un viaje para ver los mensajes</h3>
+                    <div class="header-avatars" id="headerAvatars">
+                      <div class="participant" id="driverParticipant" title="Conductor">
+                        <div class="avatar" id="driverAvatar">D</div>
+                      </div>
+                      <div class="participant" id="clientParticipant" title="Cliente">
+                        <div class="avatar" id="clientAvatar">C</div>
+                      </div>
+                    </div>
+                    <div class="header-info">
+                      <div class="header-title" id="chatTitle">Selecciona un viaje para ver los mensajes</div>
+                      <div class="header-sub" id="chatSubtitle"></div>
+                    </div>
                   </div>
                   <div class="chat-messages" id="chatMessages">
                     <div class="no-messages">
@@ -339,8 +413,12 @@
   <script src="../js/global-context.js"></script>
   <script type="module">
     const firestore = firebase.firestore();
+    const rtdb = firebase.database();
     let tripsList = [];
     let selectedTripId = null;
+    let unsubscribeTrip = null;
+    let unsubscribeTrips = null;
+    const avatarCache = {};
 
     // Función para formatear fecha
     function formatDate(timestamp) {
@@ -355,24 +433,71 @@
       });
     }
 
+    function formatDateOnly(timestamp) {
+      const d = new Date(timestamp);
+      return d.toLocaleDateString('es-MX', { year: 'numeric', month: '2-digit', day: '2-digit' });
+    }
+
+    function getInitials(name = '') {
+      const parts = name.trim().split(/\s+/);
+      const initials = (parts[0]?.[0] || 'U') + (parts[1]?.[0] || '');
+      return initials.toUpperCase();
+    }
+
+    function colorForId(id = '') {
+      let hash = 0;
+      for (let i = 0; i < id.length; i++) hash = id.charCodeAt(i) + ((hash << 5) - hash);
+      const hue = Math.abs(hash) % 360;
+      return `hsl(${hue}, 55%, 60%)`;
+    }
+
+    async function fetchAvatar(userId) {
+      if (!userId) return null;
+      if (avatarCache[userId]) return avatarCache[userId];
+      try {
+        // Intentar en Drivers
+        const driverSnap = await rtdb.ref(`Users/Drivers/${userId}`).once('value');
+        const driver = driverSnap.val();
+        const driverPhoto = driver?.photoURL || driver?.profileImage || driver?.avatar;
+        if (driverPhoto) { avatarCache[userId] = driverPhoto; return driverPhoto; }
+      } catch (_) {}
+      try {
+        // Intentar en Clients
+        const clientSnap = await rtdb.ref(`Users/Clients/${userId}`).once('value');
+        const client = clientSnap.val();
+        const clientPhoto = client?.photoURL || client?.profileImage || client?.avatar;
+        if (clientPhoto) { avatarCache[userId] = clientPhoto; return clientPhoto; }
+      } catch (_) {}
+      avatarCache[userId] = null;
+      return null;
+    }
+
     // Función para cargar todos los viajes con chats
     async function loadTripsWithChats() {
       try {
         console.log("Cargando viajes con chats...");
-        const tripsSnapshot = await firestore.collection('trip_chats').get();
-        
-        tripsList = [];
-        tripsSnapshot.forEach(doc => {
-          const data = doc.data();
-          tripsList.push({
-            id: doc.id,
-            messageCount: data.messageCount || 0,
-            lastMessage: data.messages && data.messages.length > 0 ? data.messages[data.messages.length - 1] : null
+        if (unsubscribeTrips) { unsubscribeTrips(); }
+        unsubscribeTrips = firestore.collection('trip_chats').onSnapshot((tripsSnapshot) => {
+          tripsList = [];
+          tripsSnapshot.forEach(doc => {
+            const data = doc.data();
+            const messages = data.messages || [];
+            const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
+            const unreadCount = messages.filter(m => m && m.isRead === false).length;
+            tripsList.push({
+              id: doc.id,
+              messageCount: data.messageCount || messages.length || 0,
+              lastMessage,
+              unreadCount
+            });
           });
+          // Ordenar por último mensaje descendente
+          tripsList.sort((a, b) => (b.lastMessage?.timestamp || 0) - (a.lastMessage?.timestamp || 0));
+          console.log(`Encontrados ${tripsList.length} viajes con chats`);
+          renderTripsList();
+        }, (error) => {
+          console.error('Error snapshot trips:', error);
         });
-
-        console.log(`Encontrados ${tripsList.length} viajes con chats`);
-        renderTripsList();
         
       } catch (error) {
         console.error("Error al cargar viajes:", error);
@@ -393,7 +518,7 @@
         <div class="trip-item" data-trip-id="${trip.id}" onclick="selectTrip('${trip.id}')">
           <div class="trip-id">Viaje: ${trip.id}</div>
           <div class="trip-info">
-            Mensajes: ${trip.messageCount}
+            Mensajes: ${trip.messageCount}${trip.unreadCount ? ` · <b>${trip.unreadCount} sin leer</b>` : ''}
             ${trip.lastMessage ? `<br>Último: ${formatDate(trip.lastMessage.timestamp)}` : ''}
           </div>
         </div>
@@ -412,9 +537,22 @@
       
       // Actualizar título
       document.getElementById('chatTitle').textContent = `Chat del Viaje: ${tripId}`;
+      document.getElementById('chatSubtitle').textContent = '';
       
-      // Cargar mensajes
-      await loadTripMessages(tripId);
+      // Cargar mensajes en tiempo real
+      if (unsubscribeTrip) { unsubscribeTrip(); }
+      unsubscribeTrip = firestore.collection('trip_chats').doc(tripId).onSnapshot(async (doc) => {
+        if (!doc.exists) {
+          document.getElementById('chatMessages').innerHTML = '<div class="no-messages">No se encontraron mensajes para este viaje</div>';
+          return;
+        }
+        const data = doc.data();
+        const messages = data.messages || [];
+        renderMessages(messages);
+        await updateHeaderParticipants(messages);
+      }, (error) => {
+        console.error('Error snapshot trip:', error);
+      });
     }
 
     // Función para cargar mensajes de un viaje específico
@@ -433,11 +571,49 @@
         
         console.log(`Encontrados ${messages.length} mensajes`);
         renderMessages(messages);
+        await updateHeaderParticipants(messages);
         
       } catch (error) {
         console.error("Error al cargar mensajes:", error);
         document.getElementById('chatMessages').innerHTML = '<div class="no-messages">Error al cargar mensajes</div>';
       }
+    }
+
+    async function updateHeaderParticipants(messages) {
+      // Detectar participantes por flags e ids
+      const anyDriver = messages.find(m => m && m.isConductor === true);
+      const anyClient = messages.find(m => m && m.isConductor === false);
+      const driverId = anyDriver?.senderId || anyDriver?.receiverId || '';
+      const clientId = anyClient?.senderId || anyClient?.receiverId || '';
+      const driverName = anyDriver?.senderName || 'Conductor';
+      const clientName = anyClient?.senderName || 'Cliente';
+
+      const driverPhoto = await fetchAvatar(driverId);
+      const clientPhoto = await fetchAvatar(clientId);
+
+      const driverAvatarEl = document.getElementById('driverAvatar');
+      const clientAvatarEl = document.getElementById('clientAvatar');
+
+      // Render driver avatar
+      if (driverPhoto) {
+        driverAvatarEl.innerHTML = `<img src="${driverPhoto}" alt="${driverName}" />`;
+        driverAvatarEl.style.background = 'transparent';
+      } else {
+        driverAvatarEl.textContent = getInitials(driverName);
+        driverAvatarEl.style.background = colorForId(driverId || driverName);
+      }
+      // Render client avatar
+      if (clientPhoto) {
+        clientAvatarEl.innerHTML = `<img src="${clientPhoto}" alt="${clientName}" />`;
+        clientAvatarEl.style.background = 'transparent';
+      } else {
+        clientAvatarEl.textContent = getInitials(clientName);
+        clientAvatarEl.style.background = colorForId(clientId || clientName);
+      }
+
+      // Subtítulo con nombres
+      const subtitle = document.getElementById('chatSubtitle');
+      subtitle.textContent = `${driverName} · ${clientName}`;
     }
 
     // Función para renderizar mensajes
@@ -452,21 +628,56 @@
       // Ordenar mensajes por timestamp
       messages.sort((a, b) => a.timestamp - b.timestamp);
 
-      chatMessagesElement.innerHTML = messages.map(message => `
-        <div class="message ${message.isConductor ? 'conductor' : 'client'}">
-          <div class="message-content">
-            <div class="message-text">${message.message}</div>
-            <div class="message-info">
-              ${message.senderName || (message.isConductor ? 'Conductor' : 'Cliente')} - 
-              ${message.formattedTime || formatDate(message.timestamp)}
-              ${message.isRead ? ' ✓' : ''}
+      let lastDate = '';
+      const parts = [];
+      for (const message of messages) {
+        const dateOnly = formatDateOnly(message.timestamp || Date.now());
+        if (dateOnly !== lastDate) {
+          parts.push(`<div class=\"date-separator\">${dateOnly}</div>`);
+          lastDate = dateOnly;
+        }
+        const side = message.isConductor ? 'conductor' : 'client';
+        const whoId = message.senderId || '';
+        const whoName = message.senderName || (message.isConductor ? 'Conductor' : 'Cliente');
+        const avatarHtml = (function(){
+          const cached = avatarCache[whoId];
+          if (cached) return `<div class=\"avatar\"><img src=\"${cached}\" alt=\"${whoName}\" /></div>`;
+          return `<div class=\"avatar\" style=\"background:${colorForId(whoId || whoName)}\">${getInitials(whoName)}</div>`;
+        })();
+        parts.push(`
+          <div class=\"message ${side}\">${side === 'client' ? avatarHtml : ''}
+            <div class=\"message-content\">
+              <div class=\"message-text\">${message.message}</div>
+              <div class=\"message-info\">${whoName} · ${message.formattedTime || formatDate(message.timestamp)}${message.isRead ? ' ✓' : ''}</div>
             </div>
+            ${side === 'conductor' ? avatarHtml : ''}
           </div>
-        </div>
-      `).join('');
+        `);
+      }
+      chatMessagesElement.innerHTML = parts.join('');
 
       // Scroll al final
       chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
+
+      // Copiar al hacer clic sobre el texto
+      chatMessagesElement.addEventListener('click', function(e){
+        const target = e.target;
+        if (target && target.classList.contains('message-text')) {
+          const text = target.textContent || '';
+          if (text) {
+            navigator.clipboard?.writeText(text).then(() => showCopiedToast());
+          }
+        }
+      }, { once: true });
+    }
+
+    function showCopiedToast() {
+      const toast = document.createElement('div');
+      toast.className = 'copied-toast';
+      toast.textContent = 'Mensaje copiado';
+      document.body.appendChild(toast);
+      requestAnimationFrame(() => { toast.style.opacity = '1'; });
+      setTimeout(() => { toast.style.opacity = '0'; toast.remove(); }, 1600);
     }
 
     // Función de búsqueda
@@ -489,7 +700,7 @@
           <div class="trip-item" data-trip-id="${trip.id}" onclick="selectTrip('${trip.id}')">
             <div class="trip-id">Viaje: ${trip.id}</div>
             <div class="trip-info">
-              Mensajes: ${trip.messageCount}
+              Mensajes: ${trip.messageCount}${trip.unreadCount ? ` · <b>${trip.unreadCount} sin leer</b>` : ''}
               ${trip.lastMessage ? `<br>Último: ${formatDate(trip.lastMessage.timestamp)}` : ''}
             </div>
           </div>
