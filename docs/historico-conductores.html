@@ -672,10 +672,9 @@
           console.log("Campo fecha_finalizacion encontrado:", trip.fecha_finalizacion);
           const rowElement = document.createElement("tr");
           
-          // Buscar campo de fecha automáticamente
-          const fechaField = trip.fecha_finalizacion || trip.timestamp || trip.fecha || trip.date || trip.time || trip.created_at || trip.updated_at;
-          const fechaFormateada = fechaField ? 
-            new Date(fechaField * 1000).toLocaleDateString('es-MX') : 
+          // Formatear fecha desde fecha_finalizacion (timestamp en milisegundos como string)
+          const fechaFormateada = trip.fecha_finalizacion ? 
+            new Date(parseInt(trip.fecha_finalizacion)).toLocaleDateString('es-MX') : 
             'N/A';
           
           // Formatear hora desde timestamp
@@ -684,13 +683,13 @@
             'N/A';
           
           // Mapear campos según la estructura real de los datos
-          const monto = trip.costo || trip.monto || trip.total || trip.precio || trip.amount;
-          const recibo = trip.recibo || trip.receipt || trip.folio || trip.id;
-          const trayectoria = trip.trayectoria || trip.ruta || trip.route || trip.path;
-          const partida = trip.Origin || trip.partida || trip.origen || trip.start || trip.from || trip.pickup;
-          const destino = trip.destination || trip.destino || trip.end || trip.to || trip.dropoff;
-          const calificacion = trip.calificacion || trip.rating || trip.score || trip.estrellas;
-          const resena = trip.resena || trip.review || trip.comentario || trip.comment || trip.feedback;
+          const monto = trip.costo;
+          const recibo = trip.uid || trip.recibo || trip.receipt || trip.folio || trip.id;
+          const trayectoria = trip.trayectoria || trip.ruta || trip.route || trip.path || 'N/A';
+          const partida = trip.origin;
+          const destino = trip.destination;
+          const calificacion = trip.calificacion || trip.rating || trip.score || trip.estrellas || 'N/A';
+          const resena = trip.resena || trip.review || trip.comentario || trip.comment || trip.feedback || 'N/A';
           
           const cellsValues = [
             counter + 1,
@@ -705,10 +704,10 @@
           ];
 
           console.log("Valores de celdas:", cellsValues);
-          console.log("Campo Origin encontrado:", trip.Origin);
+          console.log("Campo origin encontrado:", trip.origin);
           console.log("Campo fecha_finalizacion encontrado:", trip.fecha_finalizacion);
-          console.log("Campo de fecha usado:", fechaField);
-          console.log("Fecha formateada:", fechaFormateada);
+          console.log("Campo costo encontrado:", trip.costo);
+          console.log("Campo destination encontrado:", trip.destination);
 
           Object.values(cellsValues).forEach(function (cell) {
             const cellElement = document.createElement("td");
@@ -767,8 +766,8 @@
         clearDataTable();
         let counter = 0;
         
-        // Ordenar por fecha_finalizacion descendente
-        filteredTrips.sort((a, b) => (b.fecha_finalizacion || 0) - (a.fecha_finalizacion || 0));
+        // Ordenar por fecha_finalizacion descendente (timestamp en milisegundos)
+        filteredTrips.sort((a, b) => parseInt(b.fecha_finalizacion) - parseInt(a.fecha_finalizacion));
         
         for (const trip of filteredTrips) {
           console.log("Procesando viaje en vista general:", trip);
@@ -784,13 +783,13 @@
             'N/A';
           
           // Mapear campos según la estructura real de los datos
-          const monto = trip.costo || trip.monto || trip.total || trip.precio || trip.amount;
-          const recibo = trip.recibo || trip.receipt || trip.folio || trip.id;
-          const trayectoria = trip.trayectoria || trip.ruta || trip.route || trip.path;
-          const partida = trip.Origin || trip.partida || trip.origen || trip.start || trip.from || trip.pickup;
-          const destino = trip.destination || trip.destino || trip.end || trip.to || trip.dropoff;
-          const calificacion = trip.calificacion || trip.rating || trip.score || trip.estrellas;
-          const resena = trip.resena || trip.review || trip.comentario || trip.comment || trip.feedback;
+          const monto = trip.costo;
+          const recibo = trip.uid || trip.recibo || trip.receipt || trip.folio || trip.id;
+          const trayectoria = trip.trayectoria || trip.ruta || trip.route || trip.path || 'N/A';
+          const partida = trip.origin;
+          const destino = trip.destination;
+          const calificacion = trip.calificacion || trip.rating || trip.score || trip.estrellas || 'N/A';
+          const resena = trip.resena || trip.review || trip.comentario || trip.comment || trip.feedback || 'N/A';
           
           const cellsValues = [
             counter + 1,
@@ -830,31 +829,31 @@
       
       // Filtro por fecha de inicio
       if (filters.fechaInicio) {
-        const fechaInicio = new Date(filters.fechaInicio).getTime() / 1000;
+        const fechaInicio = new Date(filters.fechaInicio).getTime();
         filteredTrips = filteredTrips.filter(trip => 
-          trip.fecha_finalizacion >= fechaInicio
+          parseInt(trip.fecha_finalizacion) >= fechaInicio
         );
       }
       
       // Filtro por fecha final
       if (filters.fechaFinal) {
-        const fechaFinal = new Date(filters.fechaFinal).getTime() / 1000;
+        const fechaFinal = new Date(filters.fechaFinal).getTime();
         filteredTrips = filteredTrips.filter(trip => 
-          trip.fecha_finalizacion <= fechaFinal
+          parseInt(trip.fecha_finalizacion) <= fechaFinal
         );
       }
       
       // Filtro por monto mínimo
       if (filters.montoMin) {
         filteredTrips = filteredTrips.filter(trip => 
-          trip.monto >= parseFloat(filters.montoMin)
+          trip.costo >= parseFloat(filters.montoMin)
         );
       }
       
       // Filtro por monto máximo
       if (filters.montoMax) {
         filteredTrips = filteredTrips.filter(trip => 
-          trip.monto <= parseFloat(filters.montoMax)
+          trip.costo <= parseFloat(filters.montoMax)
         );
       }
       
