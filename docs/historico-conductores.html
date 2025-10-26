@@ -669,9 +669,9 @@
           console.log("Procesando viaje:", trip);
           const rowElement = document.createElement("tr");
           
-          // Formatear fecha desde timestamp (Realtime Database usa números directamente)
-          const fechaFormateada = trip.timestamp ? 
-            new Date(trip.timestamp * 1000).toLocaleDateString('es-MX') : 
+          // Formatear fecha desde fecha_finalizacion (timestamp normalizado)
+          const fechaFormateada = trip.fecha_finalizacion ? 
+            new Date(trip.fecha_finalizacion * 1000).toLocaleDateString('es-MX') : 
             'N/A';
           
           // Formatear hora desde timestamp
@@ -679,11 +679,11 @@
             new Date(trip.timestamp * 1000).toLocaleTimeString('es-MX') : 
             'N/A';
           
-          // Mapear campos comunes que pueden tener diferentes nombres
+          // Mapear campos específicos según la estructura real
           const monto = trip.monto || trip.costo || trip.total || trip.precio || trip.amount;
           const recibo = trip.recibo || trip.receipt || trip.folio || trip.id;
           const trayectoria = trip.trayectoria || trip.ruta || trip.route || trip.path;
-          const partida = trip.partida || trip.origen || trip.start || trip.from || trip.pickup;
+          const partida = trip.Origin || trip.partida || trip.origen || trip.start || trip.from || trip.pickup;
           const destino = trip.destino || trip.destination || trip.end || trip.to || trip.dropoff;
           const calificacion = trip.calificacion || trip.rating || trip.score || trip.estrellas;
           const resena = trip.resena || trip.review || trip.comentario || trip.comment || trip.feedback;
@@ -701,6 +701,8 @@
           ];
 
           console.log("Valores de celdas:", cellsValues);
+          console.log("Campo Origin encontrado:", trip.Origin);
+          console.log("Campo fecha_finalizacion encontrado:", trip.fecha_finalizacion);
 
           Object.values(cellsValues).forEach(function (cell) {
             const cellElement = document.createElement("td");
@@ -759,8 +761,8 @@
         clearDataTable();
         let counter = 0;
         
-        // Ordenar por timestamp descendente
-        filteredTrips.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+        // Ordenar por fecha_finalizacion descendente
+        filteredTrips.sort((a, b) => (b.fecha_finalizacion || 0) - (a.fecha_finalizacion || 0));
         
         for (const trip of filteredTrips) {
           console.log("Procesando viaje en vista general:", trip);
@@ -775,11 +777,11 @@
             new Date(trip.timestamp * 1000).toLocaleDateString('es-MX') : 
             'N/A';
           
-          // Mapear campos comunes que pueden tener diferentes nombres
+          // Mapear campos específicos según la estructura real
           const monto = trip.monto || trip.costo || trip.total || trip.precio || trip.amount;
           const recibo = trip.recibo || trip.receipt || trip.folio || trip.id;
           const trayectoria = trip.trayectoria || trip.ruta || trip.route || trip.path;
-          const partida = trip.partida || trip.origen || trip.start || trip.from || trip.pickup;
+          const partida = trip.Origin || trip.partida || trip.origen || trip.start || trip.from || trip.pickup;
           const destino = trip.destino || trip.destination || trip.end || trip.to || trip.dropoff;
           const calificacion = trip.calificacion || trip.rating || trip.score || trip.estrellas;
           const resena = trip.resena || trip.review || trip.comentario || trip.comment || trip.feedback;
@@ -824,7 +826,7 @@
       if (filters.fechaInicio) {
         const fechaInicio = new Date(filters.fechaInicio).getTime() / 1000;
         filteredTrips = filteredTrips.filter(trip => 
-          trip.timestamp >= fechaInicio
+          trip.fecha_finalizacion >= fechaInicio
         );
       }
       
@@ -832,7 +834,7 @@
       if (filters.fechaFinal) {
         const fechaFinal = new Date(filters.fechaFinal).getTime() / 1000;
         filteredTrips = filteredTrips.filter(trip => 
-          trip.timestamp <= fechaFinal
+          trip.fecha_finalizacion <= fechaFinal
         );
       }
       
