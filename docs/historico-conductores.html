@@ -289,6 +289,7 @@
                       <tr>
                         <th>#</th>
                         <th>Fecha</th>
+                        <th>Hora Viaje</th>
                         <th>Monto</th>
                         <th>Trayectoria</th>
                         <th>Partida</th>
@@ -425,16 +426,30 @@
       return trips;
     }
 
-    // Función para formatear fecha desde timestamp (mm-dd-aaaa)
-    function formatDateFromTimestamp(timestamp) {
-      if (!timestamp) return 'N/A';
+    // Función para formatear fecha desde tiempo_viaje_aceptado (mm-dd-aaaa)
+    function formatDateFromString(dateString) {
+      if (!dateString) return 'N/A';
       
-      const date = new Date(parseInt(timestamp));
-      const month = String(date.getMonth() + 1).padStart(2, '0');
-      const day = String(date.getDate()).padStart(2, '0');
-      const year = date.getFullYear();
+      // formato esperado: "2025-10-14 11:58:01"
+      const parts = dateString.split(' ')[0].split('-');
+      if (parts.length !== 3) return 'N/A';
+      
+      const year = parts[0];
+      const month = parts[1];
+      const day = parts[2];
       
       return `${month}-${day}-${year}`;
+    }
+
+    // Función para extraer la hora desde tiempo_viaje_aceptado
+    function extractTimeFromString(dateString) {
+      if (!dateString) return 'N/A';
+      
+      // formato esperado: "2025-10-14 11:58:01"
+      const parts = dateString.split(' ');
+      if (parts.length !== 2) return 'N/A';
+      
+      return parts[1]; // Retorna "11:58:01"
     }
 
     // Función para obtener información del conductor por ID
@@ -521,7 +536,7 @@
 
     function generateDataTable() {
       const exportOptions = {
-        columns: [0, 1, 2, 3, 4, 5, 6, 7],
+        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
       };
       DATATABLE_CONTEXT = new DataTable(TABLA_HISTORICO, {
         dom: "<'datatable-top'fB><'datatable-middle't><'datatable-bottom'lp>",
@@ -691,12 +706,14 @@
           const calificacion = trip.calificacion || trip.rating || trip.score || trip.estrellas || 'N/A';
           const resena = trip.resena || trip.review || trip.comentario || trip.comment || trip.feedback || 'N/A';
           
-          // Usar la nueva función para formatear la fecha
-          const fechaFormateada = formatDateFromTimestamp(trip.fecha_finalizacion);
+          // Usar las nuevas funciones para formatear fecha y hora
+          const fechaFormateada = formatDateFromString(trip.tiempo_viaje_aceptado);
+          const horaViaje = extractTimeFromString(trip.tiempo_viaje_aceptado);
           
           const cellsValues = [
             counter + 1,
             fechaFormateada,
+            horaViaje,
             monto ? `$ ${monto}` : 'N/A',
             trayectoria,
             partida,
@@ -768,8 +785,11 @@
         clearDataTable();
         let counter = 0;
         
-        // Ordenar por fecha_finalizacion descendente (timestamp en milisegundos)
-        filteredTrips.sort((a, b) => parseInt(b.fecha_finalizacion) - parseInt(a.fecha_finalizacion));
+        // Ordenar por tiempo_viaje_aceptado descendente
+        filteredTrips.sort((a, b) => {
+          if (!a.tiempo_viaje_aceptado || !b.tiempo_viaje_aceptado) return 0;
+          return new Date(b.tiempo_viaje_aceptado) - new Date(a.tiempo_viaje_aceptado);
+        });
         
         for (const trip of filteredTrips) {
           console.log("Procesando viaje en vista general:", trip);
@@ -796,6 +816,7 @@
           const cellsValues = [
             counter + 1,
             fechaFormateada,
+            horaViaje,
             monto ? `$ ${monto}` : 'N/A',
             trayectoria,
             partida,
@@ -830,18 +851,22 @@
       
       // Filtro por fecha de inicio
       if (filters.fechaInicio) {
-        const fechaInicio = new Date(filters.fechaInicio).getTime();
-        filteredTrips = filteredTrips.filter(trip => 
-          parseInt(trip.fecha_finalizacion) >= fechaInicio
-        );
+        const fechaInicio = new Date(filters.fechaInicio);
+        filteredTrips = filteredTrips.filter(trip => {
+          if (!trip.tiempo_viaje_aceptado) return false;
+          const tripDate = new Date(trip.tiempo_viaje_aceptado.split(' ')[0]);
+          return tripDate >= fechaInicio;
+        });
       }
       
       // Filtro por fecha final
       if (filters.fechaFinal) {
-        const fechaFinal = new Date(filters.fechaFinal).getTime();
-        filteredTrips = filteredTrips.filter(trip => 
-          parseInt(trip.fecha_finalizacion) <= fechaFinal
-        );
+        const fechaFinal = new Date(filters.fechaFinal);
+        filteredTrips = filteredTrips.filter(trip => {
+          if (!trip.tiempo_viaje_aceptado) return false;
+          const tripDate = new Date(trip.tiempo_viaje_aceptado.split(' ')[0]);
+          return tripDate <= fechaFinal;
+        });
       }
       
       // Filtro por monto mínimo
