@@ -64,8 +64,8 @@
       }
       .avatar img { width: 100%; height: 100%; object-fit: cover; }
       .header-info { display: flex; flex-direction: column; line-height: 1.1; }
-      .header-title { font-size: 14px; opacity: 0.95; }
-      .header-sub { font-size: 12px; opacity: 0.8; }
+      .header-title { font-size: 14px; color: white; opacity: 0.95; }
+      .header-sub { font-size: 12px; color: white; opacity: 0.8; }
 
       .chat-messages {
         flex: 1;
@@ -374,10 +374,10 @@
                   <div class="chat-header">
                     <div class="header-avatars" id="headerAvatars">
                       <div class="participant" id="driverParticipant" title="Conductor">
-                        <div class="avatar" id="driverAvatar">D</div>
+                        <div class="avatar" id="driverAvatar"></div>
                       </div>
                       <div class="participant" id="clientParticipant" title="Cliente">
-                        <div class="avatar" id="clientAvatar">C</div>
+                        <div class="avatar" id="clientAvatar"></div>
                       </div>
                     </div>
                     <div class="header-info">
@@ -585,8 +585,8 @@
       const anyClient = messages.find(m => m && m.isConductor === false);
       const driverId = anyDriver?.senderId || anyDriver?.receiverId || '';
       const clientId = anyClient?.senderId || anyClient?.receiverId || '';
-      const driverName = anyDriver?.senderName || 'Conductor';
-      const clientName = anyClient?.senderName || 'Cliente';
+      const driverName = anyDriver?.senderName || '';
+      const clientName = anyClient?.senderName || '';
 
       const driverPhoto = await fetchAvatar(driverId);
       const clientPhoto = await fetchAvatar(clientId);
@@ -596,24 +596,33 @@
 
       // Render driver avatar
       if (driverPhoto) {
-        driverAvatarEl.innerHTML = `<img src="${driverPhoto}" alt="${driverName}" />`;
+        driverAvatarEl.innerHTML = `<img src="${driverPhoto}" alt="${driverName || 'Conductor'}" />`;
         driverAvatarEl.style.background = 'transparent';
-      } else {
+      } else if (driverName && driverName.trim()) {
         driverAvatarEl.textContent = getInitials(driverName);
         driverAvatarEl.style.background = colorForId(driverId || driverName);
+      } else {
+        driverAvatarEl.innerHTML = '';
+        driverAvatarEl.style.background = 'transparent';
       }
+      
       // Render client avatar
       if (clientPhoto) {
-        clientAvatarEl.innerHTML = `<img src="${clientPhoto}" alt="${clientName}" />`;
+        clientAvatarEl.innerHTML = `<img src="${clientPhoto}" alt="${clientName || 'Cliente'}" />`;
         clientAvatarEl.style.background = 'transparent';
-      } else {
+      } else if (clientName && clientName.trim()) {
         clientAvatarEl.textContent = getInitials(clientName);
         clientAvatarEl.style.background = colorForId(clientId || clientName);
+      } else {
+        clientAvatarEl.innerHTML = '';
+        clientAvatarEl.style.background = 'transparent';
       }
 
       // Subtítulo con nombres
       const subtitle = document.getElementById('chatSubtitle');
-      subtitle.textContent = `${driverName} · ${clientName}`;
+      const displayDriverName = driverName && driverName.trim() ? driverName : 'Conductor';
+      const displayClientName = clientName && clientName.trim() ? clientName : 'Cliente';
+      subtitle.textContent = `${displayDriverName} · ${displayClientName}`;
     }
 
     // Función para renderizar mensajes
