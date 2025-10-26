@@ -397,6 +397,7 @@
 
     // Función para obtener todos los viajes del histórico desde Realtime Database
     async function getAllHistoricTrips() {
+      console.log("Obteniendo todos los viajes del histórico...");
       const trips = await firebase
         .database()
         .ref("historico_viajes")
@@ -405,16 +406,21 @@
           let array = [];
           if (snapshot.exists()) {
             snapshot.forEach((child) => {
+              const tripData = child.val();
+              console.log("Viaje encontrado:", child.key, tripData);
               array.push({ 
                 uid: child.key, 
-                ...child.val() 
+                ...tripData 
               });
             });
+          } else {
+            console.log("No se encontraron viajes en historico_viajes");
           }
+          console.log("Total de viajes encontrados:", array.length);
           return array;
         })
         .catch((error) => {
-          console.error({ error });
+          console.error("Error al obtener viajes:", error);
           return false;
         });
       return trips;
@@ -441,6 +447,8 @@
 
     // Función para obtener viajes filtrados por conductor desde Realtime Database
     async function getDriverTripsByGafete(gafete) {
+      console.log("Buscando conductor con gafete:", gafete);
+      
       // Primero buscar el conductor por gafete
       const driverSnapshot = await firebase
         .database()
@@ -450,18 +458,23 @@
         .once("value");
       
       if (!driverSnapshot.exists()) {
+        console.log("No se encontró conductor con gafete:", gafete);
         return null;
       }
 
       let driverId = null;
       driverSnapshot.forEach((child) => {
         driverId = child.key;
+        console.log("Conductor encontrado:", child.key, child.val());
         return true; // Solo necesitamos el primer resultado
       });
 
       if (!driverId) {
+        console.log("No se pudo obtener el ID del conductor");
         return null;
       }
+
+      console.log("Buscando viajes para conductor ID:", driverId);
 
       // Obtener los viajes del conductor desde historico_viajes en Realtime Database
       const trips = await firebase
@@ -474,16 +487,21 @@
           let array = [];
           if (snapshot.exists()) {
             snapshot.forEach((child) => {
+              const tripData = child.val();
+              console.log("Viaje del conductor encontrado:", child.key, tripData);
               array.push({ 
                 uid: child.key, 
-                ...child.val() 
+                ...tripData 
               });
             });
+          } else {
+            console.log("No se encontraron viajes para el conductor ID:", driverId);
           }
+          console.log("Total de viajes del conductor:", array.length);
           return array;
         })
         .catch((error) => {
-          console.error({ error });
+          console.error("Error al obtener viajes del conductor:", error);
           return false;
         });
 
@@ -574,6 +592,9 @@
       CONDUCTORES_ARRAY = [...conductores];
       generateDataTable();
       
+      // Ejecutar prueba de estructura de datos
+      await testDataStructure();
+      
       // Cargar todos los viajes por defecto
       await showAllTripsWithFilters();
     }
@@ -645,6 +666,7 @@
         let counter = 0;
         
         trips.forEach(function (trip) {
+          console.log("Procesando viaje:", trip);
           const rowElement = document.createElement("tr");
           
           // Formatear fecha desde timestamp (Realtime Database usa números directamente)
@@ -657,17 +679,28 @@
             new Date(trip.timestamp * 1000).toLocaleTimeString('es-MX') : 
             'N/A';
           
+          // Mapear campos comunes que pueden tener diferentes nombres
+          const monto = trip.monto || trip.costo || trip.total || trip.precio || trip.amount;
+          const recibo = trip.recibo || trip.receipt || trip.folio || trip.id;
+          const trayectoria = trip.trayectoria || trip.ruta || trip.route || trip.path;
+          const partida = trip.partida || trip.origen || trip.start || trip.from || trip.pickup;
+          const destino = trip.destino || trip.destination || trip.end || trip.to || trip.dropoff;
+          const calificacion = trip.calificacion || trip.rating || trip.score || trip.estrellas;
+          const resena = trip.resena || trip.review || trip.comentario || trip.comment || trip.feedback;
+          
           const cellsValues = [
             counter + 1,
             fechaFormateada,
-            trip.monto ? `$ ${trip.monto}` : 'N/A',
-            trip.recibo || 'N/A',
-            trip.trayectoria || 'N/A',
-            trip.partida || 'N/A',
-            trip.destino || 'N/A',
-            trip.calificacion || 'N/A',
-            trip.resena || 'N/A',
+            monto ? `$ ${monto}` : 'N/A',
+            recibo || 'N/A',
+            trayectoria || 'N/A',
+            partida || 'N/A',
+            destino || 'N/A',
+            calificacion || 'N/A',
+            resena || 'N/A',
           ];
+
+          console.log("Valores de celdas:", cellsValues);
 
           Object.values(cellsValues).forEach(function (cell) {
             const cellElement = document.createElement("td");
@@ -730,6 +763,8 @@
         filteredTrips.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
         
         for (const trip of filteredTrips) {
+          console.log("Procesando viaje en vista general:", trip);
+          
           // Obtener información del conductor para cada viaje
           const driverInfo = await getDriverInfo(trip.idDriver);
           
@@ -740,17 +775,28 @@
             new Date(trip.timestamp * 1000).toLocaleDateString('es-MX') : 
             'N/A';
           
+          // Mapear campos comunes que pueden tener diferentes nombres
+          const monto = trip.monto || trip.costo || trip.total || trip.precio || trip.amount;
+          const recibo = trip.recibo || trip.receipt || trip.folio || trip.id;
+          const trayectoria = trip.trayectoria || trip.ruta || trip.route || trip.path;
+          const partida = trip.partida || trip.origen || trip.start || trip.from || trip.pickup;
+          const destino = trip.destino || trip.destination || trip.end || trip.to || trip.dropoff;
+          const calificacion = trip.calificacion || trip.rating || trip.score || trip.estrellas;
+          const resena = trip.resena || trip.review || trip.comentario || trip.comment || trip.feedback;
+          
           const cellsValues = [
             counter + 1,
             fechaFormateada,
-            trip.monto ? `$ ${trip.monto}` : 'N/A',
-            trip.recibo || 'N/A',
-            trip.trayectoria || 'N/A',
-            trip.partida || 'N/A',
-            trip.destino || 'N/A',
-            trip.calificacion || 'N/A',
-            trip.resena || 'N/A',
+            monto ? `$ ${monto}` : 'N/A',
+            recibo || 'N/A',
+            trayectoria || 'N/A',
+            partida || 'N/A',
+            destino || 'N/A',
+            calificacion || 'N/A',
+            resena || 'N/A',
           ];
+
+          console.log("Valores de celdas en vista general:", cellsValues);
 
           Object.values(cellsValues).forEach(function (cell) {
             const cellElement = document.createElement("td");
@@ -812,6 +858,68 @@
       }
       
       return filteredTrips;
+    }
+
+    // Función alternativa para probar diferentes estructuras de datos
+    async function testDataStructure() {
+      console.log("=== PROBANDO ESTRUCTURA DE DATOS ===");
+      
+      // Probar diferentes rutas posibles para los datos
+      const possiblePaths = [
+        "historico_viajes",
+        "historicoViajes", 
+        "historial_viajes",
+        "historialViajes",
+        "viajes_historico",
+        "viajesHistorico",
+        "trips_history",
+        "tripsHistory",
+        "DriverTripTadi",
+        "DriverTrip",
+        "trips"
+      ];
+      
+      for (const path of possiblePaths) {
+        try {
+          console.log(`Probando ruta: ${path}`);
+          const snapshot = await firebase.database().ref(path).once("value");
+          if (snapshot.exists()) {
+            console.log(`✅ Datos encontrados en: ${path}`);
+            console.log("Estructura:", snapshot.val());
+            
+            // Mostrar algunos ejemplos
+            let count = 0;
+            snapshot.forEach((child) => {
+              if (count < 3) {
+                console.log(`Ejemplo ${count + 1}:`, child.key, child.val());
+                count++;
+              }
+            });
+          } else {
+            console.log(`❌ No hay datos en: ${path}`);
+          }
+        } catch (error) {
+          console.log(`❌ Error al acceder a: ${path}`, error);
+        }
+      }
+      
+      // También probar la estructura de conductores
+      console.log("=== PROBANDO ESTRUCTURA DE CONDUCTORES ===");
+      try {
+        const driversSnapshot = await firebase.database().ref("Users/Drivers").once("value");
+        if (driversSnapshot.exists()) {
+          console.log("✅ Conductores encontrados en Users/Drivers");
+          let count = 0;
+          driversSnapshot.forEach((child) => {
+            if (count < 2) {
+              console.log(`Conductor ${count + 1}:`, child.key, child.val());
+              count++;
+            }
+          });
+        }
+      } catch (error) {
+        console.log("❌ Error al acceder a conductores:", error);
+      }
     }
 
     // Event listener para el botón "ver todos"
