@@ -805,19 +805,17 @@
           
           const rowElement = document.createElement("tr");
           
-          // Formatear fecha desde timestamp
-          const fechaFormateada = trip.timestamp ? 
-            new Date(trip.timestamp * 1000).toLocaleDateString('es-MX') : 
-            'N/A';
-          
           // Mapear campos según la estructura real de los datos
           const monto = trip.costo;
-          const recibo = trip.uid || trip.recibo || trip.receipt || trip.folio || trip.id;
           const trayectoria = trip.trayectoria || trip.ruta || trip.route || trip.path || 'N/A';
           const partida = trip.origin;
           const destino = trip.destination;
           const calificacion = trip.calificacion || trip.rating || trip.score || trip.estrellas || 'N/A';
           const resena = trip.resena || trip.review || trip.comentario || trip.comment || trip.feedback || 'N/A';
+          
+          // Usar las nuevas funciones para formatear fecha y hora
+          const fechaFormateada = formatDateFromString(trip.tiempo_viaje_aceptado);
+          const horaViaje = extractTimeFromString(trip.tiempo_viaje_aceptado);
           
           const cellsValues = [
             counter + 1,
