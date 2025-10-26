@@ -667,11 +667,15 @@
         
         trips.forEach(function (trip) {
           console.log("Procesando viaje:", trip);
+          console.log("Todos los campos disponibles:", Object.keys(trip));
+          console.log("Campo Origin encontrado:", trip.Origin);
+          console.log("Campo fecha_finalizacion encontrado:", trip.fecha_finalizacion);
           const rowElement = document.createElement("tr");
           
-          // Formatear fecha desde fecha_finalizacion (timestamp normalizado)
-          const fechaFormateada = trip.fecha_finalizacion ? 
-            new Date(trip.fecha_finalizacion * 1000).toLocaleDateString('es-MX') : 
+          // Buscar campo de fecha automáticamente
+          const fechaField = trip.fecha_finalizacion || trip.timestamp || trip.fecha || trip.date || trip.time || trip.created_at || trip.updated_at;
+          const fechaFormateada = fechaField ? 
+            new Date(fechaField * 1000).toLocaleDateString('es-MX') : 
             'N/A';
           
           // Formatear hora desde timestamp
@@ -679,12 +683,12 @@
             new Date(trip.timestamp * 1000).toLocaleTimeString('es-MX') : 
             'N/A';
           
-          // Mapear campos específicos según la estructura real
-          const monto = trip.monto || trip.costo || trip.total || trip.precio || trip.amount;
+          // Mapear campos según la estructura real de los datos
+          const monto = trip.costo || trip.monto || trip.total || trip.precio || trip.amount;
           const recibo = trip.recibo || trip.receipt || trip.folio || trip.id;
           const trayectoria = trip.trayectoria || trip.ruta || trip.route || trip.path;
           const partida = trip.Origin || trip.partida || trip.origen || trip.start || trip.from || trip.pickup;
-          const destino = trip.destino || trip.destination || trip.end || trip.to || trip.dropoff;
+          const destino = trip.destination || trip.destino || trip.end || trip.to || trip.dropoff;
           const calificacion = trip.calificacion || trip.rating || trip.score || trip.estrellas;
           const resena = trip.resena || trip.review || trip.comentario || trip.comment || trip.feedback;
           
@@ -703,6 +707,8 @@
           console.log("Valores de celdas:", cellsValues);
           console.log("Campo Origin encontrado:", trip.Origin);
           console.log("Campo fecha_finalizacion encontrado:", trip.fecha_finalizacion);
+          console.log("Campo de fecha usado:", fechaField);
+          console.log("Fecha formateada:", fechaFormateada);
 
           Object.values(cellsValues).forEach(function (cell) {
             const cellElement = document.createElement("td");
@@ -777,12 +783,12 @@
             new Date(trip.timestamp * 1000).toLocaleDateString('es-MX') : 
             'N/A';
           
-          // Mapear campos específicos según la estructura real
-          const monto = trip.monto || trip.costo || trip.total || trip.precio || trip.amount;
+          // Mapear campos según la estructura real de los datos
+          const monto = trip.costo || trip.monto || trip.total || trip.precio || trip.amount;
           const recibo = trip.recibo || trip.receipt || trip.folio || trip.id;
           const trayectoria = trip.trayectoria || trip.ruta || trip.route || trip.path;
           const partida = trip.Origin || trip.partida || trip.origen || trip.start || trip.from || trip.pickup;
-          const destino = trip.destino || trip.destination || trip.end || trip.to || trip.dropoff;
+          const destino = trip.destination || trip.destino || trip.end || trip.to || trip.dropoff;
           const calificacion = trip.calificacion || trip.rating || trip.score || trip.estrellas;
           const resena = trip.resena || trip.review || trip.comentario || trip.comment || trip.feedback;
           
