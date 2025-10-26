@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="../assets/icons/favicon.ico" />
+    <title>Tu Taxi - Chats</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../css/docs/tadiDefaults.css" />
+    <link rel="stylesheet" href="../css/docs/messages.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Icons+Sharp" rel="stylesheet" />
+    <style>
+      .chat-container {
+        display: flex;
+        height: calc(100vh - 200px);
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      .chat-sidebar {
+        width: 300px;
+        background-color: #f8f9fa;
+        border-right: 1px solid #ddd;
+        overflow-y: auto;
+      }
+
+      .chat-main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+      }
+
+      .chat-header {
+        padding: 15px;
+        background-color: #2d6e3d;
+        color: white;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .chat-messages {
+        flex: 1;
+        padding: 15px;
+        overflow-y: auto;
+        background-color: #f5f5f5;
+      }
+
+      .message {
+        margin-bottom: 15px;
+        display: flex;
+        align-items: flex-start;
+      }
+
+      .message.conductor {
+        justify-content: flex-end;
+      }
+
+      .message.client {
+        justify-content: flex-start;
+      }
+
+      .message-content {
+        max-width: 70%;
+        padding: 10px 15px;
+        border-radius: 18px;
+        position: relative;
+      }
+
+      .message.conductor .message-content {
+        background-color: #2d6e3d;
+        color: white;
+        border-bottom-right-radius: 5px;
+      }
+
+      .message.client .message-content {
+        background-color: white;
+        color: #333;
+        border: 1px solid #ddd;
+        border-bottom-left-radius: 5px;
+      }
+
+      .message-info {
+        font-size: 12px;
+        margin-top: 5px;
+        opacity: 0.7;
+      }
+
+      .trip-item {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .trip-item:hover {
+        background-color: #e9ecef;
+      }
+
+      .trip-item.active {
+        background-color: #2d6e3d;
+        color: white;
+      }
+
+      .trip-id {
+        font-weight: bold;
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+
+      .trip-info {
+        font-size: 12px;
+        opacity: 0.8;
+      }
+
+      .search-container {
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+      }
+
+      .search-input {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        font-size: 14px;
+      }
+
+      .no-messages {
+        text-align: center;
+        color: #666;
+        margin-top: 50px;
+        font-style: italic;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 20px;
+        color: #666;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="root" class="preload">
+      <!-- Aside -->
+      <aside>
+        <div id="aside-container">
+          <div class="logo">
+            <a class="home-link" href="./main.html">Tu Taxi | Backoffice</a>
+          </div>
+          <hr />
+          <ul class="nav">
+            <li class="nav-item" id="mapa-menu-li" style="display: none">
+              <a class="nav-link" href="./maps.html">
+                <span class="link-icons material-icons-sharp">map</span>
+                MAPA
+              </a>
+            </li>
+            <li class="nav-item" id="concesionario-menu-li" style="display: none">
+              <a class="nav-link hasSubmenu selectedPage" href="#" id="concesionario">
+                <span class="link-icons material-icons-sharp">person</span>
+                CONCESIONARIOS
+              </a>
+            </li>
+            <li class="nav-item" id="vehiculos-menu-li">
+              <a class="nav-link" href="./vehicles.html">
+                <span class="link-icons material-icons-sharp">directions_car</span>
+                VEHICULO
+              </a>
+            </li>
+            <li class="nav-item" id="conductores-menu-li">
+              <a class="nav-link" href="./users.html">
+                <span class="link-icons material-icons-sharp">person</span>
+                CONDUCTORES
+              </a>
+            </li>
+            <li class="nav-item" id="chats-menu-li">
+              <a class="nav-link active" href="./chats.html">
+                <span class="link-icons material-icons-sharp">chat</span>
+                CHATS
+              </a>
+            </li>
+            <li class="nav-item menu-button menu-closed" id="historico-menu-li">
+              <a class="nav-link" href="#" id="historico">
+                <span class="link-icons material-icons-sharp">token</span>
+                HISTORICO DE VIAJES
+              </a>
+              <div id="historico-submenu" data-displayed="hidden">
+                <ul>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="./historico-conductores.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      CONDUCTORES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="./historico-clientes.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      CLIENTES
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item menu-button menu-closed" id="admin-menu-li" style="display: none">
+              <a class="nav-link" href="#" id="administracion">
+                <span class="link-icons material-icons-sharp">manage_accounts</span>
+                ADMINISTRACIÓN
+              </a>
+              <div id="administracion-submenu" data-displayed="hidden">
+                <ul>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/mensajes/index.html">
+                      <span class="link-icons material-icons-sharp">chat</span>
+                      MENSAJES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/administradores/index.html">
+                      <span class="link-icons material-icons-sharp">person</span>
+                      ADMINISTRADORES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden" id="roles-menu-li">
+                    <a class="nav-sublink" href="../admin/roles/index.html">
+                      <span class="link-icons material-icons-sharp">groups</span>
+                      ROLES
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/rates.html">
+                      <span class="link-icons material-icons-sharp">paid</span>
+                      TARIFAS
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="../admin/base_rates.html">
+                      <span class="link-icons material-icons-sharp">attach_money</span>
+                      TARIFAS BASE
+                    </a>
+                  </li>
+                  <li class="nav-item menu-linked hidden">
+                    <a class="nav-sublink" href="./accesos.html">
+                      <span class="link-icons material-icons-sharp">history</span>
+                      ACCESOS
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="../admin/clientes/index.html">
+                <span class="link-icons material-icons-sharp">person_pin</span>
+                CLIENTES
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./seguridad-publica.html">
+                <span class="link-icons material-icons-sharp">local_police</span>
+                Seguridad Pública
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="./mapa-seguridad.html">
+                <span class="link-icons material-icons-sharp">local_police</span>
+                Mapa Seguridad
+              </a>
+            </li>
+          </ul>
+        </div>
+      </aside>
+
+      <!-- Header  -->
+      <header>
+        <nav style="position: relative; z-index: 1;">
+          <h1 class="app-title">Tu taxi - Portal Administrativo</h1>
+          <button class="close-app" id="signout-button">
+            <span class="material-icons-sharp">logout</span>
+            Cerrar Sesión
+          </button>
+        </nav>
+        <div class="header-bg-image" style="z-index: 0;"></div>
+      </header>
+
+      <!-- Main -->
+      <main style="position: relative">
+        <div class="page-title">
+          <h2 class="header-module-title">Chats de Viajes</h2>
+        </div>
+        <div class="container">
+          <div class="container-module col-12">
+            <div class="module-body">
+              <div class="chat-container">
+                <!-- Sidebar con lista de viajes -->
+                <div class="chat-sidebar">
+                  <div class="search-container">
+                    <input 
+                      type="text" 
+                      class="search-input" 
+                      placeholder="Buscar viaje por ID..."
+                      id="searchTripInput"
+                    />
+                  </div>
+                  <div id="tripsList">
+                    <div class="loading">Cargando viajes...</div>
+                  </div>
+                </div>
+
+                <!-- Área principal de chat -->
+                <div class="chat-main">
+                  <div class="chat-header">
+                    <h3 id="chatTitle">Selecciona un viaje para ver los mensajes</h3>
+                  </div>
+                  <div class="chat-messages" id="chatMessages">
+                    <div class="no-messages">
+                      Selecciona un viaje del panel izquierdo para ver los mensajes del chat
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Footer -->
+      <footer>
+        <p id="copyrightFooter"></p>
+      </footer>
+    </div>
+  </body>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-firestore.js"></script>
+  <script type="module" src="../js/config/auth-config.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-storage.js"></script>
+  <script src="../js/global-context.js"></script>
+  <script type="module">
+    const firestore = firebase.firestore();
+    let tripsList = [];
+    let selectedTripId = null;
+
+    // Función para formatear fecha
+    function formatDate(timestamp) {
+      const date = new Date(timestamp);
+      return date.toLocaleString('es-MX', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+    }
+
+    // Función para cargar todos los viajes con chats
+    async function loadTripsWithChats() {
+      try {
+        console.log("Cargando viajes con chats...");
+        const tripsSnapshot = await firestore.collection('trip_chats').get();
+        
+        tripsList = [];
+        tripsSnapshot.forEach(doc => {
+          const data = doc.data();
+          tripsList.push({
+            id: doc.id,
+            messageCount: data.messageCount || 0,
+            lastMessage: data.messages && data.messages.length > 0 ? data.messages[data.messages.length - 1] : null
+          });
+        });
+
+        console.log(`Encontrados ${tripsList.length} viajes con chats`);
+        renderTripsList();
+        
+      } catch (error) {
+        console.error("Error al cargar viajes:", error);
+        document.getElementById('tripsList').innerHTML = '<div class="loading">Error al cargar viajes</div>';
+      }
+    }
+
+    // Función para renderizar la lista de viajes
+    function renderTripsList() {
+      const tripsListElement = document.getElementById('tripsList');
+      
+      if (tripsList.length === 0) {
+        tripsListElement.innerHTML = '<div class="loading">No hay viajes con chats</div>';
+        return;
+      }
+
+      tripsListElement.innerHTML = tripsList.map(trip => `
+        <div class="trip-item" data-trip-id="${trip.id}" onclick="selectTrip('${trip.id}')">
+          <div class="trip-id">Viaje: ${trip.id}</div>
+          <div class="trip-info">
+            Mensajes: ${trip.messageCount}
+            ${trip.lastMessage ? `<br>Último: ${formatDate(trip.lastMessage.timestamp)}` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Función para seleccionar un viaje
+    async function selectTrip(tripId) {
+      selectedTripId = tripId;
+      
+      // Actualizar UI
+      document.querySelectorAll('.trip-item').forEach(item => {
+        item.classList.remove('active');
+      });
+      document.querySelector(`[data-trip-id="${tripId}"]`).classList.add('active');
+      
+      // Actualizar título
+      document.getElementById('chatTitle').textContent = `Chat del Viaje: ${tripId}`;
+      
+      // Cargar mensajes
+      await loadTripMessages(tripId);
+    }
+
+    // Función para cargar mensajes de un viaje específico
+    async function loadTripMessages(tripId) {
+      try {
+        console.log(`Cargando mensajes para viaje: ${tripId}`);
+        const tripDoc = await firestore.collection('trip_chats').doc(tripId).get();
+        
+        if (!tripDoc.exists) {
+          document.getElementById('chatMessages').innerHTML = '<div class="no-messages">No se encontraron mensajes para este viaje</div>';
+          return;
+        }
+
+        const tripData = tripDoc.data();
+        const messages = tripData.messages || [];
+        
+        console.log(`Encontrados ${messages.length} mensajes`);
+        renderMessages(messages);
+        
+      } catch (error) {
+        console.error("Error al cargar mensajes:", error);
+        document.getElementById('chatMessages').innerHTML = '<div class="no-messages">Error al cargar mensajes</div>';
+      }
+    }
+
+    // Función para renderizar mensajes
+    function renderMessages(messages) {
+      const chatMessagesElement = document.getElementById('chatMessages');
+      
+      if (messages.length === 0) {
+        chatMessagesElement.innerHTML = '<div class="no-messages">No hay mensajes en este chat</div>';
+        return;
+      }
+
+      // Ordenar mensajes por timestamp
+      messages.sort((a, b) => a.timestamp - b.timestamp);
+
+      chatMessagesElement.innerHTML = messages.map(message => `
+        <div class="message ${message.isConductor ? 'conductor' : 'client'}">
+          <div class="message-content">
+            <div class="message-text">${message.message}</div>
+            <div class="message-info">
+              ${message.senderName || (message.isConductor ? 'Conductor' : 'Cliente')} - 
+              ${message.formattedTime || formatDate(message.timestamp)}
+              ${message.isRead ? ' ✓' : ''}
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // Scroll al final
+      chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
+    }
+
+    // Función de búsqueda
+    function setupSearch() {
+      const searchInput = document.getElementById('searchTripInput');
+      searchInput.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        
+        if (searchTerm === '') {
+          renderTripsList();
+          return;
+        }
+
+        const filteredTrips = tripsList.filter(trip => 
+          trip.id.toLowerCase().includes(searchTerm)
+        );
+
+        const tripsListElement = document.getElementById('tripsList');
+        tripsListElement.innerHTML = filteredTrips.map(trip => `
+          <div class="trip-item" data-trip-id="${trip.id}" onclick="selectTrip('${trip.id}')">
+            <div class="trip-id">Viaje: ${trip.id}</div>
+            <div class="trip-info">
+              Mensajes: ${trip.messageCount}
+              ${trip.lastMessage ? `<br>Último: ${formatDate(trip.lastMessage.timestamp)}` : ''}
+            </div>
+          </div>
+        `).join('');
+      });
+    }
+
+    // Función principal
+    async function main() {
+      console.log("Iniciando aplicación de chats...");
+      await loadTripsWithChats();
+      setupSearch();
+    }
+
+    // Hacer funciones globales para onclick
+    window.selectTrip = selectTrip;
+
+    // Inicializar
+    main();
+  </script>
+</html>
