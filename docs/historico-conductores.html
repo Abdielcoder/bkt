@@ -291,7 +291,6 @@
                         <th>Fecha</th>
                         <th>Hora Viaje</th>
                         <th>Monto</th>
-                        <th>Trayectoria</th>
                         <th>Partida</th>
                         <th>Destino</th>
                         <th>Calificación</th>
@@ -542,7 +541,7 @@
 
     function generateDataTable() {
       const exportOptions = {
-        columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+        columns: [0, 1, 2, 3, 4, 5, 6, 7],
       };
       DATATABLE_CONTEXT = new DataTable(TABLA_HISTORICO, {
         dom: "<'datatable-top'fB><'datatable-middle't><'datatable-bottom'lp>",
@@ -706,7 +705,6 @@
           
           // Mapear campos según la estructura real de los datos
           const monto = trip.costo;
-          const trayectoria = trip.trayectoria || trip.ruta || trip.route || trip.path || 'N/A';
           const partida = trip.origin;
           const destino = trip.destination;
           const calificacion = trip.calificacion || trip.rating || trip.score || trip.estrellas || 'N/A';
@@ -721,7 +719,6 @@
             fechaFormateada,
             horaViaje,
             monto ? `$ ${monto}` : 'N/A',
-            trayectoria,
             partida,
             destino,
             calificacion,
@@ -807,7 +804,6 @@
           
           // Mapear campos según la estructura real de los datos
           const monto = trip.costo;
-          const trayectoria = trip.trayectoria || trip.ruta || trip.route || trip.path || 'N/A';
           const partida = trip.origin;
           const destino = trip.destination;
           const calificacion = trip.calificacion || trip.rating || trip.score || trip.estrellas || 'N/A';
@@ -822,7 +818,6 @@
             fechaFormateada,
             horaViaje,
             monto ? `$ ${monto}` : 'N/A',
-            trayectoria,
             partida,
             destino,
             calificacion,
