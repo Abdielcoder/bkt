@@ -163,6 +163,9 @@
         background-color: #2d6e3d;
         color: white;
       }
+      .trip-item.active * {
+        color: white !important;
+      }
 
       .trip-id {
         font-weight: bold;
@@ -372,14 +375,6 @@
                 <!-- Área principal de chat -->
                 <div class="chat-main">
                   <div class="chat-header">
-                    <div class="header-avatars" id="headerAvatars">
-                      <div class="participant" id="driverParticipant" title="Conductor">
-                        <div class="avatar" id="driverAvatar"></div>
-                      </div>
-                      <div class="participant" id="clientParticipant" title="Cliente">
-                        <div class="avatar" id="clientAvatar"></div>
-                      </div>
-                    </div>
                     <div class="header-info">
                       <div class="header-title" id="chatTitle">Selecciona un viaje para ver los mensajes</div>
                       <div class="header-sub" id="chatSubtitle"></div>
@@ -549,7 +544,6 @@
         const data = doc.data();
         const messages = data.messages || [];
         renderMessages(messages);
-        await updateHeaderParticipants(messages);
       }, (error) => {
         console.error('Error snapshot trip:', error);
       });
@@ -571,7 +565,6 @@
         
         console.log(`Encontrados ${messages.length} mensajes`);
         renderMessages(messages);
-        await updateHeaderParticipants(messages);
         
       } catch (error) {
         console.error("Error al cargar mensajes:", error);
@@ -579,51 +572,6 @@
       }
     }
 
-    async function updateHeaderParticipants(messages) {
-      // Detectar participantes por flags e ids
-      const anyDriver = messages.find(m => m && m.isConductor === true);
-      const anyClient = messages.find(m => m && m.isConductor === false);
-      const driverId = anyDriver?.senderId || anyDriver?.receiverId || '';
-      const clientId = anyClient?.senderId || anyClient?.receiverId || '';
-      const driverName = anyDriver?.senderName || '';
-      const clientName = anyClient?.senderName || '';
-
-      const driverPhoto = await fetchAvatar(driverId);
-      const clientPhoto = await fetchAvatar(clientId);
-
-      const driverAvatarEl = document.getElementById('driverAvatar');
-      const clientAvatarEl = document.getElementById('clientAvatar');
-
-      // Render driver avatar
-      if (driverPhoto) {
-        driverAvatarEl.innerHTML = `<img src="${driverPhoto}" alt="${driverName || 'Conductor'}" />`;
-        driverAvatarEl.style.background = 'transparent';
-      } else if (driverName && driverName.trim()) {
-        driverAvatarEl.textContent = getInitials(driverName);
-        driverAvatarEl.style.background = colorForId(driverId || driverName);
-      } else {
-        driverAvatarEl.innerHTML = '';
-        driverAvatarEl.style.background = 'transparent';
-      }
-      
-      // Render client avatar
-      if (clientPhoto) {
-        clientAvatarEl.innerHTML = `<img src="${clientPhoto}" alt="${clientName || 'Cliente'}" />`;
-        clientAvatarEl.style.background = 'transparent';
-      } else if (clientName && clientName.trim()) {
-        clientAvatarEl.textContent = getInitials(clientName);
-        clientAvatarEl.style.background = colorForId(clientId || clientName);
-      } else {
-        clientAvatarEl.innerHTML = '';
-        clientAvatarEl.style.background = 'transparent';
-      }
-
-      // Subtítulo con nombres
-      const subtitle = document.getElementById('chatSubtitle');
-      const displayDriverName = driverName && driverName.trim() ? driverName : 'Conductor';
-      const displayClientName = clientName && clientName.trim() ? clientName : 'Cliente';
-      subtitle.textContent = `${displayDriverName} · ${displayClientName}`;
-    }
 
     // Función para renderizar mensajes
     function renderMessages(messages) {
