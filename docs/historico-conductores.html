@@ -375,14 +375,20 @@
     let CONDUCTORES_ARRAY = [];
 
     const getConductores = async () => {
-      const { docs } = await CONDUCTORES_REFERENCE.get().catch((error) => false);
-      if (docs) {
-        let conductoresList = [];
-        docs.forEach((doc, index) => {
-          const conductor = { uid: doc.id, ...doc.data() };
-          conductoresList.push(conductor);
-        });
-        return conductoresList;
+      try {
+        const snapshot = await firebase.database().ref("Users/Drivers").once("value");
+        if (snapshot.exists()) {
+          let conductoresList = [];
+          snapshot.forEach((child) => {
+            const conductor = { uid: child.key, ...child.val() };
+            conductoresList.push(conductor);
+          });
+          return conductoresList;
+        }
+        return [];
+      } catch (error) {
+        console.error("Error al obtener conductores:", error);
+        return [];
       }
     };
 
