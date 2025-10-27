@@ -53,9 +53,9 @@ const renderMenus = () => {
   const renderClientes = sessionStorage.getItem("clientesPermission");
 
   if (parseInt(renderMap.split(",")[1]) !== 1) {
-    mapaMenu.remove();
+    if (mapaMenu) mapaMenu.remove();
   } else {
-    mapaMenu.style.display = "block";
+    if (mapaMenu) mapaMenu.style.display = "block";
   }
 
   const concesionariosPermission = checkStatus(renderConcesionarios);
@@ -68,58 +68,51 @@ const renderMenus = () => {
   const clientesPermission = checkStatus(renderClientes);
 
   if (adminsPermission == 0) {
-    adminMenu.remove();
+    if (adminMenu) adminMenu.remove();
   } else {
-    adminMenu.style.display = "block";
+    if (adminMenu) adminMenu.style.display = "block";
   }
 
   if (rolesPermission == 0) {
-    rolesMenu.remove();
+    if (rolesMenu) rolesMenu.remove();
   } else {
-    rolesMenu.style.display = "block";
+    if (rolesMenu) rolesMenu.style.display = "block";
   }
 
   if (conductoresPermission == 0) {
-    conductoresMenu.remove();
+    if (conductoresMenu) conductoresMenu.remove();
   } else {
-    conductoresMenu.style.display = "block";
+    if (conductoresMenu) conductoresMenu.style.display = "block";
   }
 
   if (vehiculosPermission == 0) {
-    vehiculosMenu.remove();
+    if (vehiculosMenu) vehiculosMenu.remove();
   } else {
-    vehiculosMenu.style.display = "block";
+    if (vehiculosMenu) vehiculosMenu.style.display = "block";
   }
 
   if (concesionariosPermission == 0) {
-    concesionarioMenu.remove();
+    if (concesionarioMenu) concesionarioMenu.remove();
   } else {
-    concesionarioMenu.style.display = "block";
+    if (concesionarioMenu) concesionarioMenu.style.display = "block";
   }
-  if (conductoresPermission == 0) {
-    conductoresMenu.remove();
-  } else {
-    conductoresMenu.style.display = "block";
-  }
-  if (vehiculosPermission == 0) {
-    vehiculosMenu.remove();
-  } else {
-    vehiculosMenu.style.display = "block";
-  }
+  
   if (chatsPermission == 0) {
-    chatsMenu.remove();
+    if (chatsMenu) chatsMenu.remove();
   } else {
-    chatsMenu.style.display = "block";
+    if (chatsMenu) chatsMenu.style.display = "block";
   }
+  
   if (historicoPermission == 0) {
-    historicoMenu.remove();
+    if (historicoMenu) historicoMenu.remove();
   } else {
-    historicoMenu.style.display = "block";
+    if (historicoMenu) historicoMenu.style.display = "block";
   }
+  
   if (clientesPermission == 0) {
-    clientesMenu.remove();
+    if (clientesMenu) clientesMenu.remove();
   } else {
-    clientesMenu.style.display = "block";
+    if (clientesMenu) clientesMenu.style.display = "block";
   }
 };
 
