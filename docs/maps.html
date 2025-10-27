@@ -122,6 +122,13 @@
             </span>
             <span id="panic-data">0</span>
           </button>
+          <!-- Botón de navegación para móvil -->
+          <button type="button" class="map-data navigation-toggle" id="nav-toggle-btn" style="display: none;">
+            <span>
+              <span class="material-icons-sharp">menu</span>
+              Menú
+            </span>
+          </button>
         </div>
         <div class="modal-alert-box" data-id="">
           <div class="box-container">
@@ -177,6 +184,49 @@
       <source src="../assets/audio/warning.mp3" type="audio/mpeg" />
     </audio>
     <script src="../js/dom/mobile-menu.js"></script>
+    
+    <!-- Menú de navegación móvil -->
+    <div class="mobile-nav-overlay" id="mobile-nav-overlay"></div>
+    <div class="mobile-nav-menu" id="mobile-nav-menu">
+      <div class="mobile-nav-header">
+        <h3 class="mobile-nav-title">Navegación</h3>
+        <button class="mobile-nav-close" id="mobile-nav-close">×</button>
+      </div>
+      <div class="mobile-nav-links">
+        <a href="./main.html" class="mobile-nav-link">
+          <span class="material-icons-sharp">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="./vehicles.html" class="mobile-nav-link">
+          <span class="material-icons-sharp">directions_car</span>
+          <span>Vehículos</span>
+        </a>
+        <a href="./users.html" class="mobile-nav-link">
+          <span class="material-icons-sharp">person</span>
+          <span>Conductores</span>
+        </a>
+        <a href="./chats.html" class="mobile-nav-link">
+          <span class="material-icons-sharp">chat</span>
+          <span>Chats</span>
+        </a>
+        <a href="./historico-conductores.html" class="mobile-nav-link">
+          <span class="material-icons-sharp">history</span>
+          <span>Histórico</span>
+        </a>
+        <a href="./concesionarios.html" class="mobile-nav-link">
+          <span class="material-icons-sharp">business</span>
+          <span>Concesionarios</span>
+        </a>
+        <a href="./seguridad-publica.html" class="mobile-nav-link">
+          <span class="material-icons-sharp">local_police</span>
+          <span>Seguridad</span>
+        </a>
+        <a href="./accesos.html" class="mobile-nav-link">
+          <span class="material-icons-sharp">login</span>
+          <span>Accesos</span>
+        </a>
+      </div>
+    </div>
   </body>
 </html>
 <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
@@ -202,4 +252,47 @@
     sessionStorage.clear();
     window.location.replace("https://tutaxislp.com.mx");
   });
+  
+  // Funcionalidad del menú de navegación móvil
+  function initMobileNavMenu() {
+    const navToggleBtn = document.getElementById('nav-toggle-btn');
+    const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+    const mobileNavMenu = document.getElementById('mobile-nav-menu');
+    const mobileNavClose = document.getElementById('mobile-nav-close');
+    
+    // Mostrar/ocultar menú
+    function toggleMobileNav() {
+      mobileNavOverlay.style.display = 'block';
+      mobileNavMenu.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeMobileNav() {
+      mobileNavOverlay.style.display = 'none';
+      mobileNavMenu.classList.remove('show');
+      document.body.style.overflow = '';
+    }
+    
+    // Event listeners
+    if (navToggleBtn) {
+      navToggleBtn.addEventListener('click', toggleMobileNav);
+    }
+    
+    if (mobileNavClose) {
+      mobileNavClose.addEventListener('click', closeMobileNav);
+    }
+    
+    if (mobileNavOverlay) {
+      mobileNavOverlay.addEventListener('click', closeMobileNav);
+    }
+    
+    // Cerrar al hacer click en un enlace
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', closeMobileNav);
+    });
+  }
+  
+  // Inicializar cuando el DOM esté listo
+  document.addEventListener('DOMContentLoaded', initMobileNavMenu);
 </script>
