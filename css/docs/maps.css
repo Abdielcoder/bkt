@@ -35,33 +35,58 @@ div.map-data-container {
     left: 0.5rem;
     right: 0.5rem;
     width: auto;
-    flex-flow: row wrap;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding: 0.75rem;
     background-color: rgba(245, 245, 245, 0.95);
     backdrop-filter: blur(10px);
-    border-radius: 8px;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.15);
+    max-height: 50vh;
+    overflow-y: auto;
   }
   
   div.map-data-container button.map-data {
-    flex: 1;
-    min-width: 0;
-    margin: 0.25rem;
-    padding: 0.5rem;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 6px;
+    flex: none;
+    min-width: auto;
+    margin: 0.25rem 0;
+    padding: 0.75rem 0.5rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
     border: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
   }
   
   div.map-data-container button.map-data span {
-    font-size: 11px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  
+  div.map-data-container button.map-data span:first-child {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
   }
   
   div.map-data-container button.map-data span:last-child {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
+    color: #2d6e3d;
+    margin-left: 0.5rem;
+  }
+  
+  /* Separador más visible */
+  div.map-data-container hr.separator {
+    margin: 0.5rem 0;
+    border: none;
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.2);
+    width: 100%;
   }
   
   /* Mostrar botón de navegación solo en móvil */
@@ -71,16 +96,23 @@ div.map-data-container {
     color: white !important;
     border: 2px solid rgba(255, 255, 255, 0.3) !important;
     font-weight: 600;
+    margin-top: 0.5rem;
+    padding: 1rem 0.5rem;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
   }
   
   div.map-data-container button.navigation-toggle span {
     color: white !important;
-    font-size: 12px !important;
+    font-size: 14px !important;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
   
   div.map-data-container button.navigation-toggle .material-icons-sharp {
-    font-size: 16px;
-    margin-right: 4px;
+    font-size: 20px;
   }
 }
 
